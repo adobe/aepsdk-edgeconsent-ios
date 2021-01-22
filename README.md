@@ -46,7 +46,7 @@ To add the AEPConsent Package to your application, from the Xcode menu select:
 
 `File > Swift Packages > Add Package Dependency...`
 
-Enter the URL for the AEPConsent package repository: `https://github.com/adobe/aepsdk-consent-ios.git`.
+Enter the URL for the AEPConsent package repository: `https://github.com/adobe/aepsdk-consentedge-ios.git`.
 
 When prompted, make sure you change the branch to `main`. (Once the repo is public, we will reference specific tags/versions instead of a branch)
 
@@ -54,7 +54,7 @@ Alternatively, if your project has a `Package.swift` file, you can add AEPConsen
 
 ```
 dependencies: [
-	.package(url: "https://github.com/adobe/aepsdk-consent-ios.git", .branch: "main"),
+	.package(url: "https://github.com/adobe/aepsdk-consentedge-ios.git", .branch: "main"),
 targets: [
    	.target(name: "YourTarget",
     				dependencies: ["AEPConsent"],
