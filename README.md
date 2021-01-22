@@ -2,7 +2,7 @@
 
 ## About this project
 
-The AEP Consent Mobile Extension is an extension for the [Adobe Experience Platform SDK](https://github.com/Adobe-Marketing-Cloud/acp-sdks) and requires the `AEPCore`, `AEPEdge`, and `AEPServices` extensions for event handling, as well as the `AEPIdentity` extension for retrieving the ECID.
+The AEP Consent Mobile Extension is an extension for the [Adobe Experience Platform SDK](https://github.com/Adobe-Marketing-Cloud/acp-sdks) and requires the `AEPCore`, and `AEPServices` extensions.
 
 ## Requirements
 - Xcode 11.0 (or newer)
