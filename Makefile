@@ -53,7 +53,7 @@ lint-autocorrect:
 	(swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources SampleApps/AEPCommerceDemoApp)
+	(swiftlint lint Sources)
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))
