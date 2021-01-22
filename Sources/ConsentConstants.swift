@@ -15,5 +15,5 @@ import Foundation
 enum ConsentConstants {
     static let EXTENSION_NAME = "com.adobe.consent"
     static let FRIENDLY_NAME = "Consent"
-    static let EXTENSION_VERSION = "0.0.1"
+    static let EXTENSION_VERSION = "1.0.0-alpha.1"
 }

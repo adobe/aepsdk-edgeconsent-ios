@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "AEPConsent"
-  s.version          = "0.0.1"
+  s.version          = "1.0.0-alpha.1"
   s.summary          = "Experience Platform Consent extension for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
