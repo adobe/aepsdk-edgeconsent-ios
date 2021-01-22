@@ -21,9 +21,10 @@ class Consent: NSObject, Extension {
     public let friendlyName = ConsentConstants.FRIENDLY_NAME
     public static let extensionVersion = ConsentConstants.EXTENSION_VERSION
     public let metadata: [String: String]? = nil
-
     public let runtime: ExtensionRuntime
 
+    private let fragmentManager = ConsentFragmentManager()
+    
     required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
     }
@@ -45,6 +46,24 @@ class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
+        guard let consents = event.data?["consents"] as? [String: Any] else {
+            // Add log
+            return
+        }
+        
+        let consentDict = ["consents": consents]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
+            // Add log
+            return
+        }
+        
+        guard var consentFragment = try? JSONDecoder().decode(ConsentFragment.self, from: jsonData) else {
+            // Add log
+            return
+        }
+        
+        consentFragment.timestamp = event.timestamp
+        
 
     }
 
