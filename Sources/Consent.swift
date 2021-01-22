@@ -29,6 +29,8 @@ class Consent: NSObject, Extension {
     }
 
     func onRegistered() {
+        // TODO: Add event source and 
+        registerListener(type: "com.adobe.eventType.consent", source: "com.adobe.eventSource.requestContent", listener: receiveConsentRequest(event:))
     }
 
     func onUnregistered() {
@@ -36,6 +38,14 @@ class Consent: NSObject, Extension {
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
+    }
+    
+    // MARK: Event Listeners
+
+    /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
+    /// - Parameter event: the consent request
+    private func receiveConsentRequest(event: Event) {
+
     }
 
 }
