@@ -12,8 +12,12 @@
 
 import Foundation
 
+/// Represents an XDM consent fragment which contains a list of consents along with a timestamp of last updated
 struct ConsentFragment: Codable {
+    // Dictionary of consents for the given fragment
     var consents = [String: ConsentValue]()
+    
+    /// The timestamp this fragment was last updated
     var timestamp = Date()
     
     /// Creates a new consent fragment by merging `otherFragment` with `self`

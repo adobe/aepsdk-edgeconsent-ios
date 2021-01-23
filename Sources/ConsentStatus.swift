@@ -12,6 +12,7 @@
 
 import Foundation
 
+/// Represents the current status of a given `ConsentValue`
 enum ConsentStatus: String, Codable {
     case yes = "y"
     case no = "n"

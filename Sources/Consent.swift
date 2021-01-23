@@ -23,7 +23,7 @@ class Consent: NSObject, Extension {
     public let metadata: [String: String]? = nil
     public let runtime: ExtensionRuntime
 
-    private let fragmentManager = ConsentFragmentManager()
+    private var fragmentManager = ConsentFragmentManager()
     
     required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
@@ -62,9 +62,9 @@ class Consent: NSObject, Extension {
             return
         }
         
-        consentFragment.timestamp = event.timestamp
-        
-
+        consentFragment.timestamp = event.timestamp // set timestamp of this fragment to the timestamp of the `Event`
+        fragmentManager.update(with: consentFragment)
+        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
     }
 
 }
