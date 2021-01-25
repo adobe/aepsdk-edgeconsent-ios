@@ -16,10 +16,10 @@ import Foundation
 struct ConsentFragment: Codable, Equatable {
     /// Consents for the given fragment
     let consents: Consents?
-    
+
     /// The timestamp this fragment was last updated
-    var time = Date()
-    
+    let time: Date
+
     /// Creates a new consent fragment by merging `otherFragment` with `self`
     /// Any shared keys will take on the value stored in `otherFragment`
     /// - Parameter otherFragment: The fragment to be merged with `self`

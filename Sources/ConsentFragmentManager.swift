@@ -10,25 +10,25 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
 import AEPServices
+import Foundation
 
 /// The `ConsentFragmentManager` is responsible for saving and loading consent fragments from persistence as well as merging existing consents with new consent
 struct ConsentFragmentManager {
     private let datastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
-    
+
     /// The current consent fragment stored in local storage, updating this variable will reflect in local storage
     private(set) var currentFragment: ConsentFragment? {
         get {
             let consentFragment: ConsentFragment? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
             return consentFragment
         }
-        
+
         set {
             datastore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT, value: newValue)
         }
     }
-    
+
     /// Updates the existing consent fragment with the passed in consent fragment.
     /// Duplicate keys will take the value of what is represented in the new consent fragment
     /// - Parameters:
@@ -38,8 +38,8 @@ struct ConsentFragmentManager {
             self.currentFragment = newFragment
             return
         }
-        
+
         self.currentFragment = currentFragment.merge(with: newFragment)
     }
-    
+
 }

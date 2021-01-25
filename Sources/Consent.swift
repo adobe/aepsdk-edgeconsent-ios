@@ -11,6 +11,7 @@
  */
 
 import AEPCore
+import AEPServices
 import Foundation
 
 @objc(AEPConsent)
@@ -22,9 +23,9 @@ class Consent: NSObject, Extension {
     public let runtime: ExtensionRuntime
 
     private var fragmentManager = ConsentFragmentManager()
-    
+
     // MARK: Extension
-    
+
     required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
     }
@@ -39,42 +40,33 @@ class Consent: NSObject, Extension {
     public func readyForEvent(_ event: Event) -> Bool {
         return true
     }
-    
+
     // MARK: Event Listeners
 
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard var consents = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
-            // Add log
+        guard var consentsEventData = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
+            Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
         }
-        consents[ConsentConstants.EventDataKeys.TIME] = event.timestamp.timeIntervalSince1970 // set timestamp of this fragment to the timestamp of the `Event`
-        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consents]
         
+        // set timestamp of this fragment to the timestamp of the `Event`s
+        consentsEventData[ConsentConstants.EventDataKeys.TIME] = event.timestamp.timeIntervalSince1970
+        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData]
+
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
-            // Add log
+            Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
             return
         }
-        
+
         guard let consentFragment = try? JSONDecoder().decode(ConsentFragment.self, from: jsonData) else {
-            // Add log
+            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentFragment. Dropping event.")
             return
         }
-        
+
         fragmentManager.update(with: consentFragment)
         createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
-        dispatchConsentUpdateEvent()
-    }
-    
-    // MARK: Helpers
-    
-    /// Dispatches an edge event of source consent update with the event data containing the current consent fragment
-    private func dispatchConsentUpdateEvent() {
-        let data = fragmentManager.currentFragment?.asDictionary() ?? [:]
-        // TODO: Add event source to core
-        let event = Event(name: "Consent Update", type: EventType.edge, source: "com.adobe.eventSource.consentUpdate", data: data)
-        dispatch(event: event)
     }
 
 }

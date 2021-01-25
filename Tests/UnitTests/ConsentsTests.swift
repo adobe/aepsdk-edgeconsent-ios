@@ -10,63 +10,63 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
 @testable import AEPConsent
+import XCTest
 
 class ConsentsTests: XCTestCase {
     func testMergeNil() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: nil)
-        
+
         // test
         let merged = consents.merge(with: nil)
-        
+
         // verify
         XCTAssertEqual(merged, consents)
     }
-    
+
     func testMergeEmpty() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: nil)
-        
+
         // test
         let merged = consents.merge(with: Consents(adId: nil, collect: nil))
-        
+
         // verify
         XCTAssertEqual(merged, consents)
     }
-    
+
     func testMergeNoMatching() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: nil)
-        
+
         // test
         let merged = consents.merge(with: Consents(adId: nil, collect: ConsentValue(val: .no)))
-        
+
         // verify
         let expected = Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no))
         XCTAssertEqual(merged, expected)
     }
-    
+
     func testMergeSomeMatching() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: nil)
-        
+
         // test
         let merged = consents.merge(with: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .no)))
-        
+
         // verify
         let expected = Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .no))
         XCTAssertEqual(merged, expected)
     }
-    
+
     func testMergeAllMatching() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .yes))
-        
+
         // test
         let merged = consents.merge(with: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .no)))
-        
+
         // verify
         let expected = Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .no))
         XCTAssertEqual(merged, expected)

@@ -14,13 +14,13 @@ import Foundation
 
 /// Represents the supported consents by the extension
 struct Consents: Codable, Equatable {
-    
+
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
     let adId: ConsentValue?
-    
+
     /// Determines if data collection is permitted
     let collect: ConsentValue?
-    
+
     /// Merges a set of  consents with the current set of consents
     /// Any shared keys will take on the value stored in `otherConsents`
     /// - Parameter otherConsents: the other `Consents` to merge into this

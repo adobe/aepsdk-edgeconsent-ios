@@ -10,55 +10,55 @@
  governing permissions and limitations under the License.
  */
 
-import XCTest
 @testable import AEPConsent
 import AEPServices
+import XCTest
 
 class ConsentFragmentManagerTests: XCTestCase {
-    
+
     private var mockDatastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
-    
+
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
         mockDatastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
     }
-    
+
     func testUpdate() {
         // setup
         var manager = ConsentFragmentManager()
         let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
-        
+
         // test
         manager.update(with: fragment)
-        
+
         // verify
         let storedFragment: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
         XCTAssertEqual(storedFragment, fragment)
         XCTAssertEqual(manager.currentFragment, fragment)
     }
-    
+
     func testUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentFragmentManager()
         let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
-        
+
         // test pt. 1
         manager.update(with: fragment)
-        
+
         // verify pt. 1
         let storedFragment: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
         XCTAssertEqual(storedFragment, fragment)
         XCTAssertEqual(manager.currentFragment, fragment)
-        
+
         // setup pt. 2
         let fragment2 = ConsentFragment(consents: Consents(adId: nil, collect: ConsentValue(val: .yes)), time: Date())
-        
+
         // test pt. 2
         manager.update(with: fragment2)
-        
+
         // verify pt. 2
         let expected = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .yes)), time: fragment2.time)
-        
+
         let storedFragment2: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
         XCTAssertEqual(storedFragment2, expected)
         XCTAssertEqual(manager.currentFragment, expected)
