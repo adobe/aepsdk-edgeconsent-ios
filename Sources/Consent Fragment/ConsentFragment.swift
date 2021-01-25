@@ -17,8 +17,8 @@ struct ConsentFragment: Codable, Equatable {
     /// Consents for the given fragment
     let consents: Consents?
 
-    /// The timestamp this fragment was last updated
-    let time: Date
+    /// The timestamp this fragment was last updated represented as seconds since 1970
+    let time: TimeInterval
 
     /// Creates a new consent fragment by merging `otherFragment` with `self`
     /// Any shared keys will take on the value stored in `otherFragment`

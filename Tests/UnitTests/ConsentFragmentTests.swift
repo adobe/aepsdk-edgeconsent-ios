@@ -68,7 +68,7 @@ class ConsentFragmentTests: XCTestCase {
 
         // verify
         XCTAssertNotNil(fragment)
-        XCTAssertEqual(date, fragment?.time)
+        XCTAssertEqual(date.timeIntervalSince1970, fragment?.time)
         XCTAssertEqual("y", fragment?.consents?.adId?.val.rawValue)
         XCTAssertNil(fragment?.consents?.collect)
 
@@ -104,7 +104,7 @@ class ConsentFragmentTests: XCTestCase {
 
         // verify
         XCTAssertNotNil(fragment)
-        XCTAssertEqual(date, fragment?.time)
+        XCTAssertEqual(date.timeIntervalSince1970, fragment?.time)
         XCTAssertEqual("y", fragment?.consents?.adId?.val.rawValue)
         XCTAssertEqual("n", fragment?.consents?.collect?.val.rawValue)
 
@@ -120,7 +120,7 @@ class ConsentFragmentTests: XCTestCase {
 
     func testMergeWithNilFragment() {
         // setup
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date().timeIntervalSince1970)
 
         // test
         let mergedFragment = fragment.merge(with: nil)
@@ -131,7 +131,7 @@ class ConsentFragmentTests: XCTestCase {
 
     func testMergeWithEmptyFragment() {
         // setup
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date().timeIntervalSince1970)
         let emptyFragment = ConsentFragment(consents: nil, time: fragment.time)
 
         // test
@@ -143,7 +143,7 @@ class ConsentFragmentTests: XCTestCase {
 
     func testMergeWithSameFragment() {
         // setup
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date().timeIntervalSince1970)
 
         // test
         let mergedFragment = fragment.merge(with: fragment)
@@ -154,8 +154,8 @@ class ConsentFragmentTests: XCTestCase {
 
     func testMergeWithNoMatchingConsentsFragment() {
         // setup
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date())
-        let otherFragment = ConsentFragment(consents: Consents(adId: nil, collect: ConsentValue(val: .yes)), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: nil), time: Date().timeIntervalSince1970)
+        let otherFragment = ConsentFragment(consents: Consents(adId: nil, collect: ConsentValue(val: .yes)), time: Date().timeIntervalSince1970)
 
         // test
         let mergedFragment = fragment.merge(with: otherFragment)
@@ -168,8 +168,8 @@ class ConsentFragmentTests: XCTestCase {
     func testMergeWithSomeMatchingConsentsFragment() {
         func testMergeWithAllMatchingConsentsFragment() {
             // setup
-            let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
-            let otherFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: nil), time: Date())
+            let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date().timeIntervalSince1970)
+            let otherFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: nil), time: Date().timeIntervalSince1970)
 
             // test
             let mergedFragment = fragment.merge(with: otherFragment)
@@ -182,8 +182,8 @@ class ConsentFragmentTests: XCTestCase {
 
     func testMergeWithAllMatchingConsentsFragment() {
         // setup
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
-        let otherFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .yes)), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date().timeIntervalSince1970)
+        let otherFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .yes)), time: Date().timeIntervalSince1970)
 
         // test
         let mergedFragment = fragment.merge(with: otherFragment)

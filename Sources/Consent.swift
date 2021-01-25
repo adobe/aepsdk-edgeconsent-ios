@@ -31,8 +31,8 @@ class Consent: NSObject, Extension {
     }
 
     func onRegistered() {
-        // TODO: Add event type to core
-        registerListener(type: "com.adobe.eventType.consent", source: EventSource.requestContent, listener: receiveConsentRequest(event:))
+        registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
+        // TODO: add default consent value to XDM shared state
     }
 
     func onUnregistered() {}
@@ -46,14 +46,14 @@ class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard var consentsEventData = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
+        guard let consentsEventData = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
         }
 
         // set timestamp of this fragment to the timestamp of the `Event`s
-        consentsEventData[ConsentConstants.EventDataKeys.TIME] = event.timestamp.timeIntervalSince1970
-        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData]
+        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData,
+                           ConsentConstants.EventDataKeys.TIME: event.timestamp.timeIntervalSince1970] as [String: Any]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
             Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
@@ -67,7 +67,8 @@ class Consent: NSObject, Extension {
 
         fragmentManager.update(with: consentFragment)
         // TODO: Set date encoding strategy when available in core
-        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
+        let xdmData = fragmentManager.currentFragment?.asDictionary()
+        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary(dateEncodingStrategy: .secondsSince1970) ?? [:], event: event)
     }
 
 }

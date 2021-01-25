@@ -10,19 +10,33 @@ PODS:
   - AEPServices (3.0.0)
 
 DEPENDENCIES:
-  - AEPCore
+  - AEPCore (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `dev-v3.0.1`)
   - AEPEdge
   - AEPIdentity
   - AEPRulesEngine
-  - AEPServices
+  - AEPServices (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `dev-v3.0.1`)
 
 SPEC REPOS:
   trunk:
-    - AEPCore
     - AEPEdge
     - AEPIdentity
     - AEPRulesEngine
-    - AEPServices
+
+EXTERNAL SOURCES:
+  AEPCore:
+    :branch: dev-v3.0.1
+    :git: https://github.com/adobe/aepsdk-core-ios.git
+  AEPServices:
+    :branch: dev-v3.0.1
+    :git: https://github.com/adobe/aepsdk-core-ios.git
+
+CHECKOUT OPTIONS:
+  AEPCore:
+    :commit: 0c65089d564e82bdd4c11ff41c38e0eef0acfd28
+    :git: https://github.com/adobe/aepsdk-core-ios.git
+  AEPServices:
+    :commit: 0c65089d564e82bdd4c11ff41c38e0eef0acfd28
+    :git: https://github.com/adobe/aepsdk-core-ios.git
 
 SPEC CHECKSUMS:
   AEPCore: 9ced1f1fddcbfd61517461e548e36aee740bf7c8
@@ -31,6 +45,6 @@ SPEC CHECKSUMS:
   AEPRulesEngine: 8bbc694fce6900cd33b2496c7d4b33ee2eeffc46
   AEPServices: 21ea64149483fdfbd5f88f546b9f5ad7d4987400
 
-PODFILE CHECKSUM: cef971b19fe48d7d55f8426b1cfc51411a545183
+PODFILE CHECKSUM: 6e208a6a709bad66899c5c1e744175ed1cd71ddf
 
 COCOAPODS: 1.10.0

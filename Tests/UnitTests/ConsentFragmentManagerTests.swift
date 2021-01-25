@@ -26,7 +26,7 @@ class ConsentFragmentManagerTests: XCTestCase {
     func testUpdate() {
         // setup
         var manager = ConsentFragmentManager()
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date().timeIntervalSince1970)
 
         // test
         manager.update(with: fragment)
@@ -40,7 +40,7 @@ class ConsentFragmentManagerTests: XCTestCase {
     func testUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentFragmentManager()
-        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date())
+        let fragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .yes), collect: ConsentValue(val: .no)), time: Date().timeIntervalSince1970)
 
         // test pt. 1
         manager.update(with: fragment)
@@ -51,7 +51,7 @@ class ConsentFragmentManagerTests: XCTestCase {
         XCTAssertEqual(manager.currentFragment, fragment)
 
         // setup pt. 2
-        let fragment2 = ConsentFragment(consents: Consents(adId: nil, collect: ConsentValue(val: .yes)), time: Date())
+        let fragment2 = ConsentFragment(consents: Consents(adId: nil, collect: ConsentValue(val: .yes)), time: Date().timeIntervalSince1970)
 
         // test pt. 2
         manager.update(with: fragment2)

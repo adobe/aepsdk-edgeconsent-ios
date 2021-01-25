@@ -14,6 +14,7 @@
 import XCTest
 
 class ConsentsTests: XCTestCase {
+
     func testMergeNil() {
         // setup
         let consents = Consents(adId: ConsentValue(val: .yes), collect: nil)
