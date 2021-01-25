@@ -13,6 +13,6 @@
 import Foundation
 
 /// Maps a `ConsentStatus` to a value
-struct ConsentValue: Codable {
+struct ConsentValue: Codable, Equatable {
     let val: ConsentStatus
 }

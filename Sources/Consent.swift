@@ -45,23 +45,23 @@ class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard let consents = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
+        guard var consents = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
             // Add log
             return
         }
-        
+        consents[ConsentConstants.EventDataKeys.TIME] = event.timestamp.timeIntervalSince1970 // set timestamp of this fragment to the timestamp of the `Event`
         let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consents]
+        
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
             // Add log
             return
         }
         
-        guard var consentFragment = try? JSONDecoder().decode(ConsentFragment.self, from: jsonData) else {
+        guard let consentFragment = try? JSONDecoder().decode(ConsentFragment.self, from: jsonData) else {
             // Add log
             return
         }
         
-        consentFragment.time = event.timestamp // set timestamp of this fragment to the timestamp of the `Event`
         fragmentManager.update(with: consentFragment)
         createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
         dispatchConsentUpdateEvent()
