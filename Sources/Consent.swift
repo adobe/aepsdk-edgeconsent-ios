@@ -66,7 +66,7 @@ class Consent: NSObject, Extension {
         }
 
         fragmentManager.update(with: consentFragment)
-        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary(dateEncodingStrategy: .secondsSince1970) ?? [:], event: event)
+        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
     }
 
 }
