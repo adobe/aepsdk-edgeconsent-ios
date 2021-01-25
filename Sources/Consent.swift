@@ -50,7 +50,7 @@ class Consent: NSObject, Extension {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
         }
-        
+
         // set timestamp of this fragment to the timestamp of the `Event`s
         consentsEventData[ConsentConstants.EventDataKeys.TIME] = event.timestamp.timeIntervalSince1970
         let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData]
@@ -66,6 +66,7 @@ class Consent: NSObject, Extension {
         }
 
         fragmentManager.update(with: consentFragment)
+        // TODO: Set date encoding strategy when available in core
         createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
     }
 
