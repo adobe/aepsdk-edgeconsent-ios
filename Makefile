@@ -40,8 +40,7 @@ test:
 	@echo "######################################################################"
 	@echo "### Testing iOS"
 	@echo "######################################################################"
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 8' -derivedDataPath build/out -enableCodeCoverage YES
-
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 11 Pro' -derivedDataPath build/out -enableCodeCoverage YES
 
 install-swiftlint:
 	HOMEBREW_NO_AUTO_UPDATE=1 brew install swiftlint && brew cleanup swiftlint
@@ -53,7 +52,7 @@ lint-autocorrect:
 	(swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources)
+	(swiftlint lint Sources SampleApps/)
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))
