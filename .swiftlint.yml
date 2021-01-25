@@ -24,7 +24,7 @@ excluded: # paths to ignore during linting
 - SampleApps/*/libs
 - Pods
 
-empty_count: 
+empty_count:
     severity: warning
 force_cast: warning
 force_try: warning
