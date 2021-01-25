@@ -66,8 +66,6 @@ class Consent: NSObject, Extension {
         }
 
         fragmentManager.update(with: consentFragment)
-        // TODO: Set date encoding strategy when available in core
-        let xdmData = fragmentManager.currentFragment?.asDictionary()
         createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary(dateEncodingStrategy: .secondsSince1970) ?? [:], event: event)
     }
 
