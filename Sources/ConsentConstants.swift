@@ -16,4 +16,12 @@ enum ConsentConstants {
     static let EXTENSION_NAME = "com.adobe.consent"
     static let FRIENDLY_NAME = "Consent"
     static let EXTENSION_VERSION = "1.0.0-alpha.1"
+    
+    enum EventDataKeys {
+        static let CONSENTS = "consents"
+    }
+    
+    enum DataStoreKeys {
+        static let CONSENT_FRAGMENT = "consent.fragment"
+    }
 }

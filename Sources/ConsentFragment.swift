@@ -14,11 +14,11 @@ import Foundation
 
 /// Represents an XDM consent fragment which contains a list of consents along with a timestamp of last updated
 struct ConsentFragment: Codable {
-    // Dictionary of consents for the given fragment
-    var consents = [String: ConsentValue]()
+    /// Dictionary of consents for the given fragment
+    var consents = [ConsentType: ConsentValue]()
     
     /// The timestamp this fragment was last updated
-    var timestamp = Date()
+    var time = Date()
     
     /// Creates a new consent fragment by merging `otherFragment` with `self`
     /// Any shared keys will take on the value stored in `otherFragment`
@@ -31,5 +31,9 @@ struct ConsentFragment: Codable {
         selfDict.merge(otherDict)  { (_, new) in new }
         let mergedData = (try? JSONSerialization.data(withJSONObject: selfDict)) ?? Data()
         return try? JSONDecoder().decode(ConsentFragment.self, from: mergedData)
+    }
+    
+    func asDictionary() -> [String: Any]? {
+        return nil
     }
 }

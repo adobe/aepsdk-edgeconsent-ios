@@ -32,6 +32,7 @@
 		21C095B925BB906A006C1CFE /* ConsentFragmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B825BB906A006C1CFE /* ConsentFragmentManager.swift */; };
 		21C095BF25BB92A1006C1CFE /* ConsentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */; };
 		21C095C525BB9B83006C1CFE /* ConsentValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095C425BB9B83006C1CFE /* ConsentValue.swift */; };
+		21C095CF25BBCD51006C1CFE /* ConsentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095CE25BBCD51006C1CFE /* ConsentType.swift */; };
 		CAE5A50F10D656BC90A40E3E /* Pods_AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */; };
 		D31B97D4D03E8FC4C48ACE7C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */; };
 		E79F67AB7413663981CF93AC /* Pods_FunctionalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */; };
@@ -79,6 +80,7 @@
 		21C095B825BB906A006C1CFE /* ConsentFragmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentFragmentManager.swift; sourceTree = "<group>"; };
 		21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentStatus.swift; sourceTree = "<group>"; };
 		21C095C425BB9B83006C1CFE /* ConsentValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentValue.swift; sourceTree = "<group>"; };
+		21C095CE25BBCD51006C1CFE /* ConsentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentType.swift; sourceTree = "<group>"; };
 		289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FunctionalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1F5689382A831549A58FF19 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,10 +146,11 @@
 			isa = PBXGroup;
 			children = (
 				2170713E25BB5BEA0052BACE /* AEPConsent.h */,
-				2170719025BB5F1A0052BACE /* Consent.swift */,
 				2170719725BB5F9B0052BACE /* ConsentConstants.swift */,
+				2170719025BB5F1A0052BACE /* Consent.swift */,
 				21C095B825BB906A006C1CFE /* ConsentFragmentManager.swift */,
 				21C095B225BB9060006C1CFE /* ConsentFragment.swift */,
+				21C095CE25BBCD51006C1CFE /* ConsentType.swift */,
 				21C095C425BB9B83006C1CFE /* ConsentValue.swift */,
 				21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
@@ -453,6 +456,7 @@
 				2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */,
 				2170719125BB5F1A0052BACE /* Consent.swift in Sources */,
 				21C095C525BB9B83006C1CFE /* ConsentValue.swift in Sources */,
+				21C095CF25BBCD51006C1CFE /* ConsentType.swift in Sources */,
 				21C095B325BB9060006C1CFE /* ConsentFragment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

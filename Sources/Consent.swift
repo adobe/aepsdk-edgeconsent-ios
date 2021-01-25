@@ -15,8 +15,6 @@ import Foundation
 
 @objc(AEPConsent)
 class Consent: NSObject, Extension {
-
-    // MARK: Extension
     public let name = ConsentConstants.EXTENSION_NAME
     public let friendlyName = ConsentConstants.FRIENDLY_NAME
     public static let extensionVersion = ConsentConstants.EXTENSION_VERSION
@@ -25,17 +23,18 @@ class Consent: NSObject, Extension {
 
     private var fragmentManager = ConsentFragmentManager()
     
+    // MARK: Extension
+    
     required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
     }
 
     func onRegistered() {
-        // TODO: Add event source and 
-        registerListener(type: "com.adobe.eventType.consent", source: "com.adobe.eventSource.requestContent", listener: receiveConsentRequest(event:))
+        // TODO: Add event type to core
+        registerListener(type: "com.adobe.eventType.consent", source: EventSource.requestContent, listener: receiveConsentRequest(event:))
     }
 
-    func onUnregistered() {
-    }
+    func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
@@ -46,12 +45,12 @@ class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard let consents = event.data?["consents"] as? [String: Any] else {
+        guard let consents = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
             // Add log
             return
         }
         
-        let consentDict = ["consents": consents]
+        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consents]
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
             // Add log
             return
@@ -62,9 +61,20 @@ class Consent: NSObject, Extension {
             return
         }
         
-        consentFragment.timestamp = event.timestamp // set timestamp of this fragment to the timestamp of the `Event`
+        consentFragment.time = event.timestamp // set timestamp of this fragment to the timestamp of the `Event`
         fragmentManager.update(with: consentFragment)
         createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
+        dispatchConsentUpdateEvent()
+    }
+    
+    // MARK: Helpers
+    
+    /// Dispatches an edge event of source consent update with the event data containing the current consent fragment
+    private func dispatchConsentUpdateEvent() {
+        let data = fragmentManager.currentFragment?.asDictionary() ?? [:]
+        // TODO: Add event source to core
+        let event = Event(name: "Consent Update", type: EventType.edge, source: "com.adobe.eventSource.consentUpdate", data: data)
+        dispatch(event: event)
     }
 
 }

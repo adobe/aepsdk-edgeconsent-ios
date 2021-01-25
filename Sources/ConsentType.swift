@@ -12,7 +12,11 @@
 
 import Foundation
 
-/// Maps a `ConsentStatus` to a value
-struct ConsentValue: Codable {
-    let val: ConsentStatus
+/// Represents specific consent options
+enum ConsentType: String, Codable {
+    /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
+    case adId = "adID"
+    
+    /// Konductor data collection
+    case collect = "collect"
 }

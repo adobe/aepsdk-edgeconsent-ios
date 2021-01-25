@@ -20,12 +20,12 @@ struct ConsentFragmentManager {
     /// The current consent fragment stored in local storage, updating this variable will reflect in local storage
     private(set) var currentFragment: ConsentFragment? {
         get {
-            let consentFragment: ConsentFragment? = datastore.getObject(key: "consentFragment")
+            let consentFragment: ConsentFragment? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
             return consentFragment
         }
         
         set {
-            datastore.setObject(key: "consentFragment", value: newValue)
+            datastore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT, value: newValue)
         }
     }
     
