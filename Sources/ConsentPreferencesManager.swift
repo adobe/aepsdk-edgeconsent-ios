@@ -20,12 +20,12 @@ struct ConsentPreferencesManager {
     /// The current consent preferences stored in local storage, updating this variable will reflect in local storage
     private(set) var currentPreferences: ConsentPreferences? {
         get {
-            let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+            let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
             return consentPreferences
         }
 
         set {
-            datastore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT, value: newValue)
+            datastore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES, value: newValue)
         }
     }
 

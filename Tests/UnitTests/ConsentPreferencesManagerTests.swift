@@ -35,7 +35,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.update(with: preferences)
 
         // verify
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
         XCTAssertEqual(storedPreferences, preferences)
         XCTAssertEqual(manager.currentPreferences, preferences)
     }
@@ -52,7 +52,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.update(with: preferences)
 
         // verify pt. 1
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
         XCTAssertEqual(storedPreferences, preferences)
         XCTAssertEqual(manager.currentPreferences, preferences)
 
@@ -70,7 +70,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         expectedConsents.collect = ConsentValue(val: .yes)
         let expected = ConsentPreferences(consents: expectedConsents)
 
-        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
         XCTAssertEqual(storedPreferences2, expected)
         XCTAssertEqual(manager.currentPreferences, expected)
     }
