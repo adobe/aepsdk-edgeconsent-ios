@@ -15,5 +15,5 @@ import Foundation
 /// Represents additional metadata
 struct ConsentMetadata: Codable, Equatable {
     /// The timestamp this preferences was last updated
-    let time: Date
+    var time: Date
 }

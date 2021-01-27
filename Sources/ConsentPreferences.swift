@@ -15,7 +15,7 @@ import Foundation
 /// Represents an XDM consent preferences which contains a list of consents along with a timestamp of last updated
 struct ConsentPreferences: Codable, Equatable {
     /// Consents for the given preferences
-    let consents: Consents
+    var consents: Consents
 
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
     /// Any shared keys will take on the value stored in `otherPreferences`

@@ -22,7 +22,7 @@ struct Consents: Codable, Equatable {
     var collect: ConsentValue?
 
     /// Metadata for consents
-    let metadata: ConsentMetadata?
+    var metadata: ConsentMetadata?
 
     /// Initializes new consents with the given metadata
     /// - Parameter metadata: metadata for the consents

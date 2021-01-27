@@ -199,7 +199,7 @@ class ConsentPreferencesTests: XCTestCase {
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: Date()))
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
         expectedConsents.adId = ConsentValue(val: .no)
         expectedConsents.collect = ConsentValue(val: .no)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)

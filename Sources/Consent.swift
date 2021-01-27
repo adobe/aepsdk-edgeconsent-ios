@@ -46,27 +46,24 @@ class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard let consentsEventData = event.data?[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any] else {
+        guard let consentsEventData = event.data else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
         }
 
-        // set timestamp of this preferences to the timestamp of the `Event`s
-        let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData,
-                           ConsentConstants.EventDataKeys.TIME: event.timestamp.timeIntervalSince1970] as [String: Any]
-
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentDict) else {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsEventData) else {
             Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
             return
         }
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        guard let consentPreferences = try? decoder.decode(ConsentPreferences.self, from: jsonData) else {
+        guard var consentPreferences = try? decoder.decode(ConsentPreferences.self, from: jsonData) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
 
+        consentPreferences.consents.metadata?.time = event.timestamp
         preferencesManager.update(with: consentPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }

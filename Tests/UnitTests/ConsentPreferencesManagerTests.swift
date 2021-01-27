@@ -15,13 +15,12 @@ import AEPServices
 import XCTest
 
 class ConsentPreferencesManagerTests: XCTestCase {
-    private let dataStoreName = "com.adobe.consent"
     private let preferencesKey = "consent.preferences"
-    private var mockDatastore = NamedCollectionDataStore(name: dataStoreName)
+    private var mockDatastore: NamedCollectionDataStore!
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
-        mockDatastore = NamedCollectionDataStore(name: dataStoreName)
+        mockDatastore = NamedCollectionDataStore(name: "com.adobe.consent")
     }
 
     func testUpdate() {
