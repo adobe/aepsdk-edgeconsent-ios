@@ -15,12 +15,13 @@ import AEPServices
 import XCTest
 
 class ConsentPreferencesManagerTests: XCTestCase {
-
-    private var mockDatastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
+    private let dataStoreName = "com.adobe.consent"
+    private let preferencesKey = "consent.preferences"
+    private var mockDatastore = NamedCollectionDataStore(name: dataStoreName)
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
-        mockDatastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
+        mockDatastore = NamedCollectionDataStore(name: dataStoreName)
     }
 
     func testUpdate() {
@@ -35,7 +36,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.update(with: preferences)
 
         // verify
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
         XCTAssertEqual(storedPreferences, preferences)
         XCTAssertEqual(manager.currentPreferences, preferences)
     }
@@ -52,7 +53,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.update(with: preferences)
 
         // verify pt. 1
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
         XCTAssertEqual(storedPreferences, preferences)
         XCTAssertEqual(manager.currentPreferences, preferences)
 
@@ -70,7 +71,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         expectedConsents.collect = ConsentValue(val: .yes)
         let expected = ConsentPreferences(consents: expectedConsents)
 
-        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES)
+        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
         XCTAssertEqual(storedPreferences2, expected)
         XCTAssertEqual(manager.currentPreferences, expected)
     }
