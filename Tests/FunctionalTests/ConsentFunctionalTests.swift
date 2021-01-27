@@ -82,7 +82,10 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStateFragmentData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
         let sharedStateFragment = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData)
 
-        let expectedFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .yes)), time: event.timestamp.timeIntervalSince1970)
+        var expectedConsents = Consents()
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedFragment = ConsentFragment(consents: expectedConsents, time: event.timestamp.timeIntervalSince1970)
 
         XCTAssertEqual(expectedFragment, sharedStateFragment)
     }
@@ -100,8 +103,11 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let sharedStateFragmentData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
         let sharedStateFragment = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData)
-
-        let expectedFragment = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .yes)), time: firstEvent.timestamp.timeIntervalSince1970)
+        
+        var expectedConsents = Consents()
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedFragment = ConsentFragment(consents: expectedConsents, time: firstEvent.timestamp.timeIntervalSince1970)
 
         XCTAssertEqual(expectedFragment, sharedStateFragment)
 
@@ -109,8 +115,11 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedState2 = mockRuntime.createdXdmSharedStates.last!
         let sharedStateFragmentData2 = try! JSONSerialization.data(withJSONObject: sharedState2!, options: [])
         let sharedStateFragment2 = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData2)
-
-        let expectedFragment2 = ConsentFragment(consents: Consents(adId: ConsentValue(val: .no), collect: ConsentValue(val: .no)), time: secondEvent.timestamp.timeIntervalSince1970)
+        
+        var expectedConsents2 = Consents()
+        expectedConsents2.adId = ConsentValue(val: .no)
+        expectedConsents2.collect = ConsentValue(val: .no)
+        let expectedFragment2 = ConsentFragment(consents: expectedConsents2, time: secondEvent.timestamp.timeIntervalSince1970)
 
         XCTAssertEqual(expectedFragment2, sharedStateFragment2)
     }

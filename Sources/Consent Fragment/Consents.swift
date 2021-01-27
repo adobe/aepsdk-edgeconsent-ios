@@ -16,10 +16,13 @@ import Foundation
 struct Consents: Codable, Equatable {
 
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
-    let adId: ConsentValue?
+    var adId: ConsentValue?
 
     /// Determines if data collection is permitted
-    let collect: ConsentValue?
+    var collect: ConsentValue?
+
+    // Empty default initializer
+    init() {}
 
     /// Merges a set of  consents with the current set of consents
     /// Any shared keys will take on the value stored in `otherConsents`
@@ -27,6 +30,9 @@ struct Consents: Codable, Equatable {
     /// - Returns: The resulting `Consents` after merging `self` with `otherConsents`
     func merge(with otherConsents: Consents?) -> Consents {
         guard let otherConsents = otherConsents else { return self }
-        return Consents(adId: otherConsents.adId ?? adId, collect: otherConsents.collect ?? collect)
+        var mergedConsents = Consents()
+        mergedConsents.adId = otherConsents.adId ?? adId
+        mergedConsents.collect = otherConsents.collect ?? collect
+        return mergedConsents
     }
 }
