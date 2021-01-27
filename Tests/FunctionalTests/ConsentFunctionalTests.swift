@@ -91,7 +91,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
         XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
-        XCTAssertEqual(expectedPreferences.consents.metadata.time.iso8601String, sharedStatePreferences.consents.metadata.time.iso8601String)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
     }
 
     func testConsentUpdateMergeHappy() {
@@ -117,7 +117,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
         XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
-        XCTAssertEqual(expectedPreferences.consents.metadata.time.iso8601String, sharedStatePreferences.consents.metadata.time.iso8601String)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
 
         // verify second shared state data
         let sharedState2 = mockRuntime.createdXdmSharedStates.last!
@@ -131,7 +131,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual(expectedPreferences2.consents.adId, sharedStatePreferences2.consents.adId)
         XCTAssertEqual(expectedPreferences2.consents.collect, sharedStatePreferences2.consents.collect)
-        XCTAssertEqual(expectedPreferences2.consents.metadata.time.iso8601String, sharedStatePreferences2.consents.metadata.time.iso8601String)
+        XCTAssertEqual(expectedPreferences2.consents.metadata!.time.iso8601String, sharedStatePreferences2.consents.metadata!.time.iso8601String)
     }
 
     private func buildFirstConsentUpdateEvent() -> Event {

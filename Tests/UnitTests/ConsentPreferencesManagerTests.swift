@@ -65,7 +65,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.update(with: preferences2)
 
         // verify pt. 2
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata.time))
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         expectedConsents.collect = ConsentValue(val: .yes)
         let expected = ConsentPreferences(consents: expectedConsents)

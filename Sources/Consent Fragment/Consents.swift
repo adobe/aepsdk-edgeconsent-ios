@@ -22,11 +22,11 @@ struct Consents: Codable, Equatable {
     var collect: ConsentValue?
 
     /// Metadata for consents
-    let metadata: ConsentMetadata
+    let metadata: ConsentMetadata?
 
     /// Initializes new consents with the given metadata
     /// - Parameter metadata: metadata for the consents
-    init(metadata: ConsentMetadata) {
+    init(metadata: ConsentMetadata?) {
         self.metadata = metadata
     }
 
@@ -36,7 +36,7 @@ struct Consents: Codable, Equatable {
     /// - Returns: The resulting `Consents` after merging `self` with `otherConsents`
     func merge(with otherConsents: Consents?) -> Consents {
         guard let otherConsents = otherConsents else { return self }
-        var mergedConsents = Consents(metadata: otherConsents.metadata)
+        var mergedConsents = Consents(metadata: otherConsents.metadata ?? metadata)
         mergedConsents.adId = otherConsents.adId ?? adId
         mergedConsents.collect = otherConsents.collect ?? collect
         return mergedConsents

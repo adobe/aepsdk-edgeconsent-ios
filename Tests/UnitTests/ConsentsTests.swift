@@ -37,7 +37,7 @@ class ConsentsTests: XCTestCase {
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata.time))
+        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(val: .yes)
         XCTAssertEqual(merged, expected)
     }
@@ -53,7 +53,7 @@ class ConsentsTests: XCTestCase {
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata.time))
+        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(val: .yes)
         expected.collect = ConsentValue(val: .no)
         XCTAssertEqual(merged, expected)
@@ -71,7 +71,7 @@ class ConsentsTests: XCTestCase {
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata.time))
+        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(val: .no)
         expected.collect = ConsentValue(val: .no)
         XCTAssertEqual(merged, expected)

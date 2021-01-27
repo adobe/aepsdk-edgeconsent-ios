@@ -70,7 +70,7 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata.time.iso8601String)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata?.time.iso8601String)
         XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
         XCTAssertNil(preferences?.consents.collect)
 
@@ -108,7 +108,7 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata.time.iso8601String)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata?.time.iso8601String)
         XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
         XCTAssertEqual("n", preferences?.consents.collect?.val.rawValue)
 
@@ -146,7 +146,7 @@ class ConsentPreferencesTests: XCTestCase {
         let mergedPreferences = preferences.merge(with: emptyPreferences)
 
         // verify
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: emptyPreferences.consents.metadata.time))
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: emptyPreferences.consents.metadata!.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
         XCTAssertEqual(expectedPreferences, mergedPreferences)
@@ -178,7 +178,7 @@ class ConsentPreferencesTests: XCTestCase {
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata.time))
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         expectedConsents.collect = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
