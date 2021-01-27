@@ -26,10 +26,10 @@ class ConsentFragmentManagerTests: XCTestCase {
     func testUpdate() {
         // setup
         var manager = ConsentFragmentManager()
-        var consents = Consents()
+        var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
         consents.collect = ConsentValue(val: .no)
-        let fragment = ConsentFragment(consents: consents, time: Date().timeIntervalSince1970)
+        let fragment = ConsentFragment(consents: consents)
 
         // test
         manager.update(with: fragment)
@@ -43,10 +43,10 @@ class ConsentFragmentManagerTests: XCTestCase {
     func testUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentFragmentManager()
-        var consents = Consents()
+        var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
         consents.collect = ConsentValue(val: .no)
-        let fragment = ConsentFragment(consents: consents, time: Date().timeIntervalSince1970)
+        let fragment = ConsentFragment(consents: consents)
 
         // test pt. 1
         manager.update(with: fragment)
@@ -57,18 +57,18 @@ class ConsentFragmentManagerTests: XCTestCase {
         XCTAssertEqual(manager.currentFragment, fragment)
 
         // setup pt. 2
-        var consents2 = Consents()
+        var consents2 = Consents(metadata: ConsentMetadata(time: Date()))
         consents2.collect = ConsentValue(val: .yes)
-        let fragment2 = ConsentFragment(consents: consents2, time: Date().timeIntervalSince1970)
+        let fragment2 = ConsentFragment(consents: consents2)
 
         // test pt. 2
         manager.update(with: fragment2)
 
         // verify pt. 2
-        var expectedConsents = Consents()
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         expectedConsents.collect = ConsentValue(val: .yes)
-        let expected = ConsentFragment(consents: expectedConsents, time: fragment2.time)
+        let expected = ConsentFragment(consents: expectedConsents)
 
         let storedFragment2: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
         XCTAssertEqual(storedFragment2, expected)

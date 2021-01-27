@@ -60,13 +60,15 @@ class Consent: NSObject, Extension {
             return
         }
 
-        guard let consentFragment = try? JSONDecoder().decode(ConsentFragment.self, from: jsonData) else {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        guard let consentFragment = try? decoder.decode(ConsentFragment.self, from: jsonData) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentFragment. Dropping event.")
             return
         }
 
         fragmentManager.update(with: consentFragment)
-        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary() ?? [:], event: event)
+        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }
 
 }

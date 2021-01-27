@@ -37,6 +37,9 @@
 		21C0962125BF481D006C1CFE /* ConsentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0962025BF481D006C1CFE /* ConsentsTests.swift */; };
 		21C0963325BF4928006C1CFE /* ConsentFragmentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963225BF4928006C1CFE /* ConsentFragmentManagerTests.swift */; };
 		21C0964725BF4A21006C1CFE /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963925BF49D4006C1CFE /* MockDataStore.swift */; };
+		21D0F20625C1E11A0091FFBD /* ConsentMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */; };
+		21D0F21125C1FA150091FFBD /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
+		21D0F21625C1FA170091FFBD /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */; };
 		CAE5A50F10D656BC90A40E3E /* Pods_AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */; };
 		D31B97D4D03E8FC4C48ACE7C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */; };
@@ -90,6 +93,8 @@
 		21C0962025BF481D006C1CFE /* ConsentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentsTests.swift; sourceTree = "<group>"; };
 		21C0963225BF4928006C1CFE /* ConsentFragmentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentFragmentManagerTests.swift; sourceTree = "<group>"; };
 		21C0963925BF49D4006C1CFE /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
+		21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentMetadata.swift; sourceTree = "<group>"; };
+		21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ISO8601.swift"; sourceTree = "<group>"; };
 		21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
 		289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FunctionalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +177,7 @@
 				21C0963225BF4928006C1CFE /* ConsentFragmentManagerTests.swift */,
 				21C0960725BF3429006C1CFE /* ConsentFragmentTests.swift */,
 				21C0962025BF481D006C1CFE /* ConsentsTests.swift */,
+				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
 				21C0963825BF49C8006C1CFE /* Mocks */,
 				2170714B25BB5BEB0052BACE /* Info.plist */,
 			);
@@ -196,6 +202,7 @@
 				21C095B225BB9060006C1CFE /* ConsentFragment.swift */,
 				21C0961125BF46D3006C1CFE /* Consents.swift */,
 				21C095C425BB9B83006C1CFE /* ConsentValue.swift */,
+				21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */,
 				21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */,
 			);
 			path = "Consent Fragment";
@@ -503,6 +510,7 @@
 				21C095BF25BB92A1006C1CFE /* ConsentStatus.swift in Sources */,
 				21C095B925BB906A006C1CFE /* ConsentFragmentManager.swift in Sources */,
 				2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */,
+				21D0F20625C1E11A0091FFBD /* ConsentMetadata.swift in Sources */,
 				2170719125BB5F1A0052BACE /* Consent.swift in Sources */,
 				21C095C525BB9B83006C1CFE /* ConsentValue.swift in Sources */,
 				21C0961225BF46D3006C1CFE /* Consents.swift in Sources */,
@@ -518,6 +526,7 @@
 				21C0963325BF4928006C1CFE /* ConsentFragmentManagerTests.swift in Sources */,
 				21C0960825BF3429006C1CFE /* ConsentFragmentTests.swift in Sources */,
 				21C0962125BF481D006C1CFE /* ConsentsTests.swift in Sources */,
+				21D0F21125C1FA150091FFBD /* Date+ISO8601.swift in Sources */,
 				2170714A25BB5BEB0052BACE /* ConsentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */,
+				21D0F21625C1FA170091FFBD /* Date+ISO8601.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

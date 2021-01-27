@@ -15,10 +15,7 @@ import Foundation
 /// Represents an XDM consent fragment which contains a list of consents along with a timestamp of last updated
 struct ConsentFragment: Codable, Equatable {
     /// Consents for the given fragment
-    let consents: Consents?
-
-    /// The timestamp this fragment was last updated represented as seconds since 1970
-    let time: TimeInterval
+    let consents: Consents
 
     /// Creates a new consent fragment by merging `otherFragment` with `self`
     /// Any shared keys will take on the value stored in `otherFragment`
@@ -26,7 +23,6 @@ struct ConsentFragment: Codable, Equatable {
     /// - Returns: The resulting `ConsentFragment` after merging `self` with `otherFragment`
     func merge(with otherFragment: ConsentFragment?) -> ConsentFragment {
         guard let otherFragment = otherFragment else { return self }
-        return ConsentFragment(consents: consents?.merge(with: otherFragment.consents) ?? otherFragment.consents,
-                               time: otherFragment.time)
+        return ConsentFragment(consents: consents.merge(with: otherFragment.consents))
     }
 }

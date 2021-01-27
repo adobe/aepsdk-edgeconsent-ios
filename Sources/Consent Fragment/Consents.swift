@@ -21,8 +21,14 @@ struct Consents: Codable, Equatable {
     /// Determines if data collection is permitted
     var collect: ConsentValue?
 
-    // Empty default initializer
-    init() {}
+    /// Metadata for consents
+    let metadata: ConsentMetadata
+
+    /// Initializes new consents with the given metadata
+    /// - Parameter metadata: metadata for the consents
+    init(metadata: ConsentMetadata) {
+        self.metadata = metadata
+    }
 
     /// Merges a set of  consents with the current set of consents
     /// Any shared keys will take on the value stored in `otherConsents`
@@ -30,7 +36,7 @@ struct Consents: Codable, Equatable {
     /// - Returns: The resulting `Consents` after merging `self` with `otherConsents`
     func merge(with otherConsents: Consents?) -> Consents {
         guard let otherConsents = otherConsents else { return self }
-        var mergedConsents = Consents()
+        var mergedConsents = Consents(metadata: otherConsents.metadata)
         mergedConsents.adId = otherConsents.adId ?? adId
         mergedConsents.collect = otherConsents.collect ?? collect
         return mergedConsents

@@ -80,14 +80,18 @@ class ConsentFunctionalTests: XCTestCase {
         // verify shared state data
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let sharedStateFragmentData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let sharedStateFragment = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStateFragment = try! decoder.decode(ConsentFragment.self, from: sharedStateFragmentData)
 
-        var expectedConsents = Consents()
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
         expectedConsents.adId = ConsentValue(val: .no)
         expectedConsents.collect = ConsentValue(val: .yes)
-        let expectedFragment = ConsentFragment(consents: expectedConsents, time: event.timestamp.timeIntervalSince1970)
+        let expectedFragment = ConsentFragment(consents: expectedConsents)
 
-        XCTAssertEqual(expectedFragment, sharedStateFragment)
+        XCTAssertEqual(expectedFragment.consents.adId, sharedStateFragment.consents.adId)
+        XCTAssertEqual(expectedFragment.consents.collect, sharedStateFragment.consents.collect)
+        XCTAssertEqual(expectedFragment.consents.metadata.time.iso8601String, sharedStateFragment.consents.metadata.time.iso8601String)
     }
 
     func testConsentUpdateMergeHappy() {
@@ -102,55 +106,70 @@ class ConsentFunctionalTests: XCTestCase {
         // verify first shared state data
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let sharedStateFragmentData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let sharedStateFragment = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData)
-        
-        var expectedConsents = Consents()
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStateFragment = try! decoder.decode(ConsentFragment.self, from: sharedStateFragmentData)
+
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
         expectedConsents.adId = ConsentValue(val: .no)
         expectedConsents.collect = ConsentValue(val: .yes)
-        let expectedFragment = ConsentFragment(consents: expectedConsents, time: firstEvent.timestamp.timeIntervalSince1970)
+        let expectedFragment = ConsentFragment(consents: expectedConsents)
 
-        XCTAssertEqual(expectedFragment, sharedStateFragment)
+        XCTAssertEqual(expectedFragment.consents.adId, sharedStateFragment.consents.adId)
+        XCTAssertEqual(expectedFragment.consents.collect, sharedStateFragment.consents.collect)
+        XCTAssertEqual(expectedFragment.consents.metadata.time.iso8601String, sharedStateFragment.consents.metadata.time.iso8601String)
 
         // verify second shared state data
         let sharedState2 = mockRuntime.createdXdmSharedStates.last!
         let sharedStateFragmentData2 = try! JSONSerialization.data(withJSONObject: sharedState2!, options: [])
-        let sharedStateFragment2 = try! JSONDecoder().decode(ConsentFragment.self, from: sharedStateFragmentData2)
-        
-        var expectedConsents2 = Consents()
+        let sharedStateFragment2 = try! decoder.decode(ConsentFragment.self, from: sharedStateFragmentData2)
+
+        var expectedConsents2 = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
         expectedConsents2.adId = ConsentValue(val: .no)
         expectedConsents2.collect = ConsentValue(val: .no)
-        let expectedFragment2 = ConsentFragment(consents: expectedConsents2, time: secondEvent.timestamp.timeIntervalSince1970)
+        let expectedFragment2 = ConsentFragment(consents: expectedConsents2)
 
-        XCTAssertEqual(expectedFragment2, sharedStateFragment2)
+        XCTAssertEqual(expectedFragment2.consents.adId, sharedStateFragment2.consents.adId)
+        XCTAssertEqual(expectedFragment2.consents.collect, sharedStateFragment2.consents.collect)
+        XCTAssertEqual(expectedFragment2.consents.metadata.time.iso8601String, sharedStateFragment2.consents.metadata.time.iso8601String)
     }
 
     private func buildFirstConsentUpdateEvent() -> Event {
+        let date = Date()
         let rawEventData = """
-                        {
-                            "consents": {
-                                "collect": {
-                                    "val": "y"
-                                },
-                                "adId": {
-                                    "val": "n"
-                                }
-                            }
+                    {
+                      "consents" : {
+                        "adId" : {
+                          "val" : "n"
+                        },
+                        "collect" : {
+                          "val" : "y"
+                        },
+                        "metadata" : {
+                          "time" : "\(date.iso8601String)"
                         }
-                        """.data(using: .utf8)!
+                      }
+                    }
+                   """.data(using: .utf8)!
+
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
         return Event(name: "Consent Update", type: EventType.consent, source: EventSource.requestContent, data: eventData)
     }
 
     private func buildSecondConsentUpdateEvent() -> Event {
+        let date = Date()
         let rawEventData = """
-                        {
-                            "consents": {
-                                "collect": {
-                                    "val": "n"
-                                }
-                            }
+                    {
+                      "consents" : {
+                        "collect" : {
+                          "val" : "n"
+                        },
+                        "metadata" : {
+                          "time" : "\(date.iso8601String)"
                         }
-                        """.data(using: .utf8)!
+                      }
+                    }
+                   """.data(using: .utf8)!
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
         return Event(name: "Consent Update", type: EventType.consent, source: EventSource.requestContent, data: eventData)
     }
