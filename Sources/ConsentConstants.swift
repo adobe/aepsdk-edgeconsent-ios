@@ -23,6 +23,6 @@ enum ConsentConstants {
     }
 
     enum DataStoreKeys {
-        static let CONSENT_FRAGMENT = "consent.fragment"
+        static let CONSENT_FRAGMENT = "consent.preferences"
     }
 }

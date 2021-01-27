@@ -13,7 +13,7 @@
 @testable import AEPConsent
 import XCTest
 
-class ConsentFragmentTests: XCTestCase {
+class ConsentPreferencesTests: XCTestCase {
 
     // MARK: Codable tests
 
@@ -25,10 +25,10 @@ class ConsentFragmentTests: XCTestCase {
                    """
 
         // test
-        let fragment = try? JSONDecoder().decode(ConsentFragment.self, from: json.data(using: .utf8)!)
+        let preferences = try? JSONDecoder().decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
         // verify
-        XCTAssertNil(fragment)
+        XCTAssertNil(preferences)
     }
 
     func testEncodeInvalidJson() {
@@ -41,10 +41,10 @@ class ConsentFragmentTests: XCTestCase {
                    """
 
         // test
-        let fragment = try? JSONDecoder().decode(ConsentFragment.self, from: json.data(using: .utf8)!)
+        let preferences = try? JSONDecoder().decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
         // verify
-        XCTAssertNil(fragment)
+        XCTAssertNil(preferences)
     }
 
     func testEncodeOneConsentWithTime() {
@@ -66,20 +66,20 @@ class ConsentFragmentTests: XCTestCase {
         // test decode
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let fragment = try? decoder.decode(ConsentFragment.self, from: json.data(using: .utf8)!)
+        let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
         // verify
-        XCTAssertNotNil(fragment)
-        XCTAssertEqual(date.iso8601String, fragment?.consents.metadata.time.iso8601String)
-        XCTAssertEqual("y", fragment?.consents.adId?.val.rawValue)
-        XCTAssertNil(fragment?.consents.collect)
+        XCTAssertNotNil(preferences)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata.time.iso8601String)
+        XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
+        XCTAssertNil(preferences?.consents.collect)
 
         // test encode
-        let encodedData = try? JSONEncoder().encode(fragment)
-        let encodedFragment = try? JSONDecoder().decode(ConsentFragment.self, from: encodedData!)
+        let encodedData = try? JSONEncoder().encode(preferences)
+        let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
         // verify encoding
-        XCTAssertEqual(fragment, encodedFragment)
+        XCTAssertEqual(preferences, encodedPreferences)
     }
 
     func testEncodeTwoConsentsWithTime() {
@@ -104,126 +104,126 @@ class ConsentFragmentTests: XCTestCase {
         // test decode
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let fragment = try? decoder.decode(ConsentFragment.self, from: json.data(using: .utf8)!)
+        let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
         // verify
-        XCTAssertNotNil(fragment)
-        XCTAssertEqual(date.iso8601String, fragment?.consents.metadata.time.iso8601String)
-        XCTAssertEqual("y", fragment?.consents.adId?.val.rawValue)
-        XCTAssertEqual("n", fragment?.consents.collect?.val.rawValue)
+        XCTAssertNotNil(preferences)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata.time.iso8601String)
+        XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
+        XCTAssertEqual("n", preferences?.consents.collect?.val.rawValue)
 
         // test encode
-        let encodedData = try? JSONEncoder().encode(fragment)
-        let encodedFragment = try? JSONDecoder().decode(ConsentFragment.self, from: encodedData!)
+        let encodedData = try? JSONEncoder().encode(preferences)
+        let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
         // verify encoding
-        XCTAssertEqual(fragment, encodedFragment)
+        XCTAssertEqual(preferences, encodedPreferences)
     }
 
     // MARK: Merge Tests
 
-    func testMergeWithNilFragment() {
+    func testMergeWithNilPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
 
         // test
-        let mergedFragment = fragment.merge(with: nil)
+        let mergedPreferences = preferences.merge(with: nil)
 
         // verify
-        XCTAssertEqual(fragment, mergedFragment)
+        XCTAssertEqual(preferences, mergedPreferences)
     }
 
-    func testMergeWithEmptyFragment() {
+    func testMergeWithEmptyPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
-        let fragment = ConsentFragment(consents: consents)
-        let emptyFragment = ConsentFragment(consents: Consents(metadata: ConsentMetadata(time: Date())))
+        let preferences = ConsentPreferences(consents: consents)
+        let emptyPreferences = ConsentPreferences(consents: Consents(metadata: ConsentMetadata(time: Date())))
 
         // test
-        let mergedFragment = fragment.merge(with: emptyFragment)
+        let mergedPreferences = preferences.merge(with: emptyPreferences)
 
         // verify
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: emptyFragment.consents.metadata.time))
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: emptyPreferences.consents.metadata.time))
         expectedConsents.adId = ConsentValue(val: .yes)
-        let expectedFragment = ConsentFragment(consents: expectedConsents)
-        XCTAssertEqual(expectedFragment, mergedFragment)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+        XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
 
-    func testMergeWithSameFragment() {
+    func testMergeWithSamePreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
 
         // test
-        let mergedFragment = fragment.merge(with: fragment)
+        let mergedPreferences = preferences.merge(with: preferences)
 
         // verify
-        XCTAssertEqual(fragment, mergedFragment)
+        XCTAssertEqual(preferences, mergedPreferences)
     }
 
-    func testMergeWithNoMatchingConsentsFragment() {
+    func testMergeWithNoMatchingConsentsPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
         var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
         otherConsents.collect = ConsentValue(val: .yes)
-        let otherFragment = ConsentFragment(consents: otherConsents)
+        let otherPreferences = ConsentPreferences(consents: otherConsents)
 
         // test
-        let mergedFragment = fragment.merge(with: otherFragment)
+        let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
         var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         expectedConsents.collect = ConsentValue(val: .yes)
-        let expectedFragment = ConsentFragment(consents: expectedConsents)
-        XCTAssertEqual(expectedFragment, mergedFragment)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+        XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
 
-    func testMergeWithSomeMatchingConsentsFragment() {
-        func testMergeWithAllMatchingConsentsFragment() {
+    func testMergeWithSomeMatchingConsentsPreferences() {
+        func testMergeWithAllMatchingConsentsPreferences() {
             // setup
             var consents = Consents(metadata: ConsentMetadata(time: Date()))
             consents.adId = ConsentValue(val: .yes)
             consents.collect = ConsentValue(val: .no)
-            let fragment = ConsentFragment(consents: consents)
+            let preferences = ConsentPreferences(consents: consents)
             var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
             otherConsents.adId = ConsentValue(val: .no)
-            let otherFragment = ConsentFragment(consents: otherConsents)
+            let otherPreferences = ConsentPreferences(consents: otherConsents)
 
             // test
-            let mergedFragment = fragment.merge(with: otherFragment)
+            let mergedPreferences = preferences.merge(with: otherPreferences)
 
             // verify
             var expectedConsents = Consents(metadata: ConsentMetadata(time: Date()))
             expectedConsents.adId = ConsentValue(val: .no)
             expectedConsents.collect = ConsentValue(val: .no)
-            let expectedFragment = ConsentFragment(consents: expectedConsents)
-            XCTAssertEqual(expectedFragment, mergedFragment)
+            let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+            XCTAssertEqual(expectedPreferences, mergedPreferences)
         }
     }
 
-    func testMergeWithAllMatchingConsentsFragment() {
+    func testMergeWithAllMatchingConsentsPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
         consents.collect = ConsentValue(val: .no)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
         var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
         otherConsents.adId = ConsentValue(val: .no)
         otherConsents.collect = ConsentValue(val: .yes)
-        let otherFragment = ConsentFragment(consents: otherConsents)
+        let otherPreferences = ConsentPreferences(consents: otherConsents)
 
         // test
-        let mergedFragment = fragment.merge(with: otherFragment)
+        let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
-        XCTAssertEqual(otherFragment, mergedFragment)
+        XCTAssertEqual(otherPreferences, mergedPreferences)
     }
 
 }

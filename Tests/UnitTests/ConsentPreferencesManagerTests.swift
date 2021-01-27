@@ -14,7 +14,7 @@
 import AEPServices
 import XCTest
 
-class ConsentFragmentManagerTests: XCTestCase {
+class ConsentPreferencesManagerTests: XCTestCase {
 
     private var mockDatastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
 
@@ -25,54 +25,54 @@ class ConsentFragmentManagerTests: XCTestCase {
 
     func testUpdate() {
         // setup
-        var manager = ConsentFragmentManager()
+        var manager = ConsentPreferencesManager()
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
         consents.collect = ConsentValue(val: .no)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
 
         // test
-        manager.update(with: fragment)
+        manager.update(with: preferences)
 
         // verify
-        let storedFragment: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
-        XCTAssertEqual(storedFragment, fragment)
-        XCTAssertEqual(manager.currentFragment, fragment)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        XCTAssertEqual(storedPreferences, preferences)
+        XCTAssertEqual(manager.currentPreferences, preferences)
     }
 
     func testUpdateMultipleMerges() {
         // setup pt. 1
-        var manager = ConsentFragmentManager()
+        var manager = ConsentPreferencesManager()
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(val: .yes)
         consents.collect = ConsentValue(val: .no)
-        let fragment = ConsentFragment(consents: consents)
+        let preferences = ConsentPreferences(consents: consents)
 
         // test pt. 1
-        manager.update(with: fragment)
+        manager.update(with: preferences)
 
         // verify pt. 1
-        let storedFragment: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
-        XCTAssertEqual(storedFragment, fragment)
-        XCTAssertEqual(manager.currentFragment, fragment)
+        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        XCTAssertEqual(storedPreferences, preferences)
+        XCTAssertEqual(manager.currentPreferences, preferences)
 
         // setup pt. 2
         var consents2 = Consents(metadata: ConsentMetadata(time: Date()))
         consents2.collect = ConsentValue(val: .yes)
-        let fragment2 = ConsentFragment(consents: consents2)
+        let preferences2 = ConsentPreferences(consents: consents2)
 
         // test pt. 2
-        manager.update(with: fragment2)
+        manager.update(with: preferences2)
 
         // verify pt. 2
         var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata.time))
         expectedConsents.adId = ConsentValue(val: .yes)
         expectedConsents.collect = ConsentValue(val: .yes)
-        let expected = ConsentFragment(consents: expectedConsents)
+        let expected = ConsentPreferences(consents: expectedConsents)
 
-        let storedFragment2: ConsentFragment? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
-        XCTAssertEqual(storedFragment2, expected)
-        XCTAssertEqual(manager.currentFragment, expected)
+        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_FRAGMENT)
+        XCTAssertEqual(storedPreferences2, expected)
+        XCTAssertEqual(manager.currentPreferences, expected)
     }
 
 }

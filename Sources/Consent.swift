@@ -22,7 +22,7 @@ class Consent: NSObject, Extension {
     public let metadata: [String: String]? = nil
     public let runtime: ExtensionRuntime
 
-    private var fragmentManager = ConsentFragmentManager()
+    private var preferencesManager = ConsentPreferencesManager()
 
     // MARK: Extension
 
@@ -51,7 +51,7 @@ class Consent: NSObject, Extension {
             return
         }
 
-        // set timestamp of this fragment to the timestamp of the `Event`s
+        // set timestamp of this preferences to the timestamp of the `Event`s
         let consentDict = [ConsentConstants.EventDataKeys.CONSENTS: consentsEventData,
                            ConsentConstants.EventDataKeys.TIME: event.timestamp.timeIntervalSince1970] as [String: Any]
 
@@ -62,13 +62,13 @@ class Consent: NSObject, Extension {
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        guard let consentFragment = try? decoder.decode(ConsentFragment.self, from: jsonData) else {
-            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentFragment. Dropping event.")
+        guard let consentPreferences = try? decoder.decode(ConsentPreferences.self, from: jsonData) else {
+            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
 
-        fragmentManager.update(with: consentFragment)
-        createXDMSharedState(data: fragmentManager.currentFragment?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
+        preferencesManager.update(with: consentPreferences)
+        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }
 
 }
