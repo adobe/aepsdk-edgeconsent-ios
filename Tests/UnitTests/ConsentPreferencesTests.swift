@@ -186,26 +186,24 @@ class ConsentPreferencesTests: XCTestCase {
     }
 
     func testMergeWithSomeMatchingConsentsPreferences() {
-        func testMergeWithAllMatchingConsentsPreferences() {
-            // setup
-            var consents = Consents(metadata: ConsentMetadata(time: Date()))
-            consents.adId = ConsentValue(val: .yes)
-            consents.collect = ConsentValue(val: .no)
-            let preferences = ConsentPreferences(consents: consents)
-            var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-            otherConsents.adId = ConsentValue(val: .no)
-            let otherPreferences = ConsentPreferences(consents: otherConsents)
+        // setup
+        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        consents.adId = ConsentValue(val: .yes)
+        consents.collect = ConsentValue(val: .no)
+        let preferences = ConsentPreferences(consents: consents)
+        var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
+        otherConsents.adId = ConsentValue(val: .no)
+        let otherPreferences = ConsentPreferences(consents: otherConsents)
 
-            // test
-            let mergedPreferences = preferences.merge(with: otherPreferences)
+        // test
+        let mergedPreferences = preferences.merge(with: otherPreferences)
 
-            // verify
-            var expectedConsents = Consents(metadata: ConsentMetadata(time: Date()))
-            expectedConsents.adId = ConsentValue(val: .no)
-            expectedConsents.collect = ConsentValue(val: .no)
-            let expectedPreferences = ConsentPreferences(consents: expectedConsents)
-            XCTAssertEqual(expectedPreferences, mergedPreferences)
-        }
+        // verify
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: Date()))
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .no)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+        XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
 
     func testMergeWithAllMatchingConsentsPreferences() {
