@@ -12,17 +12,7 @@
 
 import Foundation
 
-enum ConsentConstants {
-    static let EXTENSION_NAME = "com.adobe.consent"
-    static let FRIENDLY_NAME = "Consent"
-    static let EXTENSION_VERSION = "1.0.0-alpha.1"
-
-    enum EventDataKeys {
-        static let CONSENTS = "consents"
-        static let TIME = "time"
-    }
-
-    enum DataStoreKeys {
-        static let CONSENT_PREFERNCES = "consent.preferences"
-    }
+/// Maps a `ConsentStatus` to a value
+struct ConsentValue: Codable, Equatable {
+    let val: ConsentStatus
 }

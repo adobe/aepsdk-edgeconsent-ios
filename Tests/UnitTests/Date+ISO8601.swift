@@ -12,17 +12,8 @@
 
 import Foundation
 
-enum ConsentConstants {
-    static let EXTENSION_NAME = "com.adobe.consent"
-    static let FRIENDLY_NAME = "Consent"
-    static let EXTENSION_VERSION = "1.0.0-alpha.1"
-
-    enum EventDataKeys {
-        static let CONSENTS = "consents"
-        static let TIME = "time"
-    }
-
-    enum DataStoreKeys {
-        static let CONSENT_PREFERNCES = "consent.preferences"
+extension Date {
+    var iso8601String: String {
+        return ISO8601DateFormatter().string(from: self)
     }
 }
