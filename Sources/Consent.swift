@@ -71,13 +71,18 @@ class Consent: NSObject, Extension {
 
     // MARK: Helpers
 
-    /// Dispatches a consent update event with the fragment represented as event data
+    /// Dispatches a consent update event with the preferences represented as event data
     /// - Parameter preferences: The `ConsentPreferences` to be serialized into event data
     private func dispatchConsentUpdateEvent(preferences: ConsentPreferences?) {
+        guard let preferences = preferences else {
+            Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
+            return
+        }
+        
         let event = Event(name: "Consent Update",
                           type: EventType.edge,
                           source: EventSource.consentUpdate,
-                          data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
+                          data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
 
         dispatch(event: event)
     }
