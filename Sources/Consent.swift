@@ -15,7 +15,7 @@ import AEPServices
 import Foundation
 
 @objc(AEPConsent)
-class Consent: NSObject, Extension {
+public class Consent: NSObject, Extension {
     public let name = ConsentConstants.EXTENSION_NAME
     public let friendlyName = ConsentConstants.FRIENDLY_NAME
     public static let extensionVersion = ConsentConstants.EXTENSION_VERSION
@@ -26,16 +26,16 @@ class Consent: NSObject, Extension {
 
     // MARK: Extension
 
-    required init?(runtime: ExtensionRuntime) {
+    public required init?(runtime: ExtensionRuntime) {
         self.runtime = runtime
     }
 
-    func onRegistered() {
+    public func onRegistered() {
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
         // TODO: add default consent value to XDM shared state
     }
 
-    func onUnregistered() {}
+    public func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
         return true
