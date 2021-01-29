@@ -171,7 +171,6 @@ class ConsentFunctionalTests: XCTestCase {
     }
 
     private func buildFirstConsentUpdateEvent() -> Event {
-        let date = Date()
         let rawEventData = """
                     {
                       "consents" : {
@@ -180,9 +179,6 @@ class ConsentFunctionalTests: XCTestCase {
                         },
                         "collect" : {
                           "val" : "y"
-                        },
-                        "metadata" : {
-                          "time" : "\(date.iso8601String)"
                         }
                       }
                     }
@@ -193,15 +189,11 @@ class ConsentFunctionalTests: XCTestCase {
     }
 
     private func buildSecondConsentUpdateEvent() -> Event {
-        let date = Date()
         let rawEventData = """
                     {
                       "consents" : {
                         "collect" : {
                           "val" : "n"
-                        },
-                        "metadata" : {
-                          "time" : "\(date.iso8601String)"
                         }
                       }
                     }
