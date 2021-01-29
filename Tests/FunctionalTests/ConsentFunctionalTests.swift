@@ -76,6 +76,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         // verify
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         // verify shared state data
         let sharedState = mockRuntime.createdXdmSharedStates.first!
@@ -89,9 +90,21 @@ class ConsentFunctionalTests: XCTestCase {
         expectedConsents.collect = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
+        // verify shared state
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
         XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
         XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+
+        // verify consent update event
+        let dispatchedEvent = mockRuntime.dispatchedEvents.first!
+        let eventDataConsentsData = try! JSONSerialization.data(withJSONObject: dispatchedEvent.data!, options: [])
+        let eventConsents = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, eventConsents.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, eventConsents.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, eventConsents.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, eventConsents.consents.metadata!.time.iso8601String)
     }
 
     func testConsentUpdateMergeHappy() {
@@ -118,7 +131,18 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
         XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
         XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(firstEvent.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        
+        // verify first consent update event
+        let dispatchedEvent = mockRuntime.dispatchedEvents.first!
+        let eventDataConsentsData = try! JSONSerialization.data(withJSONObject: dispatchedEvent.data!, options: [])
+        let eventConsents = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData)
 
+        XCTAssertEqual(expectedPreferences.consents.adId, eventConsents.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, eventConsents.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, eventConsents.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(firstEvent.timestamp.iso8601String, eventConsents.consents.metadata!.time.iso8601String)
+        
         // verify second shared state data
         let sharedState2 = mockRuntime.createdXdmSharedStates.last!
         let sharedStatePreferencesData2 = try! JSONSerialization.data(withJSONObject: sharedState2!, options: [])
@@ -132,6 +156,18 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(expectedPreferences2.consents.adId, sharedStatePreferences2.consents.adId)
         XCTAssertEqual(expectedPreferences2.consents.collect, sharedStatePreferences2.consents.collect)
         XCTAssertEqual(expectedPreferences2.consents.metadata!.time.iso8601String, sharedStatePreferences2.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(secondEvent.timestamp.iso8601String, sharedStatePreferences2.consents.metadata!.time.iso8601String)
+
+
+        // verify second consent update event
+        let dispatchedEvent2 = mockRuntime.dispatchedEvents.last!
+        let eventDataConsentsData2 = try! JSONSerialization.data(withJSONObject: dispatchedEvent2.data!, options: [])
+        let eventConsents2 = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData2)
+
+        XCTAssertEqual(expectedPreferences2.consents.adId, eventConsents2.consents.adId)
+        XCTAssertEqual(expectedPreferences2.consents.collect, eventConsents2.consents.collect)
+        XCTAssertEqual(expectedPreferences2.consents.metadata!.time.iso8601String, eventConsents2.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(secondEvent.timestamp.iso8601String, eventConsents2.consents.metadata!.time.iso8601String)
     }
 
     private func buildFirstConsentUpdateEvent() -> Event {

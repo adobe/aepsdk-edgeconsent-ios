@@ -66,6 +66,25 @@ class Consent: NSObject, Extension {
         consentPreferences.consents.metadata?.time = event.timestamp
         preferencesManager.update(with: consentPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
+        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+    }
+
+    // MARK: Helpers
+
+    /// Dispatches a consent update event with the preferences represented as event data
+    /// - Parameter preferences: The `ConsentPreferences` to be serialized into event data
+    private func dispatchConsentUpdateEvent(preferences: ConsentPreferences?) {
+        guard let preferences = preferences else {
+            Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
+            return
+        }
+        
+        let event = Event(name: "Consent Update",
+                          type: EventType.edge,
+                          source: EventSource.consentUpdate,
+                          data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
+
+        dispatch(event: event)
     }
 
 }
