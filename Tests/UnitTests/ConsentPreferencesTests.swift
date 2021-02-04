@@ -125,7 +125,7 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithNilPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
+        consents.adId = GenericConsent(val: .yes)
         let preferences = ConsentPreferences(consents: consents)
 
         // test
@@ -138,7 +138,7 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithEmptyPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
+        consents.adId = GenericConsent(val: .yes)
         let preferences = ConsentPreferences(consents: consents)
         let emptyPreferences = ConsentPreferences(consents: Consents(metadata: ConsentMetadata(time: Date())))
 
@@ -147,7 +147,7 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         var expectedConsents = Consents(metadata: ConsentMetadata(time: emptyPreferences.consents.metadata!.time))
-        expectedConsents.adId = ConsentValue(val: .yes)
+        expectedConsents.adId = GenericConsent(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
         XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
@@ -155,7 +155,7 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithSamePreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
+        consents.adId = GenericConsent(val: .yes)
         let preferences = ConsentPreferences(consents: consents)
 
         // test
@@ -168,10 +168,10 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithNoMatchingConsentsPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
+        consents.adId = GenericConsent(val: .yes)
         let preferences = ConsentPreferences(consents: consents)
         var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.collect = ConsentValue(val: .yes)
+        otherConsents.collect = GenericConsent(val: .yes)
         let otherPreferences = ConsentPreferences(consents: otherConsents)
 
         // test
@@ -179,8 +179,8 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
-        expectedConsents.adId = ConsentValue(val: .yes)
-        expectedConsents.collect = ConsentValue(val: .yes)
+        expectedConsents.adId = GenericConsent(val: .yes)
+        expectedConsents.collect = GenericConsent(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
         XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
@@ -188,11 +188,11 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithSomeMatchingConsentsPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
-        consents.collect = ConsentValue(val: .no)
+        consents.adId = GenericConsent(val: .yes)
+        consents.collect = GenericConsent(val: .no)
         let preferences = ConsentPreferences(consents: consents)
         var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.adId = ConsentValue(val: .no)
+        otherConsents.adId = GenericConsent(val: .no)
         let otherPreferences = ConsentPreferences(consents: otherConsents)
 
         // test
@@ -200,8 +200,8 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         var expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
-        expectedConsents.adId = ConsentValue(val: .no)
-        expectedConsents.collect = ConsentValue(val: .no)
+        expectedConsents.adId = GenericConsent(val: .no)
+        expectedConsents.collect = GenericConsent(val: .no)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
         XCTAssertEqual(expectedPreferences, mergedPreferences)
     }
@@ -209,12 +209,12 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithAllMatchingConsentsPreferences() {
         // setup
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
-        consents.collect = ConsentValue(val: .no)
+        consents.adId = GenericConsent(val: .yes)
+        consents.collect = GenericConsent(val: .no)
         let preferences = ConsentPreferences(consents: consents)
         var otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.adId = ConsentValue(val: .no)
-        otherConsents.collect = ConsentValue(val: .yes)
+        otherConsents.adId = GenericConsent(val: .no)
+        otherConsents.collect = GenericConsent(val: .yes)
         let otherPreferences = ConsentPreferences(consents: otherConsents)
 
         // test

@@ -13,6 +13,7 @@
 import Foundation
 
 /// Maps a `ConsentStatus` to a value
-struct ConsentValue: Codable, Equatable {
+@objc(AEPGenericConsent)
+class GenericConsent: NSObject, Codable {
     let val: ConsentStatus
 }

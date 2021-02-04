@@ -13,6 +13,7 @@
 import Foundation
 
 /// Represents the current status of a given `ConsentValue`
+@objc(AEPConsentStatus)
 enum ConsentStatus: String, Codable, Equatable {
     case yes = "y"
     case no = "n"
