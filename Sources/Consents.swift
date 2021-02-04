@@ -14,16 +14,19 @@ import Foundation
 
 /// Represents the supported consents by the extension
 @objc(AEPConsents)
-class Consents: NSObject, Codable {
+@objcMembers
+public class Consents: NSObject, Codable {
 
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
-    var adId: GenericConsent?
+    public private(set) var adId: GenericConsent?
 
     /// Determines if data collection is permitted
-    var collect: GenericConsent?
+    public var collect: GenericConsent?
 
     /// Metadata for consents
     var metadata: ConsentMetadata?
+
+    public override init() {}
 
     /// Initializes new consents with the given metadata
     /// - Parameter metadata: metadata for the consents
@@ -42,4 +45,5 @@ class Consents: NSObject, Codable {
         mergedConsents.collect = otherConsents.collect ?? collect
         return mergedConsents
     }
+
 }

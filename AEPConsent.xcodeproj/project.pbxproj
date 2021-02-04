@@ -28,6 +28,7 @@
 		2170716A25BB5CDC0052BACE /* AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPConsent.framework */; };
 		2170719125BB5F1A0052BACE /* Consent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719025BB5F1A0052BACE /* Consent.swift */; };
 		2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719725BB5F9B0052BACE /* ConsentConstants.swift */; };
+		217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */; };
 		21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B225BB9060006C1CFE /* ConsentPreferences.swift */; };
 		21C095B925BB906A006C1CFE /* ConsentPreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */; };
 		21C095BF25BB92A1006C1CFE /* ConsentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */; };
@@ -84,6 +85,7 @@
 		2170716925BB5CDC0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2170719025BB5F1A0052BACE /* Consent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consent.swift; sourceTree = "<group>"; };
 		2170719725BB5F9B0052BACE /* ConsentConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentConstants.swift; sourceTree = "<group>"; };
+		217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Consent+PublicAPI.swift"; sourceTree = "<group>"; };
 		21C095B225BB9060006C1CFE /* ConsentPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferences.swift; sourceTree = "<group>"; };
 		21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManager.swift; sourceTree = "<group>"; };
 		21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentStatus.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				21C095C425BB9B83006C1CFE /* GenericConsent.swift */,
 				21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */,
 				21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */,
+				217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
 			);
 			path = Sources;
@@ -505,6 +508,7 @@
 				21D0F20625C1E11A0091FFBD /* ConsentMetadata.swift in Sources */,
 				2170719125BB5F1A0052BACE /* Consent.swift in Sources */,
 				21C095C525BB9B83006C1CFE /* GenericConsent.swift in Sources */,
+				217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */,
 				21C0961225BF46D3006C1CFE /* Consents.swift in Sources */,
 				21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */,
 			);
