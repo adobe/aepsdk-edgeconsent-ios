@@ -16,7 +16,7 @@ import Foundation
 @objc(AEPGenericConsent)
 public class GenericConsent: NSObject, Codable {
     let val: ConsentStatus
-    
+
     /// Creates a new `GenericConsent` with the given consent status
     /// - Parameter val: the consent status
     init(val: ConsentStatus) {

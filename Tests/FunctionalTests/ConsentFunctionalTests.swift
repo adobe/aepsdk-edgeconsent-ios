@@ -86,8 +86,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(val: .no)
-        expectedConsents.collect = ConsentValue(val: .yes)
+        expectedConsents.adId = GenericConsent(val: .no)
+        expectedConsents.collect = GenericConsent(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         // verify shared state
@@ -124,8 +124,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(val: .no)
-        expectedConsents.collect = ConsentValue(val: .yes)
+        expectedConsents.adId = GenericConsent(val: .no)
+        expectedConsents.collect = GenericConsent(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         // verify shared state
@@ -164,8 +164,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
-        expectedConsents.adId = ConsentValue(val: .no)
-        expectedConsents.collect = ConsentValue(val: .yes)
+        expectedConsents.adId = GenericConsent(val: .no)
+        expectedConsents.collect = GenericConsent(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
@@ -261,5 +261,24 @@ class ConsentFunctionalTests: XCTestCase {
 
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
         return (Event(name: "Consent Update", type: EventType.consent, source: EventSource.requestContent, data: eventData), date)
+    }
+    
+    // TODO REMOVE
+    func testAPI() {
+        Consent.getConsents { (consents, error) in
+            // handle result
+            guard error == nil else { return }
+            guard let consents = consents, let collect = consents.collect else { return }
+            if collect.val == .yes {
+                // do something
+            }
+            
+            let adId = consents.adId // can read adId but can't write
+        }
+        
+        let consents = Consents()
+        consents.collect = GenericConsent(val: .yes)
+//        consents.adId = GenericConsent(val: .no) Cannot assign to property: 'adId' setter is inaccessible
+        Consent.updateConsents(consents: consents)
     }
 }
