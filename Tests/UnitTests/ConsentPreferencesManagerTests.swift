@@ -27,8 +27,8 @@ class ConsentPreferencesManagerTests: XCTestCase {
         // setup
         var manager = ConsentPreferencesManager()
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = GenericConsent(val: .yes)
-        consents.collect = GenericConsent(val: .no)
+        consents.adId = ConsentValue(val: .yes)
+        consents.collect = ConsentValue(val: .no)
         let preferences = ConsentPreferences(consents: consents)
 
         // test
@@ -44,8 +44,8 @@ class ConsentPreferencesManagerTests: XCTestCase {
         // setup pt. 1
         var manager = ConsentPreferencesManager()
         var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = GenericConsent(val: .yes)
-        consents.collect = GenericConsent(val: .no)
+        consents.adId = ConsentValue(val: .yes)
+        consents.collect = ConsentValue(val: .no)
         let preferences = ConsentPreferences(consents: consents)
 
         // test pt. 1
@@ -58,7 +58,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
 
         // setup pt. 2
         var consents2 = Consents(metadata: ConsentMetadata(time: Date()))
-        consents2.collect = GenericConsent(val: .yes)
+        consents2.collect = ConsentValue(val: .yes)
         let preferences2 = ConsentPreferences(consents: consents2)
 
         // test pt. 2
@@ -66,8 +66,8 @@ class ConsentPreferencesManagerTests: XCTestCase {
 
         // verify pt. 2
         var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
-        expectedConsents.adId = GenericConsent(val: .yes)
-        expectedConsents.collect = GenericConsent(val: .yes)
+        expectedConsents.adId = ConsentValue(val: .yes)
+        expectedConsents.collect = ConsentValue(val: .yes)
         let expected = ConsentPreferences(consents: expectedConsents)
 
         let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)

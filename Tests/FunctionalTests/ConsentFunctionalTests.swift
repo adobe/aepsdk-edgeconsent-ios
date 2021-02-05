@@ -86,8 +86,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = GenericConsent(val: .no)
-        expectedConsents.collect = GenericConsent(val: .yes)
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         // verify shared state
@@ -124,8 +124,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = GenericConsent(val: .no)
-        expectedConsents.collect = GenericConsent(val: .yes)
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         // verify shared state
@@ -164,8 +164,8 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
         var expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
-        expectedConsents.adId = GenericConsent(val: .no)
-        expectedConsents.collect = GenericConsent(val: .yes)
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
         XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
@@ -277,8 +277,8 @@ class ConsentFunctionalTests: XCTestCase {
         }
         
         let consents = Consents()
-        consents.collect = GenericConsent(val: .yes)
-//        consents.adId = GenericConsent(val: .no) Cannot assign to property: 'adId' setter is inaccessible
+        consents.collect = ConsentValue(val: .yes)
+//        consents.adId = ConsentValue(val: .no) Cannot assign to property: 'adId' setter is inaccessible
         Consent.updateConsents(consents: consents)
     }
 }
