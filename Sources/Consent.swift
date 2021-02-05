@@ -87,8 +87,10 @@ public class Consent: NSObject, Extension {
 
         consentPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: consentPreferences)
+
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
         dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        dispatchPrivacyOptInIfNeeded(newPreferences: consentPreferences)
     }
 
     /// Dispatches a consent update event with the preferences represented as event data
@@ -99,12 +101,28 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        let event = Event(name: "Consent Update",
+        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.consentUpdate,
                           data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
 
         dispatch(event: event)
+    }
+
+    /// Dispatches an event to update privacy to opt-in if the new preferences contains "yes" for collect
+    /// - Parameter newPreferences: the new `ConsentPreferences` received
+    private func dispatchPrivacyOptInIfNeeded(newPreferences: ConsentPreferences) {
+        // Only update privacy to opt-in if the new preferences contains "yes" for collect
+        guard newPreferences.consents.collect?.val == .yes else { return }
+
+        let configDict = [ConsentConstants.EventDataKeys.Configuration.GLOBAL_CONFIG_PRIVACY: PrivacyStatus.optedIn.rawValue]
+        let event = Event(name: ConsentConstants.EventNames.CONFIGURATION_UPDATE,
+                          type: EventType.configuration,
+                          source: EventSource.requestContent,
+                          data: [ConsentConstants.EventDataKeys.Configuration.UPDATE_CONFIG: configDict])
+        dispatch(event: event)
+        Log.debug(label: friendlyName,
+                  "New consent preferences contains collect with yes value. Dispatching configuration update event to set privacy status opt-in.")
     }
 
 }
