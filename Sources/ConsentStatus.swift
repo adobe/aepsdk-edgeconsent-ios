@@ -15,17 +15,17 @@ import Foundation
 /// Represents the current status of a given `ConsentValue`
 @objc(AEPConsentStatus)
 public enum ConsentStatus: Int, RawRepresentable, Codable {
-    case yes = 0
-    case no = 1
+    case no = 0
+    case yes = 1
 
     public typealias RawValue = String
 
     public var rawValue: RawValue {
         switch self {
-        case .yes:
-            return "y"
         case .no:
             return "n"
+        case .yes:
+            return "y"
         }
     }
 
@@ -33,10 +33,10 @@ public enum ConsentStatus: Int, RawRepresentable, Codable {
     /// - Parameter rawValue: a `RawValue` representation of a `ConsentStatus` enum
     public init?(rawValue: RawValue) {
         switch rawValue {
-        case "y":
-            self = .yes
         case "n":
             self = .no
+        case "y":
+            self = .yes
         default:
             self = .yes
         }
