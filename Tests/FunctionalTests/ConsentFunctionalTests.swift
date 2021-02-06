@@ -246,6 +246,15 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
         XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
     }
+    
+    func testInvalidResponsePayloadBadValue() {
+        // test
+        mockRuntime.simulateComingEvents(buildInvalidConsentValueResponseUpdateEvent())
+
+        // verify
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
+    }
 
     func testValidResponseWithEmptyExistingConsents() {
         // setup
@@ -461,6 +470,23 @@ class ConsentFunctionalTests: XCTestCase {
                                 {
                                     "collect": {
                                         "val":"y"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+    
+    private func buildInvalidConsentValueResponseUpdateEvent() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"notvalid"
                                     }
                                 }
                             ],
