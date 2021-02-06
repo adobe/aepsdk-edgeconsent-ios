@@ -59,7 +59,7 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the consent response event
     private func receiveConsentResponse(event: Event) {
         guard let payload = event.data?[ConsentConstants.EventDataKeys.PAYLOAD] as? [Any] else {
-            Log.debug(label: friendlyName, "Consent response missing payload. Dropping event.")
+            Log.debug(label: friendlyName, "consent.preferences response missing payload. Dropping event.")
             return
         }
 
