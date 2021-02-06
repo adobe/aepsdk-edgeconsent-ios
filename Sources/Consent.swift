@@ -52,6 +52,7 @@ public class Consent: NSObject, Extension {
         }
 
         processUpdateConsent(consentsDict: consentsDict, event: event)
+        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
@@ -68,7 +69,7 @@ public class Consent: NSObject, Extension {
 
     // MARK: Helpers
 
-    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state and dispatches a consent update event.
+    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state
     /// - Parameters:
     ///   - consentsDict: the consent dict to be read
     ///   - event: the event for this consent update
@@ -88,7 +89,6 @@ public class Consent: NSObject, Extension {
         consentPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: consentPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
-        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
     }
 
     /// Dispatches a consent update event with the preferences represented as event data
