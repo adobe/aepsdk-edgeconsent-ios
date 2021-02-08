@@ -24,7 +24,7 @@ public class Consents: NSObject, Codable {
     public var collect: ConsentValue?
 
     /// Metadata for consents
-    var metadata: ConsentMetadata?
+    public private(set) var metadata: ConsentMetadata?
 
     public override init() {}
 
