@@ -51,28 +51,29 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        processUpdateConsent(consentsDict: consentsDict, event: event)
+        processUpdateConsent(consentsDict: consentsDict, event: event, shouldDispatchUpdateEvent: true)
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
     /// - Parameter event: the consent response event
     private func receiveConsentResponse(event: Event) {
         guard let payload = event.data?[ConsentConstants.EventDataKeys.PAYLOAD] as? [Any] else {
-            Log.debug(label: friendlyName, "Consent response missing payload. Dropping event.")
+            Log.debug(label: friendlyName, "consent.preferences response missing payload. Dropping event.")
             return
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
-        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event)
+        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event, shouldDispatchUpdateEvent: false)
     }
 
     // MARK: Helpers
 
-    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state and dispatches a consent update event.
+    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state
     /// - Parameters:
     ///   - consentsDict: the consent dict to be read
     ///   - event: the event for this consent update
-    private func processUpdateConsent(consentsDict: [String: Any], event: Event) {
+    ///   - shouldDispatchUpdateEvent: true if a consent update event should be dispatched, false if not
+    private func processUpdateConsent(consentsDict: [String: Any], event: Event, shouldDispatchUpdateEvent: Bool) {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsDict) else {
             Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
             return
@@ -89,7 +90,9 @@ public class Consent: NSObject, Extension {
         preferencesManager.update(with: consentPreferences)
 
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
-        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        if shouldDispatchUpdateEvent {
+            dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        }
         dispatchPrivacyOptInIfNeeded(newPreferences: consentPreferences)
     }
 
