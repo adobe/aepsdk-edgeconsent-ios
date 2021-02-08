@@ -114,7 +114,7 @@ public class Consent: NSObject, Extension {
         guard newPreferences.consents.collect?.val == .yes else { return }
         Log.debug(label: friendlyName,
                   "New consent preferences contains collect with yes value. Dispatching configuration update event to set privacy status opt-in.")
-        
+
         let configDict = [ConsentConstants.EventDataKeys.Configuration.GLOBAL_CONFIG_PRIVACY: PrivacyStatus.optedIn.rawValue]
         let event = Event(name: ConsentConstants.EventNames.CONFIGURATION_UPDATE,
                           type: EventType.configuration,
