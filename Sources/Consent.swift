@@ -51,7 +51,9 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        processUpdateConsent(consentsDict: consentsDict, event: event, shouldDispatchUpdateEvent: true)
+        processUpdateConsent(consentsDict: consentsDict, event: event)
+        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        dispatchPrivacyOptInIfNeeded(newPreferences: preferencesManager.currentPreferences)
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
@@ -63,7 +65,7 @@ public class Consent: NSObject, Extension {
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
-        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event, shouldDispatchUpdateEvent: false)
+        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event)
     }
 
     // MARK: Helpers
@@ -72,8 +74,7 @@ public class Consent: NSObject, Extension {
     /// - Parameters:
     ///   - consentsDict: the consent dict to be read
     ///   - event: the event for this consent update
-    ///   - shouldDispatchUpdateEvent: true if a consent update event should be dispatched, false if not
-    private func processUpdateConsent(consentsDict: [String: Any], event: Event, shouldDispatchUpdateEvent: Bool) {
+    private func processUpdateConsent(consentsDict: [String: Any], event: Event) {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsDict) else {
             Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
             return
@@ -88,12 +89,7 @@ public class Consent: NSObject, Extension {
 
         consentPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: consentPreferences)
-
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
-        if shouldDispatchUpdateEvent {
-            dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
-        }
-        dispatchPrivacyOptInIfNeeded(newPreferences: consentPreferences)
     }
 
     /// Dispatches a consent update event with the preferences represented as event data
@@ -114,7 +110,8 @@ public class Consent: NSObject, Extension {
 
     /// Dispatches an event to update privacy to opt-in if the new preferences contains "yes" for collect
     /// - Parameter newPreferences: the new `ConsentPreferences` received
-    private func dispatchPrivacyOptInIfNeeded(newPreferences: ConsentPreferences) {
+    private func dispatchPrivacyOptInIfNeeded(newPreferences: ConsentPreferences?) {
+        guard let newPreferences = newPreferences else { return }
         // Only update privacy to opt-in if the new preferences contains "yes" for collect
         guard newPreferences.consents.collect?.val == .yes else { return }
 
