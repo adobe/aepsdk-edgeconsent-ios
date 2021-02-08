@@ -24,3 +24,10 @@ public class ConsentValue: NSObject, Codable {
         self.val = val
     }
 }
+
+extension ConsentValue {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ConsentValue else { return false }
+        return val == object.val
+    }
+}

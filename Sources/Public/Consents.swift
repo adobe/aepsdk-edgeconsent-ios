@@ -47,3 +47,12 @@ public class Consents: NSObject, Codable {
     }
 
 }
+
+extension Consents {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? Consents else { return false }
+        return adId == object.adId &&
+               collect == object.collect &&
+               metadata == object.metadata
+    }
+}

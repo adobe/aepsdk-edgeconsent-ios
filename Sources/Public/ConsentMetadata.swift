@@ -25,3 +25,10 @@ public class ConsentMetadata: NSObject, Codable {
         self.time = time
     }
 }
+
+extension ConsentMetadata {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ConsentMetadata else { return false }
+        return time == object.time
+    }
+}
