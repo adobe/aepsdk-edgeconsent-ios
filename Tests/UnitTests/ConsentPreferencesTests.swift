@@ -120,6 +120,111 @@ class ConsentPreferencesTests: XCTestCase {
         XCTAssertEqual(preferences, encodedPreferences)
     }
 
+    // MARK: From event data tests
+
+    func testFromEmptyEventData() {
+        // setup
+        let json = """
+                   {
+                   }
+                   """.data(using: .utf8)!
+
+        // test
+        let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
+        let preferences = ConsentPreferences.from(eventData: eventData!)
+
+        // verify
+        XCTAssertNil(preferences)
+    }
+
+    func testFromInvalidEventData() {
+        // setup
+        let json = """
+                   {
+                    "key1": "val1",
+                    "key2": "val2"
+                   }
+                   """.data(using: .utf8)!
+
+        // test
+        let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
+        let preferences = ConsentPreferences.from(eventData: eventData!)
+
+        // verify
+        XCTAssertNil(preferences)
+    }
+
+    func testFromEventDataWithValidConsentAndTime() {
+        // setup
+        let date = Date()
+        let json = """
+                    {
+                      "consents" : {
+                        "adId" : {
+                          "val" : "y"
+                        },
+                        "metadata" : {
+                          "time" : "\(date.iso8601String)"
+                        }
+                      }
+                    }
+                   """.data(using: .utf8)!
+
+        // test decode
+        let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
+        let preferences = ConsentPreferences.from(eventData: eventData!)
+
+        // verify
+        XCTAssertNotNil(preferences)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata?.time.iso8601String)
+        XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
+        XCTAssertNil(preferences?.consents.collect)
+
+        // test encode
+        let encodedData = try? JSONEncoder().encode(preferences)
+        let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
+
+        // verify encoding
+        XCTAssertEqual(preferences, encodedPreferences)
+    }
+
+    func testFromEventDataTwoConsentsAndTime() {
+        // setup
+        let date = Date()
+        let json = """
+                    {
+                      "consents" : {
+                        "adId" : {
+                          "val" : "y"
+                        },
+                        "collect" : {
+                          "val" : "n"
+                        },
+                        "metadata" : {
+                          "time" : "\(date.iso8601String)"
+                        }
+                      }
+                    }
+                   """.data(using: .utf8)!
+
+        // test decode
+        let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
+        let preferences = ConsentPreferences.from(eventData: eventData!)
+
+        // verify
+        XCTAssertNotNil(preferences)
+        XCTAssertEqual(date.iso8601String, preferences?.consents.metadata?.time.iso8601String)
+        XCTAssertEqual("y", preferences?.consents.adId?.val.rawValue)
+        XCTAssertEqual("n", preferences?.consents.collect?.val.rawValue)
+
+        // test encode
+        let encodedData = try? JSONEncoder().encode(preferences)
+        let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
+
+        // verify encoding
+        XCTAssertEqual(preferences, encodedPreferences)
+    }
+
     // MARK: Merge Tests
 
     func testMergeWithNilPreferences() {

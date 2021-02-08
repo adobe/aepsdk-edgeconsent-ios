@@ -218,7 +218,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(expectedPreferences2.consents.metadata!.time.iso8601String, eventConsents2.consents.metadata!.time.iso8601String)
         XCTAssertEqual(secondEvent.timestamp.iso8601String, eventConsents2.consents.metadata!.time.iso8601String)
     }
-    
+
     func testConsentUpdateCollectNoDoesNotDispatchConfigUpdate() {
         // test
         let event = buildSecondConsentUpdateEvent()
