@@ -56,8 +56,8 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        processUpdateConsent(consentPreferences: newPreferences, event: event)
-        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        dispatchConsentUpdateEvent(currentPreferences: preferencesManager.currentPreferences)
         dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
     }
 
@@ -75,26 +75,26 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        processUpdateConsent(consentPreferences: newPreferences, event: event)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
     // MARK: Helpers
 
-    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state
+    /// Updates current preferences and creates a new shared state with the newly updated preferences
     /// - Parameters:
-    ///   - consentsDict: the consent dict to be read
+    ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func processUpdateConsent(consentPreferences: ConsentPreferences, event: Event) {
-        var updatedPreferences = consentPreferences
+    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
+        var updatedPreferences = newPreferences
         updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: updatedPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }
 
     /// Dispatches a consent update event with the preferences represented as event data
-    /// - Parameter preferences: The `ConsentPreferences` to be serialized into event data
-    private func dispatchConsentUpdateEvent(preferences: ConsentPreferences?) {
-        guard let preferences = preferences else {
+    /// - Parameter currentPreferences: The `ConsentPreferences` to be serialized into event data
+    private func dispatchConsentUpdateEvent(currentPreferences: ConsentPreferences?) {
+        guard let preferences = currentPreferences else {
             Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
             return
         }
