@@ -12,14 +12,16 @@
 
 import Foundation
 
-/// Maps a `ConsentStatus` to a value
-@objc(AEPConsentValue)
-public class ConsentValue: NSObject, Codable {
-    let val: ConsentStatus
+/// Represents additional metadata
+@objc(AEPConsentMetadata)
+@objcMembers
+public class ConsentMetadata: NSObject, Codable {
+    /// The timestamp this preferences was last updated
+    var time: Date
 
-    /// Creates a new `ConsentValue` with the given consent status
-    /// - Parameter val: the consent status
-    init(_ val: ConsentStatus) {
-        self.val = val
+    /// Creates a new `ConsentMetadata` with the given time
+    /// - Parameter time: time for the consent metadata
+    init(time: Date) {
+        self.time = time
     }
 }

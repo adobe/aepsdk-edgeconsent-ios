@@ -167,11 +167,7 @@
 				2170719025BB5F1A0052BACE /* Consent.swift */,
 				21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */,
 				21C095B225BB9060006C1CFE /* ConsentPreferences.swift */,
-				21C0961125BF46D3006C1CFE /* Consents.swift */,
-				21C095C425BB9B83006C1CFE /* ConsentValue.swift */,
-				21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */,
-				21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */,
-				217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */,
+				21A9E29725D1DF430089690E /* Public */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
 			);
 			path = Sources;
@@ -201,6 +197,18 @@
 			);
 			name = FunctionalTests;
 			path = Tests/FunctionalTests;
+			sourceTree = "<group>";
+		};
+		21A9E29725D1DF430089690E /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				21C0961125BF46D3006C1CFE /* Consents.swift */,
+				21C095C425BB9B83006C1CFE /* ConsentValue.swift */,
+				21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */,
+				21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */,
+				217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */,
+			);
+			path = Public;
 			sourceTree = "<group>";
 		};
 		21C0963825BF49C8006C1CFE /* Mocks */ = {
