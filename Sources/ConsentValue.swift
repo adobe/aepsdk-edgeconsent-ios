@@ -19,7 +19,7 @@ public class ConsentValue: NSObject, Codable {
 
     /// Creates a new `ConsentValue` with the given consent status
     /// - Parameter val: the consent status
-    init(val: ConsentStatus) {
+    init(_ val: ConsentStatus) {
         self.val = val
     }
 }

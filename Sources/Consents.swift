@@ -18,13 +18,13 @@ import Foundation
 public class Consents: NSObject, Codable {
 
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
-    public private(set) var adId: ConsentValue?
+    public internal(set) var adId: ConsentValue?
 
     /// Determines if data collection is permitted
     public var collect: ConsentValue?
 
     /// Metadata for consents
-    public private(set) var metadata: ConsentMetadata?
+    public internal(set) var metadata: ConsentMetadata?
 
     public override init() {}
 
