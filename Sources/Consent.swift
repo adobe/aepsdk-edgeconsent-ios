@@ -31,9 +31,9 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
+        registerListener(type: EventType.consent, source: "com.adobe.eventSource.updateConsent", listener: receiveConsentUpdate(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
-        registerListener(type: EventType.consent, source: "com.adobe.eventSource.requestConsent", listener: <#T##EventListener##EventListener##(Event) -> Void#>)
+        registerListener(type: EventType.consent, source: "com.adobe.eventSource.requestConsent", listener: receiveGetConsent(event:))
     }
 
     public func onUnregistered() {}
@@ -46,7 +46,7 @@ public class Consent: NSObject, Extension {
 
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
-    private func receiveConsentRequest(event: Event) {
+    private func receiveConsentUpdate(event: Event) {
         guard let consentsDict = event.data else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
@@ -83,7 +83,10 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the event requesting consents
     private func receiveGetConsent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
-        let responseEvent = event.createResponseEvent(name: "Get consent response", type: EventType.consent, source: EventSource.responseContent, data: data)
+        let responseEvent = event.createResponseEvent(name: "Get consent response",
+                                                      type: EventType.consent,
+                                                      source: EventSource.responseContent,
+                                                      data: data)
         dispatch(event: responseEvent)
     }
 

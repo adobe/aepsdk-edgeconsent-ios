@@ -29,6 +29,9 @@
 		2170719125BB5F1A0052BACE /* Consent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719025BB5F1A0052BACE /* Consent.swift */; };
 		2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719725BB5F9B0052BACE /* ConsentConstants.swift */; };
 		217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */; };
+		21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */; };
+		21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */; };
+		21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2B025D1EDB10089690E /* MockExtension.swift */; };
 		21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B225BB9060006C1CFE /* ConsentPreferences.swift */; };
 		21C095B925BB906A006C1CFE /* ConsentPreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */; };
 		21C095BF25BB92A1006C1CFE /* ConsentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */; };
@@ -86,6 +89,9 @@
 		2170719025BB5F1A0052BACE /* Consent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consent.swift; sourceTree = "<group>"; };
 		2170719725BB5F9B0052BACE /* ConsentConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentConstants.swift; sourceTree = "<group>"; };
 		217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Consent+PublicAPI.swift"; sourceTree = "<group>"; };
+		21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPublicAPITests.swift; sourceTree = "<group>"; };
+		21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventHub+Testable.swift"; sourceTree = "<group>"; };
+		21A9E2B025D1EDB10089690E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 		21C095B225BB9060006C1CFE /* ConsentPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferences.swift; sourceTree = "<group>"; };
 		21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManager.swift; sourceTree = "<group>"; };
 		21C095BE25BB92A1006C1CFE /* ConsentStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentStatus.swift; sourceTree = "<group>"; };
@@ -192,7 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */,
-				21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */,
+				21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */,
+				21A9E2B625D1EDB90089690E /* Helpers */,
 				2170716925BB5CDC0052BACE /* Info.plist */,
 			);
 			name = FunctionalTests;
@@ -209,6 +216,16 @@
 				217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */,
 			);
 			path = Public;
+			sourceTree = "<group>";
+		};
+		21A9E2B625D1EDB90089690E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */,
+				21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */,
+				21A9E2B025D1EDB10089690E /* MockExtension.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		21C0963825BF49C8006C1CFE /* Mocks */ = {
@@ -539,7 +556,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
+				21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */,
 				21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */,
+				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
 				21D0F21625C1FA170091FFBD /* Date+ISO8601.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);

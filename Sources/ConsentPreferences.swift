@@ -14,7 +14,7 @@ import AEPServices
 import Foundation
 
 /// Represents an XDM consent preferences which contains a list of consents along with a timestamp of last updated
-struct ConsentPreferences: Codable, Equatable {
+struct ConsentPreferences: Codable {
     private static let LOG_TAG = "ConsentPreferences"
 
     /// Consents for the given preferences
@@ -46,5 +46,11 @@ struct ConsentPreferences: Codable, Equatable {
         }
 
         return consentPreferences
+    }
+}
+
+extension ConsentPreferences: Equatable {
+    public static func == (lhs: ConsentPreferences, rhs: ConsentPreferences) -> Bool {
+        return lhs.consents == rhs.consents
     }
 }

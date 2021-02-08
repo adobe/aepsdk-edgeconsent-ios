@@ -40,8 +40,9 @@ import Foundation
     /// - Parameter consents: consents to be merged with the existing consents
     @objc(updateConsents:)
     static func updateConsents(consents: Consents) {
-        let consentsDict = consents.asDictionary(dateEncodingStrategy: .iso8601)
-        let event = Event(name: "Consent update", type: EventType.consent, source: EventSource.requestContent, data: consentsDict)
+        let consentPrefs = ConsentPreferences(consents: consents)
+        let event = Event(name: "Consent update", type: EventType.consent, source: "com.adobe.eventSource.updateConsent",
+                          data: consentPrefs.asDictionary(dateEncodingStrategy: .iso8601))
 
         MobileCore.dispatch(event: event)
     }
