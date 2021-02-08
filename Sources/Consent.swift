@@ -33,6 +33,7 @@ public class Consent: NSObject, Extension {
     public func onRegistered() {
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
+        registerListener(type: EventType.consent, source: "com.adobe.eventSource.requestConsent", listener: <#T##EventListener##EventListener##(Event) -> Void#>)
     }
 
     public func onUnregistered() {}
@@ -78,6 +79,14 @@ public class Consent: NSObject, Extension {
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
+    /// Handles the get consent event
+    /// - Parameter event: the event requesting consents
+    private func receiveGetConsent(event: Event) {
+        let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
+        let responseEvent = event.createResponseEvent(name: "Get consent response", type: EventType.consent, source: EventSource.responseContent, data: data)
+        dispatch(event: responseEvent)
+    }
+
     // MARK: Helpers
 
     /// Updates current preferences and creates a new shared state with the newly updated preferences
@@ -85,7 +94,7 @@ public class Consent: NSObject, Extension {
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
     private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
-        var updatedPreferences = newPreferences
+        let updatedPreferences = newPreferences
         updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: updatedPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)

@@ -10,27 +10,29 @@
  governing permissions and limitations under the License.
  */
 
-import Foundation
 import AEPCore
+import Foundation
 
 @objc public extension Consent {
 
     /// Retrieves the stored consents from the consent extension
     /// - Parameter completion: invoked with the current consents and possible error
     @objc(getConsents:)
-    static func getConsents(completion: (Consents?, Error?) -> Void) {
-        let event = Event(name: "Get consents", type: <#T##String#>, source: <#T##String#>, data: nil)
-        
-        MobileCore.dispatch(event: event) { (responseEvent) in
+    static func getConsents(completion: @escaping (Consents?, Error?) -> Void) {
+        let event = Event(name: "Get consents", type: EventType.consent, source: "com.adobe.eventSource.requestConsent", data: nil)
+
+        MobileCore.dispatch(event: event) { responseEvent in
             guard let responseEvent = responseEvent else {
                 completion(nil, AEPError.callbackTimeout)
                 return
             }
 
-            guard let data = responseEvent.data, let consents = Consent else {
+            guard let data = responseEvent.data, let consents = ConsentPreferences.from(eventData: data) else {
                 completion(nil, AEPError.unexpected)
                 return
             }
+
+            completion(consents.consents, nil)
         }
     }
 
@@ -40,7 +42,7 @@ import AEPCore
     static func updateConsents(consents: Consents) {
         let consentsDict = consents.asDictionary(dateEncodingStrategy: .iso8601)
         let event = Event(name: "Consent update", type: EventType.consent, source: EventSource.requestContent, data: consentsDict)
-        
+
         MobileCore.dispatch(event: event)
     }
 }
