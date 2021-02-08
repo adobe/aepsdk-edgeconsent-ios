@@ -209,6 +209,197 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(secondEvent.timestamp.iso8601String, eventConsents2.consents.metadata!.time.iso8601String)
     }
 
+    // MARK: Consent response event handling (consent:preferences)
+
+    func testEmptyResponseNilPayload() {
+        // setup
+        let event = Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: nil)
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        // verify
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
+    }
+
+    func testEmptyResponsePayload() {
+        // setup
+        let event = Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: [:])
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        // verify
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
+    }
+
+    func testInvalidResponsePayload() {
+        // setup
+        let event = Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: ["not a valid response": "some value"])
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        // verify
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
+    }
+    
+    func testInvalidResponsePayloadBadValue() {
+        // test
+        mockRuntime.simulateComingEvents(buildInvalidConsentValueResponseUpdateEvent())
+
+        // verify
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty) // no update events should have been dispatched
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
+    }
+
+    func testValidResponseWithEmptyExistingConsents() {
+        // setup
+        let event = buildConsentResponseUpdateEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
+
+        // verify shared state
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.first!
+        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+    }
+    
+    func testValidResponseWithEmptyExistingConsentsIgnoresExtraneous() {
+        // setup
+        let event = buildConsentResponseUpdateEventWithExtraneous() // should ignore the personalization field that is not currently supported
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
+
+        // verify shared state
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.first!
+        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+    }
+
+    func testValidResponseWithExistingConsentsOverridden() {
+        mockRuntime.simulateComingEvents(buildFirstConsentUpdateEvent()) // set the consents for the first time
+
+        let event = buildConsentResponseUpdateEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // from setting consents for the first time
+
+        // verify shared state
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        expectedConsents.adId = ConsentValue(val: .no)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.first!
+        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+    }
+
+    func testValidResponseWithExistingConsentsMerged() {
+        mockRuntime.simulateComingEvents(buildSecondConsentUpdateEvent()) // set the consents for the first time
+
+        let event = buildSecondConsentResponseUpdateEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // from setting consents for the first time
+
+        // verify shared state
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        expectedConsents.adId = ConsentValue(val: .yes)
+        expectedConsents.collect = ConsentValue(val: .no)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.last!
+        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+    }
+
+    func testMultipleValidResponsesWithExistingConsentsMerged() {
+        mockRuntime.simulateComingEvents(buildSecondConsentUpdateEvent()) // set the consents for the first time
+
+        let firstEvent = buildSecondConsentResponseUpdateEvent()
+        let secondEvent = buildThirdConsentResponseUpdateEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(firstEvent, secondEvent)
+
+        XCTAssertEqual(3, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // from setting consents for the first time
+
+        // verify shared state
+        var expectedConsents = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
+        expectedConsents.adId = ConsentValue(val: .yes)
+        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedPreferences = ConsentPreferences(consents: expectedConsents)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.last!
+        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
+
+        XCTAssertEqual(expectedPreferences.consents.adId, sharedStatePreferences.consents.adId)
+        XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
+        XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+        XCTAssertEqual(secondEvent.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
+    }
+
     private func buildFirstConsentUpdateEvent() -> Event {
         let rawEventData = """
                     {
@@ -262,23 +453,100 @@ class ConsentFunctionalTests: XCTestCase {
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
         return (Event(name: "Consent Update", type: EventType.consent, source: EventSource.requestContent, data: eventData), date)
     }
+
+    private func buildConsentResponseUpdateEvent() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"y"
+                                    },
+                                    "adId": {
+                                        "val":"n"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+
+    private func buildSecondConsentResponseUpdateEvent() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "adId": {
+                                        "val":"y"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+
+    private func buildThirdConsentResponseUpdateEvent() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"y"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
     
-    // TODO REMOVE
-    func testAPI() {
-        Consent.getConsents { (consents, error) in
-            // handle result
-            guard error == nil else { return }
-            guard let consents = consents, let collect = consents.collect else { return }
-            if collect.val == .yes {
-                // do something
-            }
-            
-            let adId = consents.adId // can read adId but can't write
-        }
-        
-        let consents = Consents()
-        consents.collect = ConsentValue( .yes)
-//        consents.adId = ConsentValue( .no) Cannot assign to property: 'adId' setter is inaccessible
-        Consent.updateConsents(consents: consents)
+    private func buildInvalidConsentValueResponseUpdateEvent() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"notvalid"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+    
+    private func buildConsentResponseUpdateEventWithExtraneous() -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"y"
+                                    },
+                                    "adId": {
+                                        "val":"n"
+                                    },
+                                    "personalize": {
+                                        "content": {
+                                           "val": "y"
+                                         }
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
     }
 }

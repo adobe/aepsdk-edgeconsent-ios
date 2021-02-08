@@ -32,7 +32,7 @@ public class Consent: NSObject, Extension {
 
     public func onRegistered() {
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
-        // TODO: add default consent value to XDM shared state
+        registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
     }
 
     public func onUnregistered() {}
@@ -46,12 +46,35 @@ public class Consent: NSObject, Extension {
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
     private func receiveConsentRequest(event: Event) {
-        guard let consentsEventData = event.data else {
+        guard let consentsDict = event.data else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
         }
 
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsEventData) else {
+        processUpdateConsent(consentsDict: consentsDict, event: event)
+        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+    }
+
+    /// Invoked when an event of type edge and source consent:preferences is dispatched
+    /// - Parameter event: the consent response event
+    private func receiveConsentResponse(event: Event) {
+        guard let payload = event.data?[ConsentConstants.EventDataKeys.PAYLOAD] as? [Any] else {
+            Log.debug(label: friendlyName, "consent.preferences response missing payload. Dropping event.")
+            return
+        }
+
+        let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
+        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event)
+    }
+
+    // MARK: Helpers
+
+    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state
+    /// - Parameters:
+    ///   - consentsDict: the consent dict to be read
+    ///   - event: the event for this consent update
+    private func processUpdateConsent(consentsDict: [String: Any], event: Event) {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsDict) else {
             Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
             return
         }
@@ -66,10 +89,7 @@ public class Consent: NSObject, Extension {
         consentPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: consentPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
-        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
     }
-
-    // MARK: Helpers
 
     /// Dispatches a consent update event with the preferences represented as event data
     /// - Parameter preferences: The `ConsentPreferences` to be serialized into event data
