@@ -11,6 +11,7 @@
  */
 
 import Foundation
+import AEPCore
 
 @objc public extension Consent {
 
@@ -18,13 +19,28 @@ import Foundation
     /// - Parameter completion: invoked with the current consents and possible error
     @objc(getConsents:)
     static func getConsents(completion: (Consents?, Error?) -> Void) {
+        let event = Event(name: "Get consents", type: <#T##String#>, source: <#T##String#>, data: nil)
+        
+        MobileCore.dispatch(event: event) { (responseEvent) in
+            guard let responseEvent = responseEvent else {
+                completion(nil, AEPError.callbackTimeout)
+                return
+            }
 
+            guard let data = responseEvent.data, let consents = Consent else {
+                completion(nil, AEPError.unexpected)
+                return
+            }
+        }
     }
 
     /// Merges the existing consents with the given consents. Duplicate keys will take the value of those passed in the API
     /// - Parameter consents: consents to be merged with the existing consents
     @objc(updateConsents:)
     static func updateConsents(consents: Consents) {
-
+        let consentsDict = consents.asDictionary(dateEncodingStrategy: .iso8601)
+        let event = Event(name: "Consent update", type: EventType.consent, source: EventSource.requestContent, data: consentsDict)
+        
+        MobileCore.dispatch(event: event)
     }
 }
