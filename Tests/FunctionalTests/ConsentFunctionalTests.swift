@@ -85,7 +85,7 @@ class ConsentFunctionalTests: XCTestCase {
         decoder.dateDecodingStrategy = .iso8601
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
         expectedConsents.adId = ConsentValue(.no)
         expectedConsents.collect = ConsentValue(.yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
@@ -170,7 +170,7 @@ class ConsentFunctionalTests: XCTestCase {
         decoder.dateDecodingStrategy = .iso8601
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
+        let expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
         expectedConsents.adId = ConsentValue(.no)
         expectedConsents.collect = ConsentValue(.yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
@@ -198,7 +198,7 @@ class ConsentFunctionalTests: XCTestCase {
         let sharedStatePreferencesData2 = try! JSONSerialization.data(withJSONObject: sharedState2!, options: [])
         let sharedStatePreferences2 = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData2)
 
-        var expectedConsents2 = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
+        let expectedConsents2 = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
         expectedConsents2.adId = ConsentValue(.no)
         expectedConsents2.collect = ConsentValue(.no)
         let expectedPreferences2 = ConsentPreferences(consents: expectedConsents2)
@@ -235,7 +235,7 @@ class ConsentFunctionalTests: XCTestCase {
         decoder.dateDecodingStrategy = .iso8601
         let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
 
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
         expectedConsents.collect = ConsentValue(.no)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)
 
@@ -314,7 +314,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
 
         // verify shared state
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
+        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
         expectedConsents.adId = ConsentValue(.no)
         expectedConsents.collect = ConsentValue(.yes)
         let expectedPreferences = ConsentPreferences(consents: expectedConsents)

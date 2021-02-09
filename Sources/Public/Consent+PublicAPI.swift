@@ -41,7 +41,9 @@ import Foundation
     @objc(updateConsents:)
     static func updateConsents(consents: Consents) {
         let consentPrefs = ConsentPreferences(consents: consents)
-        let event = Event(name: "Consent update", type: EventType.consent, source: "com.adobe.eventSource.updateConsent",
+        let event = Event(name: "Consent update",
+                          type: EventType.consent,
+                          source: "com.adobe.eventSource.updateConsent",
                           data: consentPrefs.asDictionary(dateEncodingStrategy: .iso8601))
 
         MobileCore.dispatch(event: event)
