@@ -31,9 +31,9 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: "com.adobe.eventSource.updateConsent", listener: receiveConsentUpdate(event:))
+        registerListener(type: EventType.consent, source: EventSource.consentUpdate, listener: receiveConsentUpdate(event:))
+        registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveGetConsent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
-        registerListener(type: EventType.consent, source: "com.adobe.eventSource.requestConsent", listener: receiveGetConsent(event:))
     }
 
     public func onUnregistered() {}

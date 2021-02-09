@@ -19,7 +19,7 @@ import Foundation
     /// - Parameter completion: invoked with the current consents and possible error
     @objc(getConsents:)
     static func getConsents(completion: @escaping (Consents?, Error?) -> Void) {
-        let event = Event(name: "Get consents", type: EventType.consent, source: "com.adobe.eventSource.requestConsent", data: nil)
+        let event = Event(name: "Get consents", type: EventType.consent, source: EventSource.requestConsent, data: nil)
 
         MobileCore.dispatch(event: event) { responseEvent in
             guard let responseEvent = responseEvent else {
@@ -43,7 +43,7 @@ import Foundation
         let consentPrefs = ConsentPreferences(consents: consents)
         let event = Event(name: "Consent update",
                           type: EventType.consent,
-                          source: "com.adobe.eventSource.updateConsent",
+                          source: EventSource.consentUpdate,
                           data: consentPrefs.asDictionary(dateEncodingStrategy: .iso8601))
 
         MobileCore.dispatch(event: event)

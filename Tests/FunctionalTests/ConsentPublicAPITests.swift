@@ -39,7 +39,7 @@ class ConsentPublicAPITests: XCTestCase {
         // setup
         let expectation = XCTestExpectation(description: "getConsents should dispatch an event")
         expectation.assertForOverFulfill = true
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: "com.adobe.eventSource.requestConsent") { _ in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.requestConsent) { _ in
             expectation.fulfill()
         }
 
@@ -62,7 +62,7 @@ class ConsentPublicAPITests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: "com.adobe.eventSource.updateConsent") { event in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.consentUpdate) { event in
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
             XCTAssertEqual(consents, dispatchedConsents?.consents) // consents in update event should be equal
             expectation.fulfill()
