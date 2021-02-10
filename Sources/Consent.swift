@@ -31,7 +31,7 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: EventSource.consentUpdate, listener: receiveConsentUpdate(event:))
+        registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveConsentUpdate(event:))
         registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveGetConsent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
     }
@@ -57,9 +57,9 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        updateAndShareConsent(newPreferences: newPreferences, event: event)
-        dispatchConsentUpdateEvent(currentPreferences: preferencesManager.currentPreferences)
         dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        dispatchConsentUpdateEvent()
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
@@ -76,6 +76,7 @@ public class Consent: NSObject, Extension {
             return
         }
 
+        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
@@ -103,17 +104,16 @@ public class Consent: NSObject, Extension {
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }
 
-    /// Dispatches a consent update event with the preferences represented as event data
-    /// - Parameter currentPreferences: The `ConsentPreferences` to be serialized into event data
-    private func dispatchConsentUpdateEvent(currentPreferences: ConsentPreferences?) {
-        guard let preferences = currentPreferences else {
+    /// Dispatches a consent update event with the current preferences represented as event data
+    private func dispatchConsentUpdateEvent() {
+        guard let preferences = preferencesManager.currentPreferences else {
             Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
             return
         }
 
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
-                          source: EventSource.consentUpdate,
+                          source: EventSource.updateConsent,
                           data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
 
         dispatch(event: event)
