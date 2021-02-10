@@ -74,7 +74,8 @@ public class Consent: NSObject, Extension {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-
+        
+        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
