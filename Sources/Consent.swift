@@ -56,9 +56,9 @@ public class Consent: NSObject, Extension {
             return
         }
 
+        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
         dispatchConsentUpdateEvent()
-        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
