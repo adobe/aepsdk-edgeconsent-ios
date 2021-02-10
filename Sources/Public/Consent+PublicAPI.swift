@@ -43,7 +43,7 @@ import Foundation
         let consentPrefs = ConsentPreferences(consents: consents)
         let event = Event(name: "Consent update",
                           type: EventType.consent,
-                          source: EventSource.consentUpdate,
+                          source: EventSource.updateConsent,
                           data: consentPrefs.asDictionary(dateEncodingStrategy: .iso8601))
 
         MobileCore.dispatch(event: event)

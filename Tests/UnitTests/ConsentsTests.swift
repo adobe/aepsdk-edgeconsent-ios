@@ -17,7 +17,7 @@ class ConsentsTests: XCTestCase {
 
     func testMergeNil() {
         // setup
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
 
         // test
@@ -29,7 +29,7 @@ class ConsentsTests: XCTestCase {
 
     func testMergeEmpty() {
         // setup
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
 
         // test
@@ -37,23 +37,23 @@ class ConsentsTests: XCTestCase {
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
+        let expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(.yes)
         XCTAssertEqual(merged, expected)
     }
 
     func testMergeNoMatching() {
         // setup
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
 
         // test
-        var toBeMerged = Consents(metadata: ConsentMetadata(time: Date()))
+        let toBeMerged = Consents(metadata: ConsentMetadata(time: Date()))
         toBeMerged.collect = ConsentValue(.no)
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
+        let expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(.yes)
         expected.collect = ConsentValue(.no)
         XCTAssertEqual(merged, expected)
@@ -61,17 +61,17 @@ class ConsentsTests: XCTestCase {
 
     func testMergeSomeMatching() {
         // setup
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
 
         // test
-        var toBeMerged = Consents(metadata: ConsentMetadata(time: Date()))
+        let toBeMerged = Consents(metadata: ConsentMetadata(time: Date()))
         toBeMerged.adId = ConsentValue(.no)
         toBeMerged.collect = ConsentValue(.no)
         let merged = consents.merge(with: toBeMerged)
 
         // verify
-        var expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
+        let expected = Consents(metadata: ConsentMetadata(time: toBeMerged.metadata!.time))
         expected.adId = ConsentValue(.no)
         expected.collect = ConsentValue(.no)
         XCTAssertEqual(merged, expected)
@@ -79,12 +79,12 @@ class ConsentsTests: XCTestCase {
 
     func testMergeAllMatching() {
         // setup
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.no)
         consents.collect = ConsentValue(.no)
 
         // test
-        var expected = Consents(metadata: ConsentMetadata(time: Date()))
+        let expected = Consents(metadata: ConsentMetadata(time: Date()))
         expected.adId = ConsentValue(.no)
         expected.collect = ConsentValue(.no)
         let merged = consents.merge(with: expected)
