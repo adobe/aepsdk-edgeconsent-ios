@@ -57,7 +57,7 @@ public class Consent: NSObject, Extension {
         }
 
         updateAndShareConsent(newPreferences: newPreferences, event: event)
-        dispatchConsentUpdateEvent(currentPreferences: preferencesManager.currentPreferences)
+        dispatchConsentUpdateEvent()
         dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
     }
 
@@ -92,9 +92,8 @@ public class Consent: NSObject, Extension {
     }
 
     /// Dispatches a consent update event with the preferences represented as event data
-    /// - Parameter currentPreferences: The `ConsentPreferences` to be serialized into event data
-    private func dispatchConsentUpdateEvent(currentPreferences: ConsentPreferences?) {
-        guard let preferences = currentPreferences else {
+    private func dispatchConsentUpdateEvent() {
+        guard let preferences = preferencesManager.currentPreferences else {
             Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
             return
         }
