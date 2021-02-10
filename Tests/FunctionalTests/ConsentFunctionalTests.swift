@@ -360,15 +360,18 @@ class ConsentFunctionalTests: XCTestCase {
     }
 
     func testValidResponseWithExistingConsentsOverridden() {
+        // setup
         mockRuntime.simulateComingEvents(buildFirstConsentUpdateEvent()) // set the consents for the first time
+        // reset TestableExtensionRuntime
+        mockRuntime.createdXdmSharedStates.removeAll()
+        mockRuntime.dispatchedEvents.removeAll()
 
         let event = buildConsentResponseUpdateEvent()
 
         // test
         mockRuntime.simulateComingEvents(event)
 
-        XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // 1 consent updates + 1 config update to privacy opt-in
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
@@ -386,21 +389,21 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(expectedPreferences.consents.collect, sharedStatePreferences.consents.collect)
         XCTAssertEqual(expectedPreferences.consents.metadata!.time.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
         XCTAssertEqual(event.timestamp.iso8601String, sharedStatePreferences.consents.metadata!.time.iso8601String)
-
-        // verify config update event
-        assertConfigUpdateAt(index: mockRuntime.dispatchedEvents.count - 1)
     }
 
     func testValidResponseWithExistingConsentsMerged() {
+        // setup
         mockRuntime.simulateComingEvents(buildSecondConsentUpdateEvent()) // set the consents for the first time
+        // reset TestableExtensionRuntime
+        mockRuntime.createdXdmSharedStates.removeAll()
+        mockRuntime.dispatchedEvents.removeAll()
 
         let event = buildSecondConsentResponseUpdateEvent()
 
         // test
         mockRuntime.simulateComingEvents(event)
 
-        XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // 1 consent update
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
@@ -421,7 +424,11 @@ class ConsentFunctionalTests: XCTestCase {
     }
 
     func testMultipleValidResponsesWithExistingConsentsMerged() {
+        // setup
         mockRuntime.simulateComingEvents(buildSecondConsentUpdateEvent()) // set the consents for the first time
+        // reset TestableExtensionRuntime
+        mockRuntime.createdXdmSharedStates.removeAll()
+        mockRuntime.dispatchedEvents.removeAll()
 
         let firstEvent = buildSecondConsentResponseUpdateEvent()
         let secondEvent = buildThirdConsentResponseUpdateEvent()
@@ -429,8 +436,7 @@ class ConsentFunctionalTests: XCTestCase {
         // test
         mockRuntime.simulateComingEvents(firstEvent, secondEvent)
 
-        XCTAssertEqual(3, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // from setting consents for the first time
+        XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
         var expectedConsents = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
