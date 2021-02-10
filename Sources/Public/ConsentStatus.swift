@@ -12,7 +12,7 @@
 
 import Foundation
 
-/// Represents the current status of a given `ConsentValue`
+/// Represents the current status of a given `ConsentStatus`
 @objc(AEPConsentStatus)
 public enum ConsentStatus: Int, RawRepresentable, Codable {
     case no = 0
@@ -38,7 +38,7 @@ public enum ConsentStatus: Int, RawRepresentable, Codable {
         case "y":
             self = .yes
         default:
-            self = .yes
+            self = .no // TODO: Handle unknown case
         }
     }
 }

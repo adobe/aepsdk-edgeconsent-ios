@@ -31,8 +31,8 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveConsentUpdate(event:))
-        registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveGetConsent(event:))
+        registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
+        registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveRequestConsent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
     }
 
@@ -46,7 +46,7 @@ public class Consent: NSObject, Extension {
 
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
-    private func receiveConsentUpdate(event: Event) {
+    private func receiveUpdateConsent(event: Event) {
         guard let consentsDict = event.data else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
@@ -82,7 +82,7 @@ public class Consent: NSObject, Extension {
 
     /// Handles the get consent event
     /// - Parameter event: the event requesting consents
-    private func receiveGetConsent(event: Event) {
+    private func receiveRequestConsent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
         let responseEvent = event.createResponseEvent(name: "Get consent response",
                                                       type: EventType.consent,

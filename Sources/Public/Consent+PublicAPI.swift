@@ -27,12 +27,12 @@ import Foundation
                 return
             }
 
-            guard let data = responseEvent.data, let consents = ConsentPreferences.from(eventData: data) else {
+            guard let data = responseEvent.data, let consentPrefs = ConsentPreferences.from(eventData: data) else {
                 completion(nil, AEPError.unexpected)
                 return
             }
 
-            completion(consents.consents, nil)
+            completion(consentPrefs.consents, nil)
         }
     }
 
