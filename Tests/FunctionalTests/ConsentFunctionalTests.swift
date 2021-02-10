@@ -400,7 +400,7 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(event)
 
         XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // 1 config update
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // 1 consent update
 
         // verify shared state
         var expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
