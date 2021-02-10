@@ -51,8 +51,14 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        processUpdateConsent(consentsDict: consentsDict, event: event)
-        dispatchConsentUpdateEvent(preferences: preferencesManager.currentPreferences)
+        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
+            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
+            return
+        }
+
+        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        dispatchConsentUpdateEvent()
     }
 
     /// Invoked when an event of type edge and source consent:preferences is dispatched
@@ -64,46 +70,56 @@ public class Consent: NSObject, Extension {
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
-        processUpdateConsent(consentsDict: consentsDict as [String: Any], event: event)
+        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
+            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
+            return
+        }
+        
+        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
     // MARK: Helpers
 
-    /// Takes `consentsDict` and converts it into a `ConsentPreferences` then updates the shared state
+    /// Updates current preferences and creates a new shared state with the newly updated preferences
     /// - Parameters:
-    ///   - consentsDict: the consent dict to be read
+    ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func processUpdateConsent(consentsDict: [String: Any], event: Event) {
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: consentsDict) else {
-            Log.debug(label: friendlyName, "Unable to serialize consent event data. Dropping event.")
-            return
-        }
-
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        guard var consentPreferences = try? decoder.decode(ConsentPreferences.self, from: jsonData) else {
-            Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
-            return
-        }
-
-        consentPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
-        preferencesManager.update(with: consentPreferences)
+    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
+        var updatedPreferences = newPreferences
+        updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
+        preferencesManager.update(with: updatedPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
     }
 
-    /// Dispatches a consent update event with the preferences represented as event data
-    /// - Parameter preferences: The `ConsentPreferences` to be serialized into event data
-    private func dispatchConsentUpdateEvent(preferences: ConsentPreferences?) {
-        guard let preferences = preferences else {
+    /// Dispatches a consent update event with the current preferences represented as event data
+    private func dispatchConsentUpdateEvent() {
+        guard let preferences = preferencesManager.currentPreferences else {
             Log.debug(label: friendlyName, "Current consent preferences is nil, not dispatching consent update event.")
             return
         }
 
-        let event = Event(name: "Consent Update",
+        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.consentUpdate,
                           data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
 
+        dispatch(event: event)
+    }
+
+    /// Dispatches an event to update privacy to opt-in if the new preferences contains "yes" for collect
+    /// - Parameter newPreferences: the new `ConsentPreferences` received in the event
+    private func dispatchPrivacyOptInIfNeeded(newPreferences: ConsentPreferences) {
+        // Only update privacy to opt-in if the new preferences contains "yes" for collect
+        guard newPreferences.consents.collect?.val == .yes else { return }
+        Log.debug(label: friendlyName,
+                  "New consent preferences contains collect with yes value. Dispatching configuration update event to set privacy status opt-in.")
+
+        let configDict = [ConsentConstants.EventDataKeys.Configuration.GLOBAL_CONFIG_PRIVACY: PrivacyStatus.optedIn.rawValue]
+        let event = Event(name: ConsentConstants.EventNames.CONFIGURATION_UPDATE,
+                          type: EventType.configuration,
+                          source: EventSource.requestContent,
+                          data: [ConsentConstants.EventDataKeys.Configuration.UPDATE_CONFIG: configDict])
         dispatch(event: event)
     }
 

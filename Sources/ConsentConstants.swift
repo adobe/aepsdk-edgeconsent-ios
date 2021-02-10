@@ -21,6 +21,16 @@ enum ConsentConstants {
         static let CONSENTS = "consents"
         static let TIME = "time"
         static let PAYLOAD = "payload"
+
+        enum Configuration {
+            static let GLOBAL_CONFIG_PRIVACY = "global.privacy"
+            static let UPDATE_CONFIG = "config.update"
+        }
+    }
+
+    enum EventNames {
+        static let CONSENT_UPDATE = "Edge Consent Update"
+        static let CONFIGURATION_UPDATE = "Consent Configuration Update"
     }
 
     enum EventSource {
