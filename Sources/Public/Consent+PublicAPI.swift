@@ -15,8 +15,8 @@ import Foundation
 
 @objc public extension Consent {
 
-    /// Retrieves the stored consents from the consent extension
-    /// - Parameter completion: invoked with the current consents and possible error
+    /// Retrieves the current consent preferences stored in the Consent extension.
+    /// - Parameter completion: invoked with the current `Consents` or an `AEPError` if an unexpected error occurs or the request timed out.
     @objc(getConsents:)
     static func getConsents(completion: @escaping (Consents?, Error?) -> Void) {
         let event = Event(name: ConsentConstants.EventNames.CONSENTS_REQUEST, type: EventType.consent, source: EventSource.requestConsent, data: nil)
