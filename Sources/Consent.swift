@@ -84,7 +84,7 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the event requesting consents
     private func receiveRequestConsent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
-        let responseEvent = event.createResponseEvent(name: "Get consent response",
+        let responseEvent = event.createResponseEvent(name: "Get Consents Response",
                                                       type: EventType.consent,
                                                       source: EventSource.responseContent,
                                                       data: data)
