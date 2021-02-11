@@ -16,7 +16,7 @@ import Foundation
 @objc(AEPConsentValue)
 @objcMembers
 public class ConsentValue: NSObject, Codable {
-    let val: ConsentStatus
+    public let val: ConsentStatus
 
     /// Creates a new `ConsentValue` with the given consent status
     /// - Parameter val: the consent status

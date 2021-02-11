@@ -17,11 +17,11 @@ import Foundation
 @objcMembers
 public class ConsentMetadata: NSObject, Codable {
     /// The timestamp this preferences was last updated
-    var time: Date
+    public var time: Date
 
     /// Creates a new `ConsentMetadata` with the given time
     /// - Parameter time: time for the consent metadata
-    init(time: Date) {
+    public init(time: Date) {
         self.time = time
     }
 }
