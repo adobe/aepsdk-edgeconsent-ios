@@ -31,7 +31,8 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveConsentRequest(event:))
+        registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
+        registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveRequestConsent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
     }
 
@@ -45,7 +46,7 @@ public class Consent: NSObject, Extension {
 
     /// Invoked when an event of type consent and source request content is dispatched by the `EventHub`
     /// - Parameter event: the consent request
-    private func receiveConsentRequest(event: Event) {
+    private func receiveUpdateConsent(event: Event) {
         guard let consentsDict = event.data else {
             Log.debug(label: friendlyName, "Consent data not found in consent event request. Dropping event.")
             return
@@ -74,9 +75,20 @@ public class Consent: NSObject, Extension {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-        
+
         dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
+    }
+
+    /// Handles the get consent event
+    /// - Parameter event: the event requesting consents
+    private func receiveRequestConsent(event: Event) {
+        let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
+        let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
+                                                      type: EventType.consent,
+                                                      source: EventSource.responseContent,
+                                                      data: data)
+        dispatch(event: responseEvent)
     }
 
     // MARK: Helpers
@@ -86,7 +98,7 @@ public class Consent: NSObject, Extension {
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
     private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
-        var updatedPreferences = newPreferences
+        let updatedPreferences = newPreferences
         updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.update(with: updatedPreferences)
         createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
@@ -101,7 +113,7 @@ public class Consent: NSObject, Extension {
 
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
-                          source: EventSource.consentUpdate,
+                          source: EventSource.updateConsent,
                           data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
 
         dispatch(event: event)

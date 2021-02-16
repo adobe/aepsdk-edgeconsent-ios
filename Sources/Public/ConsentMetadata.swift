@@ -13,7 +13,22 @@
 import Foundation
 
 /// Represents additional metadata
-struct ConsentMetadata: Codable, Equatable {
+@objc(AEPConsentMetadata)
+@objcMembers
+public class ConsentMetadata: NSObject, Codable {
     /// The timestamp this preferences was last updated
-    var time: Date
+    public let time: Date
+
+    /// Creates a new `ConsentMetadata` with the given time
+    /// - Parameter time: time for the consent metadata
+    public init(time: Date) {
+        self.time = time
+    }
+}
+
+extension ConsentMetadata {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ConsentMetadata else { return false }
+        return time == object.time
+    }
 }

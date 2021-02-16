@@ -26,9 +26,9 @@ class ConsentPreferencesManagerTests: XCTestCase {
     func testUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
-        consents.collect = ConsentValue(val: .no)
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
+        consents.adId = ConsentValue(.yes)
+        consents.collect = ConsentValue(.no)
         let preferences = ConsentPreferences(consents: consents)
 
         // test
@@ -43,9 +43,9 @@ class ConsentPreferencesManagerTests: XCTestCase {
     func testUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentPreferencesManager()
-        var consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(val: .yes)
-        consents.collect = ConsentValue(val: .no)
+        let consents = Consents(metadata: ConsentMetadata(time: Date()))
+        consents.adId = ConsentValue(.yes)
+        consents.collect = ConsentValue(.no)
         let preferences = ConsentPreferences(consents: consents)
 
         // test pt. 1
@@ -57,17 +57,17 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertEqual(manager.currentPreferences, preferences)
 
         // setup pt. 2
-        var consents2 = Consents(metadata: ConsentMetadata(time: Date()))
-        consents2.collect = ConsentValue(val: .yes)
+        let consents2 = Consents(metadata: ConsentMetadata(time: Date()))
+        consents2.collect = ConsentValue(.yes)
         let preferences2 = ConsentPreferences(consents: consents2)
 
         // test pt. 2
         manager.update(with: preferences2)
 
         // verify pt. 2
-        var expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
-        expectedConsents.adId = ConsentValue(val: .yes)
-        expectedConsents.collect = ConsentValue(val: .yes)
+        let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
+        expectedConsents.adId = ConsentValue(.yes)
+        expectedConsents.collect = ConsentValue(.yes)
         let expected = ConsentPreferences(consents: expectedConsents)
 
         let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)

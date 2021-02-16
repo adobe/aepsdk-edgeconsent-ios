@@ -21,6 +21,11 @@
                BlueprintName = "FunctionalTests"
                ReferencedContainer = "container:AEPConsent.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ConsentFunctionalTests/testInvalidResponsePayloadBadValue()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

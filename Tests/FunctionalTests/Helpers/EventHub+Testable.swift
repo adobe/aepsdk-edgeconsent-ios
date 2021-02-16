@@ -10,9 +10,11 @@
  governing permissions and limitations under the License.
  */
 
+@testable import AEPCore
 import Foundation
 
-/// Maps a `ConsentStatus` to a value
-struct ConsentValue: Codable, Equatable {
-    let val: ConsentStatus
+extension EventHub {
+    static func reset() {
+        shared = EventHub()
+    }
 }

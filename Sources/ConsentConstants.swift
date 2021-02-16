@@ -30,6 +30,8 @@ enum ConsentConstants {
 
     enum EventNames {
         static let CONSENT_UPDATE = "Edge Consent Update"
+        static let CONSENTS_REQUEST = "Consents Request"
+        static let CONSENT_RESPONSE = "Get Consents Response"
         static let CONFIGURATION_UPDATE = "Consent Configuration Update"
     }
 

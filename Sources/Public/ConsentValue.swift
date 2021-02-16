@@ -12,8 +12,22 @@
 
 import Foundation
 
-/// Represents the current status of a given `ConsentValue`
-enum ConsentStatus: String, Codable, Equatable {
-    case yes = "y"
-    case no = "n"
+/// Maps a `ConsentStatus` to a value
+@objc(AEPConsentValue)
+@objcMembers
+public class ConsentValue: NSObject, Codable {
+    public let val: ConsentStatus
+
+    /// Creates a new `ConsentValue` with the given consent status
+    /// - Parameter val: the consent status
+    public init(_ val: ConsentStatus) {
+        self.val = val
+    }
+}
+
+extension ConsentValue {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ConsentValue else { return false }
+        return val == object.val
+    }
 }

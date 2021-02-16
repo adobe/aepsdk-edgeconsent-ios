@@ -13,16 +13,20 @@
 import Foundation
 
 /// Represents the supported consents by the extension
-struct Consents: Codable, Equatable {
+@objc(AEPConsents)
+@objcMembers
+public class Consents: NSObject, Codable {
 
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
-    var adId: ConsentValue?
+    public internal(set) var adId: ConsentValue?
 
     /// Determines if data collection is permitted
-    var collect: ConsentValue?
+    public var collect: ConsentValue?
 
     /// Metadata for consents
-    var metadata: ConsentMetadata?
+    public internal(set) var metadata: ConsentMetadata?
+
+    public override init() {}
 
     /// Initializes new consents with the given metadata
     /// - Parameter metadata: metadata for the consents
@@ -36,9 +40,19 @@ struct Consents: Codable, Equatable {
     /// - Returns: The resulting `Consents` after merging `self` with `otherConsents`
     func merge(with otherConsents: Consents?) -> Consents {
         guard let otherConsents = otherConsents else { return self }
-        var mergedConsents = Consents(metadata: otherConsents.metadata ?? metadata)
+        let mergedConsents = Consents(metadata: otherConsents.metadata ?? metadata)
         mergedConsents.adId = otherConsents.adId ?? adId
         mergedConsents.collect = otherConsents.collect ?? collect
         return mergedConsents
+    }
+
+}
+
+extension Consents {
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? Consents else { return false }
+        return adId == object.adId &&
+            collect == object.collect &&
+            metadata == object.metadata
     }
 }
