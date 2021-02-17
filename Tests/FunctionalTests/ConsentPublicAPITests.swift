@@ -52,7 +52,7 @@ class ConsentPublicAPITests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
-    // MARK: updateConsents(...) test
+    // MARK: update(with consents:...) test
 
     /// Ensures that update consents API dispatches the correct event with correct event data
     func testUpdateConsents() {
@@ -69,7 +69,7 @@ class ConsentPublicAPITests: XCTestCase {
         }
 
         // test
-        Consent.update(consents: consents)
+        Consent.update(with: consents)
 
         // verify
         wait(for: [expectation], timeout: 1)
