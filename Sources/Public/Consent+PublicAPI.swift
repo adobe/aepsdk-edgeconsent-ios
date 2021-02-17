@@ -39,7 +39,7 @@ import Foundation
     /// Merges the existing consents with the given consents. Duplicate keys will take the value of those passed in the API
     /// - Parameter consents: consents to be merged with the existing consents
     @objc(updateConsents:)
-    static func updateConsents(consents: Consents) {
+    static func update(consents: Consents) {
         let consentPrefs = ConsentPreferences(consents: consents)
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.consent,

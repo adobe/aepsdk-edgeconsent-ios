@@ -69,7 +69,7 @@ class ConsentPublicAPITests: XCTestCase {
         }
 
         // test
-        Consent.updateConsents(consents: consents)
+        Consent.update(consents: consents)
 
         // verify
         wait(for: [expectation], timeout: 1)
