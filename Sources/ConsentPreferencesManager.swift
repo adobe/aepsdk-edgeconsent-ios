@@ -34,12 +34,7 @@ struct ConsentPreferencesManager {
     /// - Parameters:
     ///   - newPreferences: new consent preferences
     mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) {
-        guard let currentPreferences = currentPreferences else {
-            self.currentPreferences = newPreferences
-            return
-        }
-
-        self.currentPreferences = currentPreferences.merge(with: newPreferences)
+        self.currentPreferences = mergeWithoutUpdate(with: newPreferences)
     }
 
     /// Merges the existing consent preferences with the passed in consent preferences without updating the internal value

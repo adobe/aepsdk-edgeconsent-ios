@@ -44,7 +44,7 @@ public class Consent: NSObject, Extension {
 
     // MARK: Event Listeners
 
-    /// Invoked when an event with `EventTpe.consent` and `EventSource.updateConsent` is dispatched by the `EventHub`
+    /// Invoked when an event with `EventType.consent` and `EventSource.updateConsent` is dispatched by the `EventHub`
     /// - Parameter event: the consent update request
     private func receiveUpdateConsent(event: Event) {
         guard let consentsDict = event.data else {
