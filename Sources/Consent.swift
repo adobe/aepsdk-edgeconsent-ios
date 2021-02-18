@@ -57,7 +57,6 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
         dispatchConsentUpdateEvent()
     }
@@ -76,7 +75,6 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        dispatchPrivacyOptInIfNeeded(newPreferences: newPreferences)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
@@ -118,21 +116,4 @@ public class Consent: NSObject, Extension {
 
         dispatch(event: event)
     }
-
-    /// Dispatches an event to update privacy to opt-in if the new preferences contains "yes" for collect
-    /// - Parameter newPreferences: the new `ConsentPreferences` received in the event
-    private func dispatchPrivacyOptInIfNeeded(newPreferences: ConsentPreferences) {
-        // Only update privacy to opt-in if the new preferences contains "yes" for collect
-        guard newPreferences.consents.collect?.val == .yes else { return }
-        Log.debug(label: friendlyName,
-                  "New consent preferences contains collect with yes value. Dispatching configuration update event to set privacy status opt-in.")
-
-        let configDict = [ConsentConstants.EventDataKeys.Configuration.GLOBAL_CONFIG_PRIVACY: PrivacyStatus.optedIn.rawValue]
-        let event = Event(name: ConsentConstants.EventNames.CONFIGURATION_UPDATE,
-                          type: EventType.configuration,
-                          source: EventSource.requestContent,
-                          data: [ConsentConstants.EventDataKeys.Configuration.UPDATE_CONFIG: configDict])
-        dispatch(event: event)
-    }
-
 }
