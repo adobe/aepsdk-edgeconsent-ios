@@ -60,7 +60,7 @@ public class Consent: NSObject, Extension {
         // merge new consent with existing consent preferences
         let newPreferencesWithTime = newPreferences
         newPreferencesWithTime.consents.metadata = ConsentMetadata(time: event.timestamp)
-        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferences)
+        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferencesWithTime)
 
         // TODO: collect consent is required by Konductor, TBD how adID consent is going to be persisted;
         // alternatively, send unknown collect consent
