@@ -17,6 +17,7 @@ import Foundation
 public enum ConsentStatus: Int, RawRepresentable, Codable {
     case no = 0
     case yes = 1
+    case unknown = 2
 
     public typealias RawValue = String
 
@@ -26,6 +27,8 @@ public enum ConsentStatus: Int, RawRepresentable, Codable {
             return "n"
         case .yes:
             return "y"
+        case .unknown:
+            return "u"
         }
     }
 
@@ -38,7 +41,7 @@ public enum ConsentStatus: Int, RawRepresentable, Codable {
         case "y":
             self = .yes
         default:
-            self = .no // TODO: Handle unknown case
+            self = .unknown
         }
     }
 }

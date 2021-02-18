@@ -23,7 +23,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         mockDatastore = NamedCollectionDataStore(name: "com.adobe.consent")
     }
 
-    func testUpdate() {
+    func testMergeAndUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
@@ -32,7 +32,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: consents)
 
         // test
-        manager.update(with: preferences)
+        manager.mergeAndUpdate(with: preferences)
 
         // verify
         let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
@@ -40,7 +40,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertEqual(manager.currentPreferences, preferences)
     }
 
-    func testUpdateMultipleMerges() {
+    func testMergeAndUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentPreferencesManager()
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
@@ -49,7 +49,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: consents)
 
         // test pt. 1
-        manager.update(with: preferences)
+        manager.mergeAndUpdate(with: preferences)
 
         // verify pt. 1
         let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
@@ -62,7 +62,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences2 = ConsentPreferences(consents: consents2)
 
         // test pt. 2
-        manager.update(with: preferences2)
+        manager.mergeAndUpdate(with: preferences2)
 
         // verify pt. 2
         let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
