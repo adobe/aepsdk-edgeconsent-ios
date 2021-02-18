@@ -32,7 +32,7 @@ public class Consent: NSObject, Extension {
 
     public func onRegistered() {
         registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
-        registerListener(type: EventType.consent, source: EventSource.requestConsent, listener: receiveRequestConsent(event:))
+        registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
     }
 
@@ -82,7 +82,7 @@ public class Consent: NSObject, Extension {
 
     /// Handles the get consent event
     /// - Parameter event: the event requesting consents
-    private func receiveRequestConsent(event: Event) {
+    private func receiveRequestContent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
         let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
                                                       type: EventType.consent,
