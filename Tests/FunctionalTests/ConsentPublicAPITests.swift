@@ -64,12 +64,13 @@ class ConsentPublicAPITests: XCTestCase {
         expectation.assertForOverFulfill = true
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.updateConsent) { event in
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
-            XCTAssertEqual(consents, dispatchedConsents?.consents) // consents in update event should be equal
+            let equal = NSDictionary(dictionary: consents.asDictionary()!).isEqual(to: (dispatchedConsents?.asDictionary())!) // consents in update event should be equal
+            XCTAssertTrue(equal)
             expectation.fulfill()
         }
 
         // test
-        Consent.update(with: consents)
+        Consent.update(with: consents.asDictionary()!)
 
         // verify
         wait(for: [expectation], timeout: 1)

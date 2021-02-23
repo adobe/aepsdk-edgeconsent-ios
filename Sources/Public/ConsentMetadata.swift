@@ -15,7 +15,7 @@ import Foundation
 /// Represents additional metadata
 @objc(AEPConsentMetadata)
 @objcMembers
-public class ConsentMetadata: NSObject, Codable {
+class ConsentMetadata: NSObject, Codable {
     /// The timestamp this preferences was last updated
     public let time: Date
 

@@ -15,7 +15,7 @@ import Foundation
 /// Represents the supported consents by the extension
 @objc(AEPConsents)
 @objcMembers
-public class Consents: NSObject, Codable {
+class Consents: NSObject, Codable {
 
     /// The Advertiser ID (IDFA / AAID) can be used to link user across apps on this device
     public internal(set) var adId: ConsentValue?

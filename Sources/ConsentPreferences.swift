@@ -18,7 +18,7 @@ struct ConsentPreferences: Codable, Equatable {
     private static let LOG_TAG = "ConsentPreferences"
 
     /// Consents for the given preferences
-    var consents: Consents
+    var consents: [String: AnyCodable]
 
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
     /// Any shared keys will take on the value stored in `otherPreferences`
@@ -26,7 +26,8 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        return ConsentPreferences(consents: consents.merge(with: otherPreferences.consents))
+        let mergedConsents = consents.merging(otherPreferences.consents) { _, new in new }
+        return ConsentPreferences(consents: mergedConsents)
     }
 
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
@@ -38,9 +39,7 @@ struct ConsentPreferences: Codable, Equatable {
             return nil
         }
 
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        guard let consentPreferences = try? decoder.decode(ConsentPreferences.self, from: jsonData) else {
+        guard let consentPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: jsonData) else {
             Log.debug(label: LOG_TAG, "Unable to decode consent data into a ConsentPreferences.")
             return nil
         }

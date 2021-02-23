@@ -21,8 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		212C60CD25E570CC00CCECF9 /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		2170714525BB5BEB0052BACE /* AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPConsent.framework */; };
-		2170714A25BB5BEB0052BACE /* ConsentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170714925BB5BEB0052BACE /* ConsentTests.swift */; };
 		2170714C25BB5BEB0052BACE /* AEPConsent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2170713E25BB5BEA0052BACE /* AEPConsent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */; };
 		2170716A25BB5CDC0052BACE /* AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPConsent.framework */; };
@@ -42,8 +42,6 @@
 		21C0963325BF4928006C1CFE /* ConsentPreferencesManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */; };
 		21C0964725BF4A21006C1CFE /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963925BF49D4006C1CFE /* MockDataStore.swift */; };
 		21D0F20625C1E11A0091FFBD /* ConsentMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20525C1E11A0091FFBD /* ConsentMetadata.swift */; };
-		21D0F21125C1FA150091FFBD /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
-		21D0F21625C1FA170091FFBD /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */; };
 		CAE5A50F10D656BC90A40E3E /* Pods_AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */; };
 		D31B97D4D03E8FC4C48ACE7C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */; };
@@ -81,7 +79,6 @@
 		2170713E25BB5BEA0052BACE /* AEPConsent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPConsent.h; sourceTree = "<group>"; };
 		2170713F25BB5BEA0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2170714425BB5BEB0052BACE /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2170714925BB5BEB0052BACE /* ConsentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentTests.swift; sourceTree = "<group>"; };
 		2170714B25BB5BEB0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2170716525BB5CDC0052BACE /* FunctionalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FunctionalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentFunctionalTests.swift; sourceTree = "<group>"; };
@@ -173,6 +170,7 @@
 				2170719025BB5F1A0052BACE /* Consent.swift */,
 				21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */,
 				21C095B225BB9060006C1CFE /* ConsentPreferences.swift */,
+				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
 				21A9E29725D1DF430089690E /* Public */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
 			);
@@ -182,11 +180,9 @@
 		2170714825BB5BEB0052BACE /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				2170714925BB5BEB0052BACE /* ConsentTests.swift */,
 				21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */,
 				21C0960725BF3429006C1CFE /* ConsentPreferencesTests.swift */,
 				21C0962025BF481D006C1CFE /* ConsentsTests.swift */,
-				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
 				21C0963825BF49C8006C1CFE /* Mocks */,
 				2170714B25BB5BEB0052BACE /* Info.plist */,
 			);
@@ -535,6 +531,7 @@
 				21C095C525BB9B83006C1CFE /* ConsentValue.swift in Sources */,
 				217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */,
 				21C0961225BF46D3006C1CFE /* Consents.swift in Sources */,
+				212C60CD25E570CC00CCECF9 /* Date+ISO8601.swift in Sources */,
 				21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,8 +544,6 @@
 				21C0963325BF4928006C1CFE /* ConsentPreferencesManagerTests.swift in Sources */,
 				21C0960825BF3429006C1CFE /* ConsentPreferencesTests.swift in Sources */,
 				21C0962125BF481D006C1CFE /* ConsentsTests.swift in Sources */,
-				21D0F21125C1FA150091FFBD /* Date+ISO8601.swift in Sources */,
-				2170714A25BB5BEB0052BACE /* ConsentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,7 +555,6 @@
 				21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */,
 				21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */,
 				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
-				21D0F21625C1FA170091FFBD /* Date+ISO8601.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

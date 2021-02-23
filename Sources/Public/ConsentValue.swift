@@ -15,7 +15,7 @@ import Foundation
 /// Maps a `ConsentStatus` to a value
 @objc(AEPConsentValue)
 @objcMembers
-public class ConsentValue: NSObject, Codable {
+class ConsentValue: NSObject, Codable {
     public let val: ConsentStatus
 
     /// Creates a new `ConsentValue` with the given consent status

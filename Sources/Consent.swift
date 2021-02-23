@@ -52,15 +52,15 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
+        guard var newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-
+        
+        // set metadata
+        newPreferences.consents["metadata"] = ["time": event.timestamp.iso8601String]
         // merge new consent with existing consent preferences
-        let newPreferencesWithTime = newPreferences
-        newPreferencesWithTime.consents.metadata = ConsentMetadata(time: event.timestamp)
-        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferencesWithTime)
+        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferences)
 
         // TODO: collect consent is required by Konductor, TBD how adID consent is going to be persisted;
         // alternatively, send unknown collect consent
@@ -102,10 +102,8 @@ public class Consent: NSObject, Extension {
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
     private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
-        let updatedPreferences = newPreferences
-        updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
-        preferencesManager.mergeAndUpdate(with: updatedPreferences)
-        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: event)
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data

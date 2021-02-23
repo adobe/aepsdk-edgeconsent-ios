@@ -29,7 +29,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
         consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: consents)
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
 
         // test
         manager.mergeAndUpdate(with: preferences)
@@ -46,7 +46,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
         consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: consents)
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
 
         // test pt. 1
         manager.mergeAndUpdate(with: preferences)
@@ -59,7 +59,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         // setup pt. 2
         let consents2 = Consents(metadata: ConsentMetadata(time: Date()))
         consents2.collect = ConsentValue(.yes)
-        let preferences2 = ConsentPreferences(consents: consents2)
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2.asDictionary())!)
 
         // test pt. 2
         manager.mergeAndUpdate(with: preferences2)
@@ -68,7 +68,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
         expectedConsents.adId = ConsentValue(.yes)
         expectedConsents.collect = ConsentValue(.yes)
-        let expected = ConsentPreferences(consents: expectedConsents)
+        let expected = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
 
         let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
         XCTAssertEqual(storedPreferences2, expected)
@@ -81,7 +81,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
         consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: consents)
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
 
         // test
         let resultPrefereneces = manager.mergeWithoutUpdate(with: preferences)
@@ -99,13 +99,13 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = Consents(metadata: ConsentMetadata(time: Date()))
         consents.adId = ConsentValue(.yes)
         consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: consents)
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
         manager.mergeAndUpdate(with: preferences)
 
         // test
         let consents2 = Consents(metadata: ConsentMetadata(time: Date()))
         consents2.collect = ConsentValue(.yes)
-        let preferences2 = ConsentPreferences(consents: consents2)
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2.asDictionary())!)
         let resultPrefereneces = manager.mergeWithoutUpdate(with: preferences2)
 
         // verify
@@ -116,7 +116,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
         expectedConsents.adId = ConsentValue(.yes)
         expectedConsents.collect = ConsentValue(.yes)
-        let expected = ConsentPreferences(consents: expectedConsents)
+        let expected = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
         XCTAssertEqual(expected, resultPrefereneces)
     }
 

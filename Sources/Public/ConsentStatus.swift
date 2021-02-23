@@ -14,7 +14,7 @@ import Foundation
 
 /// Represents the current status of a given `ConsentStatus`
 @objc(AEPConsentStatus)
-public enum ConsentStatus: Int, RawRepresentable, Codable {
+enum ConsentStatus: Int, RawRepresentable, Codable {
     case no = 0
     case yes = 1
     case unknown = 2
