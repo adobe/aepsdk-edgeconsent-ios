@@ -234,9 +234,16 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithNilPreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: nil)
@@ -247,19 +254,40 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithEmptyPreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        let preferences = ConsentPreferences(consents:  AnyCodable.from(dictionary: consents.asDictionary())!)
-        let emptyConsents =  Consents(metadata: ConsentMetadata(time: Date()))
-        let emptyPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: emptyConsents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents:  AnyCodable.from(dictionary: consents)!)
+        let date = Date()
+        let emptyConsents = [
+                "consents" :
+                    [
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let emptyPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: emptyConsents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: emptyPreferences)
 
         // verify
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: emptyConsents.metadata!.time))
-        expectedConsents.adId = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
+        let expectedConsents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
         
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
@@ -267,9 +295,16 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithSamePreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: preferences)
@@ -281,21 +316,45 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithNoMatchingConsentsPreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
-        let otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.collect = ConsentValue(.yes)
-        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        
+        let date = Date()
+        let otherConsents = [
+                "consents" :
+                    [
+                        "collect" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
-        expectedConsents.adId = ConsentValue(.yes)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
+        let expectedConsents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "collect" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
         
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
@@ -303,22 +362,46 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithSomeMatchingConsentsPreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
-        let otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.adId = ConsentValue(.no)
-        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "collect" :
+                            ["val" : "n"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        let date = Date()
+        let otherConsents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "n"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
         // verify
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: otherConsents.metadata!.time))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.no)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
+        let expectedConsents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "n"],
+                        "collect" :
+                            ["val" : "n"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
         
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
@@ -326,15 +409,31 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testMergeWithAllMatchingConsentsPreferences() {
         // setup
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "y"],
+                        "collect" :
+                            ["val" : "n"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
         
-        let otherConsents = Consents(metadata: ConsentMetadata(time: Date()))
-        otherConsents.adId = ConsentValue(.no)
-        otherConsents.collect = ConsentValue(.yes)
-        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents.asDictionary())!)
+        let otherConsents = [
+                "consents" :
+                    [
+                        "adId" :
+                            ["val" : "n"],
+                        "collect" :
+                            ["val" : "n"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
         let mergedPreferences = preferences.merge(with: otherPreferences)

@@ -18,7 +18,11 @@ struct ConsentPreferences: Codable, Equatable {
     private static let LOG_TAG = "ConsentPreferences"
 
     /// Consents for the given preferences
-    var consents: [String: AnyCodable]
+    #if DEBUG
+        var consents: [String: AnyCodable]
+    #else
+        private var consents: [String: AnyCodable]
+    #endif
 
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
     /// Any shared keys will take on the value stored in `otherPreferences`
@@ -26,8 +30,20 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        let mergedConsents = consents.merging(otherPreferences.consents) { _, new in new }
-        return ConsentPreferences(consents: mergedConsents)
+        guard let consentCodable = consents["consents"], let consentDict = consentCodable.dictionaryValue else { return self }
+        guard let otherConsentCodable = otherPreferences.consents["consents"],
+              let otherConsentDict = otherConsentCodable.dictionaryValue else { return self }
+        
+        let mergedConsents = consentDict.merging(otherConsentDict) { _, new in new }
+        return ConsentPreferences(consents: ["consents": AnyCodable(mergedConsents)])
+    }
+    
+    mutating func setTimestamp(date: Date) {
+        consents["metadata"] = ["time": date.iso8601String]
+    }
+    
+    func toEventData() -> [String: Any]? {
+        return ["consents": AnyCodable.toAnyDictionary(dictionary: consents)]
     }
 
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
@@ -46,4 +62,5 @@ struct ConsentPreferences: Codable, Equatable {
 
         return consentPreferences
     }
+    
 }

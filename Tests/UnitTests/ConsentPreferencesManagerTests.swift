@@ -26,98 +26,165 @@ class ConsentPreferencesManagerTests: XCTestCase {
     func testMergeAndUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "n"],
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
         manager.mergeAndUpdate(with: preferences)
 
         // verify
         let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        XCTAssertEqual(storedPreferences, preferences)
-        XCTAssertEqual(manager.currentPreferences, preferences)
-    }
+        let flatStoredConsents = AnyCodable.toAnyDictionary(dictionary: storedPreferences?.consents)?.flattening()
+        let flatCurrentConsents = AnyCodable.toAnyDictionary(dictionary: manager.currentPreferences?.consents)?.flattening()
+        
+        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        
+        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+    }   
 
     func testMergeAndUpdateMultipleMerges() {
         // setup pt. 1
         var manager = ConsentPreferencesManager()
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "n"],
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test pt. 1
         manager.mergeAndUpdate(with: preferences)
 
         // verify pt. 1
         let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        XCTAssertEqual(storedPreferences, preferences)
-        XCTAssertEqual(manager.currentPreferences, preferences)
+        let flatStoredConsents = AnyCodable.toAnyDictionary(dictionary: storedPreferences?.consents)?.flattening()
+        let flatCurrentConsents = AnyCodable.toAnyDictionary(dictionary: manager.currentPreferences?.consents)?.flattening()
+        
+        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        
+        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
 
         // setup pt. 2
-        let consents2 = Consents(metadata: ConsentMetadata(time: Date()))
-        consents2.collect = ConsentValue(.yes)
-        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2.asDictionary())!)
+        let date = Date()
+        let consents2 = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": date.iso8601String]
+                    ]
+            ]
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
         // test pt. 2
         manager.mergeAndUpdate(with: preferences2)
 
         // verify pt. 2
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
-        expectedConsents.adId = ConsentValue(.yes)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expected = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        XCTAssertEqual(storedPreferences2, expected)
-        XCTAssertEqual(manager.currentPreferences, expected)
+        let flatStoredConsents2 = AnyCodable.toAnyDictionary(dictionary: storedPreferences2?.consents)?.flattening()
+        let flatCurrentConsents2 = AnyCodable.toAnyDictionary(dictionary: manager.currentPreferences?.consents)?.flattening()
+        
+        XCTAssertEqual(flatStoredConsents2?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents2?["consents.collect.val"] as? String, "y")
+        XCTAssertNotNil(flatStoredConsents2?["consents.metadata.time"] as? String)
+        
+        XCTAssertEqual(flatCurrentConsents2?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents2?["consents.collect.val"] as? String, "y")
+        XCTAssertNotNil(flatCurrentConsents2?["consents.metadata.time"] as? String)
     }
 
     func testMergeWithoutUpdate() {
         // setup
         let manager = ConsentPreferencesManager()
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "n"],
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
-        let resultPrefereneces = manager.mergeWithoutUpdate(with: preferences)
+        let resultPreferences = manager.mergeWithoutUpdate(with: preferences)
 
         // verify
         let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
         XCTAssertNil(storedPreferences)
         XCTAssertNil(manager.currentPreferences)
-        XCTAssertEqual(preferences, resultPrefereneces)
+        XCTAssertEqual(preferences, resultPreferences)
     }
 
     func testMergeWithoutUpdateWithExistingPreferences() {
         // setup
         var manager = ConsentPreferencesManager()
-        let consents = Consents(metadata: ConsentMetadata(time: Date()))
-        consents.adId = ConsentValue(.yes)
-        consents.collect = ConsentValue(.no)
-        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents.asDictionary())!)
+        let consents = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "n"],
+                        "adId" :
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
         manager.mergeAndUpdate(with: preferences)
 
         // test
-        let consents2 = Consents(metadata: ConsentMetadata(time: Date()))
-        consents2.collect = ConsentValue(.yes)
-        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2.asDictionary())!)
-        let resultPrefereneces = manager.mergeWithoutUpdate(with: preferences2)
+        let consents2 = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "y"],
+                        "metadata" :
+                            ["time": Date().iso8601String]
+                    ]
+            ]
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+        let resultPreferences = manager.mergeWithoutUpdate(with: preferences2)
 
         // verify
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        XCTAssertEqual(preferences, storedPreferences)
-        XCTAssertEqual(preferences, manager.currentPreferences)
-
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: consents2.metadata!.time))
-        expectedConsents.adId = ConsentValue(.yes)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expected = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-        XCTAssertEqual(expected, resultPrefereneces)
+        let flatStoredConsents = AnyCodable.toAnyDictionary(dictionary: resultPreferences.consents)?.flattening()
+        let flatCurrentConsents = AnyCodable.toAnyDictionary(dictionary: manager.currentPreferences?.consents)?.flattening()
+        
+        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "y")
+        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        
+        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
     }
 
 }

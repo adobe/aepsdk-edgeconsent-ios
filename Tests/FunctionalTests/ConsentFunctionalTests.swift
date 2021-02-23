@@ -79,22 +79,13 @@ class ConsentFunctionalTests: XCTestCase {
         // verify
         XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent update
-
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
-        let eventDataConsentsData = try! JSONSerialization.data(withJSONObject: dispatchedEvent.data!, options: [])
-        let eventConsents = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: eventConsents.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = dispatchedEvent.data?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, buildFirstUpdateConsentEvent().timestamp.iso8601String)
     }
 
     func testUpdateConsentHappyIgnoresMetadataDate() {
@@ -106,23 +97,14 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent update
 
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
-        let eventDataConsentsData = try! JSONSerialization.data(withJSONObject: dispatchedEvent.data!, options: [])
-        let eventConsents = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: eventConsents.consents.asDictionary()!)
-        XCTAssertTrue(equal)
-        let metadata = eventConsents.consents["metadata"]?.dictionaryValue
-        XCTAssertNotEqual(metadataDate.iso8601String, metadata!["time"] as? String) // should ignore the date metadata event data
+        let flatDict = dispatchedEvent.data?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
+        XCTAssertNotEqual(flatDict?["consents.metadata.time"] as? String, metadataDate.iso8601String)
     }
 
     func testUpdateConsentMergeWithExistingHappy() {
@@ -142,23 +124,13 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // 1 consent updates
 
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: firstEvent.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.no)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
-        let eventDataConsentsData = try! JSONSerialization.data(withJSONObject: dispatchedEvent.data!, options: [])
-        let eventConsents = try! decoder.decode(ConsentPreferences.self, from: eventDataConsentsData)
+        let flatDict = dispatchedEvent.data?.flattening()
         
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: eventConsents.consents.asDictionary()!)
-        XCTAssertTrue(equal)
-        let metadata = eventConsents.consents["metadata"]?.dictionaryValue
-        XCTAssertEqual(secondEvent.timestamp.iso8601String, metadata!["time"] as? String)
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, secondEvent.timestamp.iso8601String)
     }
 
     // MARK: Consent response event handling (consent:preferences)
@@ -199,30 +171,6 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
     }
 
-    func testResponsePayloadInvalidValueFallsback2Unknown() {
-        // test
-        let event = buildInvalidConsentValueResponseUpdateEvent()
-        mockRuntime.simulateComingEvents(event)
-
-        // verify
-        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
-
-        // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.collect = ConsentValue(.unknown)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
-        let sharedState = mockRuntime.createdXdmSharedStates.first!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
-    }
-
     func testValidResponseWithEmptyExistingConsents() {
         // setup
         let event = buildConsentResponseUpdateEvent()
@@ -234,19 +182,12 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
 
         // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let sharedState = mockRuntime.createdXdmSharedStates.first!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = sharedState?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
     func testValidResponseWithEmptyExistingConsentsIgnoresExtraneous() {
@@ -258,21 +199,14 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
         XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
-
+        
         // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let sharedState = mockRuntime.createdXdmSharedStates.first!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = sharedState?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
     func testValidResponseWithExistingConsentsOverridden() {
@@ -290,19 +224,12 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.no)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let sharedState = mockRuntime.createdXdmSharedStates.first!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = sharedState?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
     func testValidResponseWithExistingConsentsMerged() {
@@ -320,19 +247,12 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: event.timestamp))
-        expectedConsents.adId = ConsentValue(.yes)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let sharedState = mockRuntime.createdXdmSharedStates.last!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = sharedState?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
     func testMultipleValidResponsesWithExistingConsentsMerged() {
@@ -351,19 +271,12 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(2, mockRuntime.createdXdmSharedStates.count)
 
         // verify shared state
-        let expectedConsents = Consents(metadata: ConsentMetadata(time: secondEvent.timestamp))
-        expectedConsents.adId = ConsentValue(.yes)
-        expectedConsents.collect = ConsentValue(.yes)
-        let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents.asDictionary())!)
-
         let sharedState = mockRuntime.createdXdmSharedStates.last!
-        let sharedStatePreferencesData = try! JSONSerialization.data(withJSONObject: sharedState!, options: [])
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let sharedStatePreferences = try! decoder.decode(ConsentPreferences.self, from: sharedStatePreferencesData)
-
-        let equal = NSDictionary(dictionary: expectedPreferences.consents.asDictionary()!).isEqual(to: sharedStatePreferences.consents.asDictionary()!)
-        XCTAssertTrue(equal)
+        let flatDict = sharedState?.flattening()
+        
+        XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, secondEvent.timestamp.iso8601String)
     }
 
     private func buildFirstUpdateConsentEvent() -> Event {

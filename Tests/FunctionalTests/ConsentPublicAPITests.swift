@@ -57,8 +57,13 @@ class ConsentPublicAPITests: XCTestCase {
     /// Ensures that update consents API dispatches the correct event with correct event data
     func testUpdateConsents() {
         // setup
-        let consents = Consents()
-        consents.collect = ConsentValue(.yes)
+        let consents = [
+                "consents" :
+                    [
+                        "collect":
+                            ["val" : "y"]
+                    ]
+            ]
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
@@ -70,7 +75,7 @@ class ConsentPublicAPITests: XCTestCase {
         }
 
         // test
-        Consent.update(with: consents.asDictionary()!)
+        Consent.update(with: consents)
 
         // verify
         wait(for: [expectation], timeout: 1)

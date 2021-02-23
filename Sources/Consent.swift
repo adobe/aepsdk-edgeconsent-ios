@@ -56,9 +56,9 @@ public class Consent: NSObject, Extension {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-        
+
         // set metadata
-        newPreferences.consents["metadata"] = ["time": event.timestamp.iso8601String]
+        newPreferences.setTimestamp(date: event.timestamp)
         // merge new consent with existing consent preferences
         let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferences)
 
@@ -76,11 +76,12 @@ public class Consent: NSObject, Extension {
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
-        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
+        guard var newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-
+        
+        newPreferences.setTimestamp(date: event.timestamp)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
@@ -111,7 +112,7 @@ public class Consent: NSObject, Extension {
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.updateConsent,
-                          data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
+                          data: preferences.toEventData())
 
         dispatch(event: event)
     }
