@@ -80,7 +80,7 @@ public class Consent: NSObject, Extension {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
-        
+
         newPreferences.setTimestamp(date: event.timestamp)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }

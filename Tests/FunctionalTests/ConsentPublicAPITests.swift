@@ -58,12 +58,11 @@ class ConsentPublicAPITests: XCTestCase {
     func testUpdateConsents() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "collect":
-                            ["val" : "y"]
-                    ]
-            ]
+            "consents": [
+                    "collect":
+                        ["val": "y"]
+                ]
+        ]
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true

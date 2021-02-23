@@ -235,14 +235,11 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithNilPreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
@@ -255,23 +252,18 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithEmptyPreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
-        let preferences = ConsentPreferences(consents:  AnyCodable.from(dictionary: consents)!)
+            "consents": [
+                    "adId": ["val": "y"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
         let date = Date()
         let emptyConsents = [
-                "consents" :
-                    [
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let emptyPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: emptyConsents)!)
 
         // test
@@ -279,16 +271,13 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         let expectedConsents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
-        
+
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
     }
@@ -296,14 +285,11 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithSamePreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
@@ -317,26 +303,20 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithNoMatchingConsentsPreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-        
+
         let date = Date()
         let otherConsents = [
-                "consents" :
-                    [
-                        "collect" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "collect": ["val": "y"],
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
@@ -344,18 +324,14 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         let expectedConsents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "collect" :
-                            ["val" : "y"],
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "collect": ["val": "y"],
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
-        
+
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
     }
@@ -363,27 +339,20 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithSomeMatchingConsentsPreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "collect" :
-                            ["val" : "n"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "collect": ["val": "n"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
         let date = Date()
         let otherConsents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "n"],
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "n"],
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
@@ -391,18 +360,14 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         let expectedConsents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "n"],
-                        "collect" :
-                            ["val" : "n"],
-                        "metadata" :
-                            ["time": date.iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "n"],
+                    "collect": ["val": "n"],
+                    "metadata": ["time": date.iso8601String]
+                ]
+        ]
         let expectedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: expectedConsents)!)
-        
+
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: expectedPreferences.consents)!)
         XCTAssertTrue(equal)
     }
@@ -410,29 +375,21 @@ class ConsentPreferencesTests: XCTestCase {
     func testMergeWithAllMatchingConsentsPreferences() {
         // setup
         let consents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "y"],
-                        "collect" :
-                            ["val" : "n"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "y"],
+                    "collect": ["val": "n"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-        
+
         let otherConsents = [
-                "consents" :
-                    [
-                        "adId" :
-                            ["val" : "n"],
-                        "collect" :
-                            ["val" : "n"],
-                        "metadata" :
-                            ["time": Date().iso8601String]
-                    ]
-            ]
+            "consents": [
+                    "adId": ["val": "n"],
+                    "collect": ["val": "n"],
+                    "metadata": ["time": Date().iso8601String]
+                ]
+        ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
         // test
