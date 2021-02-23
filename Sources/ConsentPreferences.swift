@@ -30,7 +30,8 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        guard let consentCodable = consents[ConsentConstants.EventDataKeys.CONSENTS], let consentDict = consentCodable.dictionaryValue else { return self }
+        guard let consentCodable = consents[ConsentConstants.EventDataKeys.CONSENTS],
+              let consentDict = consentCodable.dictionaryValue else { return otherPreferences }
         guard let otherConsentCodable = otherPreferences.consents[ConsentConstants.EventDataKeys.CONSENTS],
               let otherConsentDict = otherConsentCodable.dictionaryValue else { return self }
 
