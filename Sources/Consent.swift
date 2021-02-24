@@ -23,6 +23,7 @@ public class Consent: NSObject, Extension {
     public let runtime: ExtensionRuntime
 
     private var preferencesManager = ConsentPreferencesManager()
+    private var hasSharedInitialConsents = false
 
     // MARK: Extension
 
@@ -34,12 +35,23 @@ public class Consent: NSObject, Extension {
         registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
+        
+        // Share existing consents if they exist
+        if let existingPreferences = preferencesManager.currentPreferences {
+            createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: nil)
+            dispatchEdgeConsentUpdateEvent(preferences: existingPreferences)
+            hasSharedInitialConsents = true
+        }
     }
 
     public func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
-        return true
+        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
+                                                      event: event)
+
+        sharedDefaultConsentsIfNeeded(configurationSharedState)
+        return configurationSharedState?.status == .set
     }
 
     // MARK: Event Listeners
@@ -123,5 +135,22 @@ public class Consent: NSObject, Extension {
                           data: preferences.asDictionary())
 
         dispatch(event: event)
+    }
+    
+    /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
+    /// - Parameter configSharedState: the current shared state for the Configuration extension
+    private func sharedDefaultConsentsIfNeeded(_ configSharedState: SharedStateResult?) {
+        guard configSharedState?.status == .set && !hasSharedInitialConsents else { return }
+
+        // read default consent from config
+        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
+                                                      event: nil)?.value
+        guard let defaultConsents =
+                configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else { return }
+        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else { return }
+
+        createXDMSharedState(data: defaultConsents, event: nil)
+        dispatchEdgeConsentUpdateEvent(preferences: defaultPrefs)
+        hasSharedInitialConsents = true
     }
 }

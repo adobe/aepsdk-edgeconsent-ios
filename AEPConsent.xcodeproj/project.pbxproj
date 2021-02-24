@@ -24,6 +24,7 @@
 		212C60CD25E570CC00CCECF9 /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
 		2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
+		21639FCC25E70FCA000D95E5 /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21639FCB25E70FCA000D95E5 /* MockDataStore.swift */; };
 		2170714525BB5BEB0052BACE /* AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPConsent.framework */; };
 		2170714C25BB5BEB0052BACE /* AEPConsent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2170713E25BB5BEA0052BACE /* AEPConsent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */; };
@@ -73,6 +74,7 @@
 		067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0727261FE0B261DEDF99E120 /* Pods-FunctionalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunctionalTests.debug.xcconfig"; path = "Target Support Files/Pods-FunctionalTests/Pods-FunctionalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2158820825E57C4C005B830B /* Dictionary+Flatten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Flatten.swift"; sourceTree = "<group>"; };
+		21639FCB25E70FCA000D95E5 /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		2170713B25BB5BEA0052BACE /* AEPConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2170713E25BB5BEA0052BACE /* AEPConsent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPConsent.h; sourceTree = "<group>"; };
 		2170713F25BB5BEA0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */,
 				21A9E2B025D1EDB10089690E /* MockExtension.swift */,
 				2158820825E57C4C005B830B /* Dictionary+Flatten.swift */,
+				21639FCB25E70FCA000D95E5 /* MockDataStore.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
 				21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */,
 				21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */,
+				21639FCC25E70FCA000D95E5 /* MockDataStore.swift in Sources */,
 				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);
