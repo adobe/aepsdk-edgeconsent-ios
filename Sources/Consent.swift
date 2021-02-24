@@ -57,14 +57,10 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        // merge new consent with existing consent preferences
-        let newPreferencesWithTime = newPreferences
-        newPreferencesWithTime.consents.metadata = ConsentMetadata(time: event.timestamp)
-        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferencesWithTime)
-
-        // TODO: collect consent is required by Konductor, TBD how adID consent is going to be persisted;
-        // alternatively, send unknown collect consent
-        dispatchEdgeConsentUpdateEvent(preferences: mergedPreferences)
+        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        if let updatedPreferences = preferencesManager.currentPreferences {
+            dispatchEdgeConsentUpdateEvent(preferences: updatedPreferences)
+        }
     }
 
     /// Invoked when an event with `EventType.edge` and source `consent:preferences` is dispatched
@@ -97,7 +93,9 @@ public class Consent: NSObject, Extension {
 
     // MARK: Helpers
 
-    /// Updates current preferences and creates a new shared state with the newly updated preferences
+    /// Updates current preferences, creates a new shared state with the newly updated preferences and dispatches an event
+    /// with `EventType.consent` and `EventSource.responseContent` containing the updated preferences.
+    ///
     /// - Parameters:
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
@@ -105,12 +103,20 @@ public class Consent: NSObject, Extension {
         let updatedPreferences = newPreferences
         updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
         preferencesManager.mergeAndUpdate(with: updatedPreferences)
-        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
+
+        let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:]
+        // create shared state first, then dispatch response event
+        createXDMSharedState(data: currentPreferencesDict, event: event)
+        let responseEvent = Event(name: ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED,
+                                  type: EventType.consent,
+                                  source: EventSource.responseContent,
+                                  data: currentPreferencesDict)
+        dispatch(event: responseEvent)
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
     private func dispatchEdgeConsentUpdateEvent(preferences: ConsentPreferences) {
-        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
+        let event = Event(name: ConsentConstants.EventNames.EDGE_CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.updateConsent,
                           data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])

@@ -41,7 +41,7 @@ import Foundation
     @objc(updateWithConsents:)
     static func update(with consents: Consents) {
         let consentPrefs = ConsentPreferences(consents: consents)
-        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
+        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE_REQUEST,
                           type: EventType.consent,
                           source: EventSource.updateConsent,
                           data: consentPrefs.asDictionary(dateEncodingStrategy: .iso8601))

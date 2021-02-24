@@ -34,20 +34,11 @@ struct ConsentPreferencesManager {
     /// - Parameters:
     ///   - newPreferences: new consent preferences
     mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) {
-        self.currentPreferences = mergeWithoutUpdate(with: newPreferences)
-    }
-
-    /// Merges the existing consent preferences with the passed in consent preferences without updating the internal value
-    /// Duplicate keys will take the value of what is represented in the new consent preferences
-    /// - Parameters:
-    ///   - newPreferences: new consent preferences
-    /// - Returns: the new consent prefereneces merged over the existing preferences
-    func mergeWithoutUpdate(with newPreferences: ConsentPreferences) -> ConsentPreferences {
         guard let currentPreferences = currentPreferences else {
-            return newPreferences
+            self.currentPreferences = newPreferences
+            return
         }
 
-        return currentPreferences.merge(with: newPreferences)
+        self.currentPreferences = currentPreferences.merge(with: newPreferences)
     }
-
 }
