@@ -35,9 +35,9 @@ public class Consent: NSObject, Extension {
         registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
-        
+
         // Share existing consents if they exist
-        if let existingPreferences = preferencesManager.currentPreferences {
+        if let existingPreferences = preferencesManager.currentPreferences, !hasSharedInitialConsents {
             createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: nil)
             dispatchEdgeConsentUpdateEvent(preferences: existingPreferences)
             hasSharedInitialConsents = true
@@ -136,7 +136,7 @@ public class Consent: NSObject, Extension {
 
         dispatch(event: event)
     }
-    
+
     /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
     /// - Parameter configSharedState: the current shared state for the Configuration extension
     private func sharedDefaultConsentsIfNeeded(_ configSharedState: SharedStateResult?) {

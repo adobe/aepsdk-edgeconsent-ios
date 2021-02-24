@@ -32,123 +32,122 @@ class ConsentFunctionalTests: XCTestCase {
             UserDefaults.standard.removeObject(forKey: key)
         }
     }
-    
+
     // MARK: Bootup scenarios
-       func testBootup_NoCachedConsents_NoConfigDefault() {
-           // test
-           consent = Consent(runtime: mockRuntime)
-           consent.onRegistered()
-           // dummy event to invoke readyForEvent
-           _ = consent.readyForEvent(Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil))
-           
-           // verify
-           XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty)
-           XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
-       }
+    func testBootup_NoCachedConsents_NoConfigDefault() {
+        // test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        // dummy event to invoke readyForEvent
+        _ = consent.readyForEvent(Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil))
 
-       func testBootup_CachedConsentsExist_NoConfigDefault() {
-           // setup
-           let date = Date()
-           let consents = [
-               "collect": ["val": "n"],
-               "adId": ["val": "y"],
-               "metadata": ["time": date.iso8601String]
-           ]
-           let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-           mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES, value: cachedPrefs)
+        // verify
+        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty)
+        XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
+    }
 
-           // test
-           consent = Consent(runtime: mockRuntime)
-           consent.onRegistered()
-           // dummy event to invoke readyForEvent
-           _ = consent.readyForEvent(Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil))
-           
-           // verify
-           XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-           XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
-           
-           let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-           let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+    func testBootup_CachedConsentsExist_NoConfigDefault() {
+        // setup
+        let date = Date()
+        let consents = [
+            "collect": ["val": "n"],
+            "adId": ["val": "y"],
+            "metadata": ["time": date.iso8601String]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES, value: cachedPrefs)
 
-           XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
-           XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
-           
-           XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
-           XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
-       }
+        // test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        // dummy event to invoke readyForEvent
+        _ = consent.readyForEvent(Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil))
 
-       func testBootup_NoCachedConsents_ConfigDefaultExist() {
-           // setup
-           let date = Date()
-           let consents = [
-               "collect": ["val": "y"],
-               "metadata": ["time": date.iso8601String]
-           ]
-           let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        // verify
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
-           let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
-           let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
-           mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String : Any], .set))
-           
-           // test
-           consent = Consent(runtime: mockRuntime)
-           consent.onRegistered()
-           // dummy event to invoke readyForEvent
-           _ = consent.readyForEvent(event)
-           
-           // verify
-           XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-           XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
-           
-           let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-           let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+        let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
+        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
 
-           XCTAssertEqual("y", flatSharedState?["consents.collect.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
-           
-           XCTAssertEqual("y", flatConsentEvent?["consents.collect.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
-       }
+        XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
+        XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
-       func testBootup_CachedConsentsExist_ConfigDefaultExist() {
-           // setup
-           let date = Date()
-           let consents = [
-               "collect": ["val": "n"],
-               "adId": ["val": "y"],
-               "metadata": ["time": date.iso8601String]
-           ]
-           let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-           mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES, value: cachedPrefs)
+        XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
+        XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
+    }
 
-           let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
-           let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
-           mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String : Any], .set))
-           
-           // test
-           consent = Consent(runtime: mockRuntime)
-           consent.onRegistered()
-           // dummy event to invoke readyForEvent
-           _ = consent.readyForEvent(event)
-           
-           // verify
-           XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-           XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
-           
-           let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-           let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+    func testBootup_NoCachedConsents_ConfigDefaultExist() {
+        // setup
+        let date = Date()
+        let consents = [
+            "collect": ["val": "y"],
+            "metadata": ["time": date.iso8601String]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-           XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
-           XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
-           
-           XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
-           XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
-           XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
-       }
+        let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
+        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
+        mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
 
+        // test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        // dummy event to invoke readyForEvent
+        _ = consent.readyForEvent(event)
+
+        // verify
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
+
+        let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
+        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+
+        XCTAssertEqual("y", flatSharedState?["consents.collect.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
+
+        XCTAssertEqual("y", flatConsentEvent?["consents.collect.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
+    }
+
+    func testBootup_CachedConsentsExist_ConfigDefaultExist() {
+        // setup
+        let date = Date()
+        let consents = [
+            "collect": ["val": "n"],
+            "adId": ["val": "y"],
+            "metadata": ["time": date.iso8601String]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERNCES, value: cachedPrefs)
+
+        let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
+        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
+        mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
+
+        // test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        // dummy event to invoke readyForEvent
+        _ = consent.readyForEvent(event)
+
+        // verify
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
+
+        let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
+        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+
+        XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
+        XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
+
+        XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
+        XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
+    }
 
     // MARK: Consent update event processing
 
