@@ -50,7 +50,7 @@ public class Consent: NSObject, Extension {
         let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
                                                       event: event)
 
-        sharedDefaultConsentsIfNeeded(configurationSharedState)
+        sharedDefaultConsentsIfNeeded(configurationSharedState, event: event)
         return configurationSharedState?.status == .set
     }
 
@@ -139,7 +139,8 @@ public class Consent: NSObject, Extension {
 
     /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
     /// - Parameter configSharedState: the current shared state for the Configuration extension
-    private func sharedDefaultConsentsIfNeeded(_ configSharedState: SharedStateResult?) {
+    /// - Parameter event: current event the config shared state was versioned on
+    private func sharedDefaultConsentsIfNeeded(_ configSharedState: SharedStateResult?, event: Event) {
         // only share default consent if config shared state is set and we have not shared an initial consent yet
         guard configSharedState?.status == .set && !hasSharedInitialConsents else { return }
 
@@ -149,9 +150,8 @@ public class Consent: NSObject, Extension {
         guard let defaultConsents =
                 configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else { return }
         guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else { return }
-
-        createXDMSharedState(data: defaultConsents, event: nil)
-        dispatchEdgeConsentUpdateEvent(preferences: defaultPrefs)
+        
+        updateAndShareConsent(newPreferences: defaultPrefs, event: event)
         hasSharedInitialConsents = true
     }
 }
