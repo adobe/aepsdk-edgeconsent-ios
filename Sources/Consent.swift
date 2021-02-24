@@ -52,15 +52,15 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
+        guard var newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
 
+        // set metadata
+        newPreferences.setTimestamp(date: event.timestamp)
         // merge new consent with existing consent preferences
-        let newPreferencesWithTime = newPreferences
-        newPreferencesWithTime.consents.metadata = ConsentMetadata(time: event.timestamp)
-        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferencesWithTime)
+        let mergedPreferences = preferencesManager.mergeWithoutUpdate(with: newPreferences)
 
         // TODO: collect consent is required by Konductor, TBD how adID consent is going to be persisted;
         // alternatively, send unknown collect consent
@@ -76,18 +76,19 @@ public class Consent: NSObject, Extension {
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
-        guard let newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
+        guard var newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
             Log.debug(label: friendlyName, "Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
 
+        newPreferences.setTimestamp(date: event.timestamp)
         updateAndShareConsent(newPreferences: newPreferences, event: event)
     }
 
     /// Handles the get consent event and dispatches a response event with`EventType.consent` and `EventSource.responseContent`
     /// - Parameter event: the event requesting consents
     private func receiveRequestContent(event: Event) {
-        let data = preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601)
+        let data = preferencesManager.currentPreferences?.asDictionary()
         let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
                                                       type: EventType.consent,
                                                       source: EventSource.responseContent,
@@ -102,10 +103,8 @@ public class Consent: NSObject, Extension {
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
     private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
-        let updatedPreferences = newPreferences
-        updatedPreferences.consents.metadata = ConsentMetadata(time: event.timestamp)
-        preferencesManager.mergeAndUpdate(with: updatedPreferences)
-        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary(dateEncodingStrategy: .iso8601) ?? [:], event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: event)
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
@@ -113,7 +112,7 @@ public class Consent: NSObject, Extension {
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.updateConsent,
-                          data: preferences.asDictionary(dateEncodingStrategy: .iso8601) ?? [:])
+                          data: preferences.asDictionary())
 
         dispatch(event: event)
     }

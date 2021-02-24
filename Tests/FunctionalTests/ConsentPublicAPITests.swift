@@ -57,14 +57,19 @@ class ConsentPublicAPITests: XCTestCase {
     /// Ensures that update consents API dispatches the correct event with correct event data
     func testUpdateConsents() {
         // setup
-        let consents = Consents()
-        consents.collect = ConsentValue(.yes)
+        let consents = [
+            "consents": [
+                "collect":
+                    ["val": "y"]
+            ]
+        ]
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.updateConsent) { event in
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
-            XCTAssertEqual(consents, dispatchedConsents?.consents) // consents in update event should be equal
+            let equal = NSDictionary(dictionary: consents.asDictionary()!).isEqual(to: (dispatchedConsents?.asDictionary())!) // consents in update event should be equal
+            XCTAssertTrue(equal)
             expectation.fulfill()
         }
 

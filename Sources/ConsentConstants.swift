@@ -19,6 +19,7 @@ enum ConsentConstants {
 
     enum EventDataKeys {
         static let CONSENTS = "consents"
+        static let METADATA = "metadata"
         static let TIME = "time"
         static let PAYLOAD = "payload"
     }
