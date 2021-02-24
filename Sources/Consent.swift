@@ -88,7 +88,7 @@ public class Consent: NSObject, Extension {
     /// Handles the get consent event and dispatches a response event with`EventType.consent` and `EventSource.responseContent`
     /// - Parameter event: the event requesting consents
     private func receiveRequestContent(event: Event) {
-        let data = preferencesManager.currentPreferences?.toEventData()
+        let data = preferencesManager.currentPreferences?.asDictionary()
         let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
                                                       type: EventType.consent,
                                                       source: EventSource.responseContent,
@@ -104,7 +104,7 @@ public class Consent: NSObject, Extension {
     ///   - event: the event for this consent update
     private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
         preferencesManager.mergeAndUpdate(with: newPreferences)
-        createXDMSharedState(data: preferencesManager.currentPreferences?.toEventData() ?? [:], event: event)
+        createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: event)
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
@@ -112,7 +112,7 @@ public class Consent: NSObject, Extension {
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
                           type: EventType.edge,
                           source: EventSource.updateConsent,
-                          data: preferences.toEventData())
+                          data: preferences.asDictionary())
 
         dispatch(event: event)
     }

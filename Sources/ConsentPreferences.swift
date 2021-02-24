@@ -30,25 +30,14 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        guard let consentCodable = consents[ConsentConstants.EventDataKeys.CONSENTS],
-              let consentDict = consentCodable.dictionaryValue else { return otherPreferences }
-        guard let otherConsentCodable = otherPreferences.consents[ConsentConstants.EventDataKeys.CONSENTS],
-              let otherConsentDict = otherConsentCodable.dictionaryValue else { return self }
-
-        let mergedConsents = consentDict.merging(otherConsentDict) { _, new in new }
-        return ConsentPreferences(consents: [ConsentConstants.EventDataKeys.CONSENTS: AnyCodable(mergedConsents)])
+        let mergedConsents = consents.merging(otherPreferences.consents) { _, new in new }
+        return ConsentPreferences(consents: mergedConsents)
     }
 
     /// Sets the current metadata timestamp for the consents
     /// - Parameter date: date for the metadata reflecting time of last update
     mutating func setTimestamp(date: Date) {
         consents[ConsentConstants.EventDataKeys.METADATA] = [ConsentConstants.EventDataKeys.TIME: date.iso8601String]
-    }
-
-    /// Converts the consents into valid event data
-    /// - Returns: A dictionary containing a top level "consents" key containing the stored consents
-    func toEventData() -> [String: Any]? {
-        return [ConsentConstants.EventDataKeys.CONSENTS: AnyCodable.toAnyDictionary(dictionary: consents) as Any]
     }
 
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`

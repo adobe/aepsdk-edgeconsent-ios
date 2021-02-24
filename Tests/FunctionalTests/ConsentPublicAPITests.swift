@@ -59,9 +59,9 @@ class ConsentPublicAPITests: XCTestCase {
         // setup
         let consents = [
             "consents": [
-                    "collect":
-                        ["val": "y"]
-                ]
+                "collect":
+                    ["val": "y"]
+            ]
         ]
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
