@@ -77,8 +77,8 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(event)
 
         // verify
-        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent update
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count) // shared state created
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
         let flatDict = dispatchedEvent.data?.flattening()
@@ -94,8 +94,8 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(event)
 
         // verify
-        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent update
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count) // shared state created
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
 
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
@@ -121,8 +121,8 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(secondEvent)
 
         // verify
-        XCTAssertTrue(mockRuntime.createdXdmSharedStates.isEmpty) // no shared state should have been created
-        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // 1 consent updates
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count) // shared state created
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
 
         // verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
@@ -178,8 +178,9 @@ class ConsentFunctionalTests: XCTestCase {
         // test
         mockRuntime.simulateComingEvents(event)
 
-        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
+        // verify
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count) // shared state created
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent response content
 
         // verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.first!
@@ -198,7 +199,7 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(event)
 
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
-        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         // verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.first!
@@ -277,6 +278,47 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatDict?["consents.adID.val"] as? String)
         XCTAssertEqual(secondEvent.timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
+    }
+
+    func testResponse_dispatchConsentResponseContent() {
+        // setup
+        let event = buildConsentResponseUpdateEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent responseContent
+
+        // verify event dispatched: consent preferences updated
+        XCTAssertEqual(EventType.consent, mockRuntime.dispatchedEvents[0].type)
+        XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
+        let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
+        XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
+        XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
+        XCTAssertEqual(mockRuntime.dispatchedEvents[0].timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
+    }
+
+    func testUpdateConsentRequest_dispatchConsentResponseContent() {
+        // setup
+        let event = buildFirstUpdateConsentEvent()
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent responseContent + edge consentUpdate
+
+        // verify event dispatched: consent preferences updated
+        XCTAssertEqual(EventType.consent, mockRuntime.dispatchedEvents[0].type)
+        XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
+        let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
+        XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
+        XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
+        XCTAssertEqual(mockRuntime.dispatchedEvents[0].timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
+
+        XCTAssertEqual(EventType.edge, mockRuntime.dispatchedEvents[1].type)
+        XCTAssertEqual(EventSource.updateConsent, mockRuntime.dispatchedEvents[1].source)
     }
 
     private func buildFirstUpdateConsentEvent() -> Event {

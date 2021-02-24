@@ -40,7 +40,7 @@ import Foundation
     /// - Parameter consents: consents to be merged with the existing consents
     @objc(updateWithConsents:)
     static func update(with consents: [String: Any]) {
-        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE,
+        let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE_REQUEST,
                           type: EventType.consent,
                           source: EventSource.updateConsent,
                           data: consents)
