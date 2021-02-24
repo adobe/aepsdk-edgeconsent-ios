@@ -29,7 +29,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = [
             "collect":
                 ["val": "n"],
-            "adId": ["val": "y"],
+            "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601String]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
@@ -42,11 +42,11 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let flatStoredConsents = storedPreferences?.asDictionary()?.flattening()
         let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
     }
@@ -57,7 +57,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = [
             "collect":
                 ["val": "n"],
-            "adId": ["val": "y"],
+            "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601String]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
@@ -70,11 +70,11 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let flatStoredConsents = storedPreferences?.asDictionary()?.flattening()
         let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
 
@@ -95,11 +95,11 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let flatStoredConsents2 = storedPreferences2?.asDictionary()?.flattening()
         let flatCurrentConsents2 = manager.currentPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatStoredConsents2?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents2?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatStoredConsents2?["consents.collect.val"] as? String, "y")
         XCTAssertNotNil(flatStoredConsents2?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(flatCurrentConsents2?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents2?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatCurrentConsents2?["consents.collect.val"] as? String, "y")
         XCTAssertNotNil(flatCurrentConsents2?["consents.metadata.time"] as? String)
     }
@@ -110,7 +110,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = [
             "collect":
                 ["val": "n"],
-            "adId": ["val": "y"],
+            "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601String]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
@@ -131,7 +131,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents = [
             "collect":
                 ["val": "n"],
-            "adId": ["val": "y"],
+            "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601String]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
@@ -150,11 +150,11 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let flatStoredConsents = resultPreferences.asDictionary()?.flattening()
         let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "y")
         XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
     }

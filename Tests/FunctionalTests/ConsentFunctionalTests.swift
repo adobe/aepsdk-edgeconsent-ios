@@ -84,7 +84,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = dispatchedEvent.data?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, buildFirstUpdateConsentEvent().timestamp.iso8601String)
     }
 
@@ -102,7 +102,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = dispatchedEvent.data?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
         XCTAssertNotEqual(flatDict?["consents.metadata.time"] as? String, metadataDate.iso8601String)
     }
@@ -129,7 +129,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = dispatchedEvent.data?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "n")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, secondEvent.timestamp.iso8601String)
     }
 
@@ -186,7 +186,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = sharedState?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
@@ -205,7 +205,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = sharedState?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
@@ -228,7 +228,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = sharedState?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "n")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "n")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
@@ -251,7 +251,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = sharedState?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, event.timestamp.iso8601String)
     }
 
@@ -275,7 +275,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatDict = sharedState?.flattening()
 
         XCTAssertEqual(flatDict?["consents.collect.val"] as? String, "y")
-        XCTAssertEqual(flatDict?["consents.adId.val"] as? String, "y")
+        XCTAssertEqual(flatDict?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatDict?["consents.metadata.time"] as? String, secondEvent.timestamp.iso8601String)
     }
 
@@ -283,7 +283,7 @@ class ConsentFunctionalTests: XCTestCase {
         let rawEventData = """
                     {
                       "consents" : {
-                        "adId" : {
+                        "adID" : {
                           "val" : "n"
                         },
                         "collect" : {
@@ -316,7 +316,7 @@ class ConsentFunctionalTests: XCTestCase {
         let rawEventData = """
                     {
                       "consents" : {
-                        "adId" : {
+                        "adID" : {
                           "val" : "n"
                         },
                         "collect" : {
@@ -341,7 +341,7 @@ class ConsentFunctionalTests: XCTestCase {
                                     "collect": {
                                         "val":"y"
                                     },
-                                    "adId": {
+                                    "adID": {
                                         "val":"n"
                                     }
                                 }
@@ -358,7 +358,7 @@ class ConsentFunctionalTests: XCTestCase {
                         {
                             "payload": [
                                 {
-                                    "adId": {
+                                    "adID": {
                                         "val":"y"
                                     }
                                 }
@@ -412,7 +412,7 @@ class ConsentFunctionalTests: XCTestCase {
                                     "collect": {
                                         "val":"y"
                                     },
-                                    "adId": {
+                                    "adID": {
                                         "val":"n"
                                     },
                                     "personalize": {
