@@ -38,8 +38,7 @@ public class Consent: NSObject, Extension {
 
         // Share existing consents if they exist
         if let existingPreferences = preferencesManager.currentPreferences, !hasSharedInitialConsents {
-            createXDMSharedState(data: preferencesManager.currentPreferences?.asDictionary() ?? [:], event: nil)
-            dispatchEdgeConsentUpdateEvent(preferences: existingPreferences)
+            updateAndShareConsent(newPreferences: existingPreferences, event: nil)
             hasSharedInitialConsents = true
         }
     }
@@ -118,7 +117,7 @@ public class Consent: NSObject, Extension {
     /// - Parameters:
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
+    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event?) {
         preferencesManager.mergeAndUpdate(with: newPreferences)
         let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
         // create shared state first, then dispatch response event
@@ -151,7 +150,7 @@ public class Consent: NSObject, Extension {
         guard let defaultConsents =
                 configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else { return }
         guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else { return }
-        
+
         updateAndShareConsent(newPreferences: defaultPrefs, event: event)
         hasSharedInitialConsents = true
     }

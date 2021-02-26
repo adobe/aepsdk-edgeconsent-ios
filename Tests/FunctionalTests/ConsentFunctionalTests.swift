@@ -68,12 +68,15 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+        let flatConsentEvent = consentEvent.data?.flattening()
 
         XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
+        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
@@ -103,11 +106,14 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+        let flatConsentEvent = consentEvent.data?.flattening()
 
         XCTAssertEqual("y", flatSharedState?["consents.collect.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
+        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("y", flatConsentEvent?["consents.collect.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
     }
@@ -138,17 +144,20 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
-        let flatConsentEvent = mockRuntime.dispatchedEvents.first?.data?.flattening()
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+        let flatConsentEvent = consentEvent.data?.flattening()
 
         XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatSharedState?["consents.adId.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
+        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentEvent?["consents.adId.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatConsentEvent?["consents.metadata.time"] as? String)
     }
-    
+
     func testBootup_NoCachedConsents_ConfigDefaultExist_MergesWithNew() {
         // setup
         let date = Date()
@@ -177,12 +186,15 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("n", flatSharedState?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
-        
-        let flatConsentUpdateEvent = mockRuntime.dispatchedEvents[1].data?.flattening()
+
+        let consentEvent = mockRuntime.dispatchedEvents[1]
+        let flatConsentUpdateEvent = consentEvent.data?.flattening()
+        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentUpdateEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentUpdateEvent?["consents.adID.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatConsentUpdateEvent?["consents.metadata.time"] as? String)
-        
+
         let flatEdgeUpdateEvent = mockRuntime.dispatchedEvents.last?.data?.flattening()
         XCTAssertEqual("n", flatEdgeUpdateEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatEdgeUpdateEvent?["consents.adID.val"] as? String)
