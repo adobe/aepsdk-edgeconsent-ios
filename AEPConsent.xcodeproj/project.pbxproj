@@ -39,10 +39,17 @@
 		21C0960825BF3429006C1CFE /* ConsentPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0960725BF3429006C1CFE /* ConsentPreferencesTests.swift */; };
 		21C0963325BF4928006C1CFE /* ConsentPreferencesManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */; };
 		21C0964725BF4A21006C1CFE /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C0963925BF49D4006C1CFE /* MockDataStore.swift */; };
+		21D4BAAB25E9724E00DD11AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */; };
+		21D4BAAD25E9724F00DD11AF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */; };
+		21D4BAAF25E9724F00DD11AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAE25E9724F00DD11AF /* ContentView.swift */; };
+		21D4BAB125E9724F00DD11AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB025E9724F00DD11AF /* Assets.xcassets */; };
+		21D4BAB425E9724F00DD11AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */; };
+		21D4BAB725E9724F00DD11AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB525E9724F00DD11AF /* LaunchScreen.storyboard */; };
 		21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */; };
 		CAE5A50F10D656BC90A40E3E /* Pods_AEPConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */; };
 		D31B97D4D03E8FC4C48ACE7C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */; };
 		E79F67AB7413663981CF93AC /* Pods_FunctionalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */; };
+		FB431507259FD6BFDD3C313A /* Pods_AEPConsentTestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F7B93F862774676A37B7F3C /* Pods_AEPConsentTestApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +79,7 @@
 /* Begin PBXFileReference section */
 		067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0727261FE0B261DEDF99E120 /* Pods-FunctionalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunctionalTests.debug.xcconfig"; path = "Target Support Files/Pods-FunctionalTests/Pods-FunctionalTests.debug.xcconfig"; sourceTree = "<group>"; };
+		07A368AC71EC6ABD9B7C7EA5 /* Pods-AEPConsentTestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsentTestApp.release.xcconfig"; path = "Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp.release.xcconfig"; sourceTree = "<group>"; };
 		2158820825E57C4C005B830B /* Dictionary+Flatten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Flatten.swift"; sourceTree = "<group>"; };
 		2170713B25BB5BEA0052BACE /* AEPConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2170713E25BB5BEA0052BACE /* AEPConsent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPConsent.h; sourceTree = "<group>"; };
@@ -93,9 +101,19 @@
 		21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManagerTests.swift; sourceTree = "<group>"; };
 		21C0963925BF49D4006C1CFE /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ISO8601.swift"; sourceTree = "<group>"; };
+		21D4BAA825E9724E00DD11AF /* AEPConsentTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AEPConsentTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		21D4BAAE25E9724F00DD11AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		21D4BAB025E9724F00DD11AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		21D4BAB625E9724F00DD11AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		21D4BAB825E9724F00DD11AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
 		289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FunctionalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		62795EC2D00BF03568DE0BF6 /* Pods-AEPConsentTestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsentTestApp.debug.xcconfig"; path = "Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp.debug.xcconfig"; sourceTree = "<group>"; };
+		6F7B93F862774676A37B7F3C /* Pods_AEPConsentTestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AEPConsentTestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1F5689382A831549A58FF19 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AEPConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC35D13FA6B8B9627895DDD /* Pods-AEPConsent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsent.debug.xcconfig"; path = "Target Support Files/Pods-AEPConsent/Pods-AEPConsent.debug.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +148,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		21D4BAA525E9724E00DD11AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB431507259FD6BFDD3C313A /* Pods_AEPConsentTestApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -139,6 +165,7 @@
 				2170713D25BB5BEA0052BACE /* Sources */,
 				2170714825BB5BEB0052BACE /* UnitTests */,
 				2170716625BB5CDC0052BACE /* FunctionalTests */,
+				21D4BAA925E9724E00DD11AF /* AEPConsentTestApp */,
 				2170713C25BB5BEA0052BACE /* Products */,
 				B82A3AA7E7C85EC910C031D0 /* Pods */,
 				E687966F0979FCD2463265A7 /* Frameworks */,
@@ -151,6 +178,7 @@
 				2170713B25BB5BEA0052BACE /* AEPConsent.framework */,
 				2170714425BB5BEB0052BACE /* UnitTests.xctest */,
 				2170716525BB5CDC0052BACE /* FunctionalTests.xctest */,
+				21D4BAA825E9724E00DD11AF /* AEPConsentTestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +249,28 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		21D4BAA925E9724E00DD11AF /* AEPConsentTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */,
+				21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */,
+				21D4BAAE25E9724F00DD11AF /* ContentView.swift */,
+				21D4BAB025E9724F00DD11AF /* Assets.xcassets */,
+				21D4BAB525E9724F00DD11AF /* LaunchScreen.storyboard */,
+				21D4BAB825E9724F00DD11AF /* Info.plist */,
+				21D4BAB225E9724F00DD11AF /* Preview Content */,
+			);
+			path = AEPConsentTestApp;
+			sourceTree = "<group>";
+		};
+		21D4BAB225E9724F00DD11AF /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		B82A3AA7E7C85EC910C031D0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +280,8 @@
 				DFFF1D550E9043E23668437A /* Pods-FunctionalTests.release.xcconfig */,
 				289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */,
 				B1F5689382A831549A58FF19 /* Pods-UnitTests.release.xcconfig */,
+				62795EC2D00BF03568DE0BF6 /* Pods-AEPConsentTestApp.debug.xcconfig */,
+				07A368AC71EC6ABD9B7C7EA5 /* Pods-AEPConsentTestApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -240,6 +292,7 @@
 				BBE8C2B447C41C935740CAE3 /* Pods_AEPConsent.framework */,
 				28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */,
 				067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */,
+				6F7B93F862774676A37B7F3C /* Pods_AEPConsentTestApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -318,6 +371,25 @@
 			productReference = 2170716525BB5CDC0052BACE /* FunctionalTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		21D4BAA725E9724E00DD11AF /* AEPConsentTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "AEPConsentTestApp" */;
+			buildPhases = (
+				41E0E475F4B39DCF2E0D3BE0 /* [CP] Check Pods Manifest.lock */,
+				21D4BAA425E9724E00DD11AF /* Sources */,
+				21D4BAA525E9724E00DD11AF /* Frameworks */,
+				21D4BAA625E9724E00DD11AF /* Resources */,
+				F7EB184D3E2A4E9243B04992 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AEPConsentTestApp;
+			productName = AEPConsentTestApp;
+			productReference = 21D4BAA825E9724E00DD11AF /* AEPConsentTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -340,6 +412,9 @@
 					2170719C25BB60A20052BACE = {
 						CreatedOnToolsVersion = 12.0;
 					};
+					21D4BAA725E9724E00DD11AF = {
+						CreatedOnToolsVersion = 12.0;
+					};
 				};
 			};
 			buildConfigurationList = 2170713525BB5BEA0052BACE /* Build configuration list for PBXProject "AEPConsent" */;
@@ -359,6 +434,7 @@
 				2170714325BB5BEB0052BACE /* UnitTests */,
 				2170716425BB5CDC0052BACE /* FunctionalTests */,
 				2170719C25BB60A20052BACE /* AEPConsentXCF */,
+				21D4BAA725E9724E00DD11AF /* AEPConsentTestApp */,
 			);
 		};
 /* End PBXProject section */
@@ -382,6 +458,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21D4BAA625E9724E00DD11AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D4BAB725E9724F00DD11AF /* LaunchScreen.storyboard in Resources */,
+				21D4BAB425E9724F00DD11AF /* Preview Assets.xcassets in Resources */,
+				21D4BAB125E9724F00DD11AF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +506,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FunctionalTests/Pods-FunctionalTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		41E0E475F4B39DCF2E0D3BE0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AEPConsentTestApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		798EA7CBA8312711A0F9126C /* [CP] Check Pods Manifest.lock */ = {
@@ -481,6 +589,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7EB184D3E2A4E9243B04992 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F91C6111602B04F79742ED93 /* [CP] Check Pods Manifest.lock */ = {
@@ -545,6 +670,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		21D4BAA425E9724E00DD11AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D4BAAB25E9724E00DD11AF /* AppDelegate.swift in Sources */,
+				21D4BAAD25E9724F00DD11AF /* SceneDelegate.swift in Sources */,
+				21D4BAAF25E9724F00DD11AF /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -564,6 +699,17 @@
 			targetProxy = 217071A425BB60E20052BACE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		21D4BAB525E9724F00DD11AF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21D4BAB625E9724F00DD11AF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2170714D25BB5BEB0052BACE /* Debug */ = {
@@ -843,6 +989,48 @@
 			};
 			name = Release;
 		};
+		21D4BAB925E9724F00DD11AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62795EC2D00BF03568DE0BF6 /* Pods-AEPConsentTestApp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"AEPConsentTestApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = AEPConsentTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.AEPConsentTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21D4BABA25E9724F00DD11AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 07A368AC71EC6ABD9B7C7EA5 /* Pods-AEPConsentTestApp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"AEPConsentTestApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = AEPConsentTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.AEPConsentTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -887,6 +1075,15 @@
 			buildConfigurations = (
 				2170719E25BB60A20052BACE /* Debug */,
 				2170719F25BB60A20052BACE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "AEPConsentTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21D4BAB925E9724F00DD11AF /* Debug */,
+				21D4BABA25E9724F00DD11AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

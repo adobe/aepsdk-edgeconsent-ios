@@ -28,3 +28,10 @@ target 'FunctionalTests' do
   pod 'AEPIdentity'
   pod 'AEPEdge'
 end
+
+target 'AEPConsentTestApp' do
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
+  pod 'AEPRulesEngine'
+  pod 'AEPEdge'
+end
