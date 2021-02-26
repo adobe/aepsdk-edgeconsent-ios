@@ -141,6 +141,7 @@ public class Consent: NSObject, Extension {
     }
 
     /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
+    /// Note: Any default consents loaded from configuration are not dispatched to Edge.
     /// - Parameter configSharedState: the current shared state for the Configuration extension
     /// - Parameter event: current event the config shared state was versioned on
     private func shareDefaultConsents(_ configSharedState: SharedStateResult?, event: Event) {
