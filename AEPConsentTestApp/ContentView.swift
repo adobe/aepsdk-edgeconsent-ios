@@ -23,12 +23,12 @@ struct ContentView: View {
             let collectConsent = ["collect": ["val": "y"]]
             let currentConsents = ["consents": collectConsent]
             Consent.update(with: currentConsents)
-        }
+        }.padding()
         Button("Collect Consent - No") {
             let collectConsent = ["collect": ["val": "n"]]
             let currentConsents = ["consents": collectConsent]
             Consent.update(with: currentConsents)
-        }
+        }.padding()
         Button("Get Consents") {
             Consent.getConsents { consents, error in
                 guard error == nil, let consents = consents else { return }
@@ -36,8 +36,8 @@ struct ContentView: View {
                 guard let jsonStr = String(data: jsonData, encoding: .utf8) else { return }
                 currentConsents = jsonStr
             }
-        }
-        Text("Current Consents")
+        }.padding()
+        Text("Current Consents:").padding()
         Text(currentConsents)
     }
 }
