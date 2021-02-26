@@ -76,9 +76,7 @@ public class Consent: NSObject, Extension {
         newPreferences.setTimestamp(date: event.timestamp)
 
         updateAndShareConsent(newPreferences: newPreferences, event: event)
-        if let updatedPreferences = preferencesManager.currentPreferences {
-            dispatchEdgeConsentUpdateEvent(preferences: updatedPreferences)
-        }
+        dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
     }
 
     /// Invoked when an event with `EventType.edge` and source `consent:preferences` is dispatched
