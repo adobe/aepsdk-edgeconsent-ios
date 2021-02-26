@@ -74,6 +74,13 @@
 			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
 			remoteInfo = AEPConsent;
 		};
+		21D4BADD25E9766B00DD11AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
+			remoteInfo = AEPConsent;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -384,6 +391,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				21D4BADE25E9766B00DD11AF /* PBXTargetDependency */,
 			);
 			name = AEPConsentTestApp;
 			productName = AEPConsentTestApp;
@@ -697,6 +705,11 @@
 			isa = PBXTargetDependency;
 			target = 2170713A25BB5BEA0052BACE /* AEPConsent */;
 			targetProxy = 217071A425BB60E20052BACE /* PBXContainerItemProxy */;
+		};
+		21D4BADE25E9766B00DD11AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2170713A25BB5BEA0052BACE /* AEPConsent */;
+			targetProxy = 21D4BADD25E9766B00DD11AF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
