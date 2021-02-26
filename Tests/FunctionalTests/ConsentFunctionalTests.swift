@@ -129,8 +129,14 @@ class ConsentFunctionalTests: XCTestCase {
         let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
         mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES, value: cachedPrefs)
 
+        let defaultConsents = [
+            "collect": ["val": "y"],
+            "adId": ["val": "n"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        
         let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
-        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
+        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: defaultConsents.asDictionary()]
         mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
 
         // test
