@@ -37,6 +37,15 @@ enum ConsentConstants {
     }
 
     enum DataStoreKeys {
-        static let CONSENT_PREFERNCES = "consent.preferences"
+        static let CONSENT_PREFERENCES = "consent.preferences"
+    }
+
+    enum SharedState {
+        static let STATE_OWNER = "stateowner"
+
+        enum Configuration {
+            static let STATE_OWNER_NAME = "com.adobe.module.configuration"
+            static let CONSENT_DEFAULT = "consent.default"
+        }
     }
 }

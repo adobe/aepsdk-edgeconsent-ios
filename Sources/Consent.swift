@@ -23,6 +23,8 @@ public class Consent: NSObject, Extension {
     public let runtime: ExtensionRuntime
 
     private var preferencesManager = ConsentPreferencesManager()
+    // True when either default consents have been loaded from configuration and shared or consents from persistence have been loaded and shared
+    private var hasSharedInitialConsents = false
 
     // MARK: Extension
 
@@ -34,12 +36,25 @@ public class Consent: NSObject, Extension {
         registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
+
+        // Share existing consents if they exist
+        if let existingPreferences = preferencesManager.currentPreferences, !hasSharedInitialConsents {
+            updateAndShareConsent(newPreferences: existingPreferences, event: nil)
+            hasSharedInitialConsents = true
+        }
     }
 
     public func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
-        return true
+        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
+                                                      event: event)
+
+        // only share default consent if config shared state is set and we have not shared an initial consent yet
+        if configurationSharedState?.status == .set && !hasSharedInitialConsents {
+            shareDefaultConsents(configurationSharedState, event: event)
+        }
+        return configurationSharedState?.status == .set
     }
 
     // MARK: Event Listeners
@@ -103,7 +118,7 @@ public class Consent: NSObject, Extension {
     /// - Parameters:
     ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event) {
+    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event?) {
         preferencesManager.mergeAndUpdate(with: newPreferences)
         let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
         // create shared state first, then dispatch response event
@@ -123,5 +138,27 @@ public class Consent: NSObject, Extension {
                           data: preferences.asDictionary())
 
         dispatch(event: event)
+    }
+
+    /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
+    /// Note: Any default consents loaded from configuration are not dispatched to Edge.
+    /// - Parameter configSharedState: the current shared state for the Configuration extension
+    /// - Parameter event: current event the config shared state was versioned on
+    private func shareDefaultConsents(_ configSharedState: SharedStateResult?, event: Event) {
+        // read default consent from config
+        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
+                                                      event: nil)?.value
+        guard let defaultConsents =
+                configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
+            Log.warning(label: friendlyName, "consent.default not set in configuration, use Launch or updateConfiguration API to do so")
+            return
+        }
+        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
+            Log.warning(label: friendlyName, "Unable to encode consent.default, see consents and preferences datatype definition")
+            return
+        }
+
+        updateAndShareConsent(newPreferences: defaultPrefs, event: event)
+        hasSharedInitialConsents = true
     }
 }
