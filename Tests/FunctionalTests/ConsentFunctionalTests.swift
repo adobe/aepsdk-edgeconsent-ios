@@ -313,7 +313,7 @@ class ConsentFunctionalTests: XCTestCase {
         let flatEdgeDict = edgeEvent.data?.flattening()
 
         XCTAssertEqual("n", flatEdgeDict?["consents.collect.val"] as? String)
-        XCTAssertNil(flatEdgeDict?["consents.adID.val"])
+        XCTAssertNil(flatEdgeDict?["consents.adID.val"]) // should only contain updated consents
         XCTAssertEqual(secondEvent.timestamp.iso8601String, flatEdgeDict?["consents.metadata.time"] as? String)
     }
 
