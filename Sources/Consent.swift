@@ -149,8 +149,14 @@ public class Consent: NSObject, Extension {
         let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
                                                       event: nil)?.value
         guard let defaultConsents =
-                configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else { return }
-        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else { return }
+                configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
+            Log.warning(label: friendlyName, "consent.default not set in configuration, use Launch or updateConfiguration API to do so")
+            return
+        }
+        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
+            Log.warning(label: friendlyName, "Unable to encode consent.default, see consents and preferences datatype definition")
+            return
+        }
 
         updateAndShareConsent(newPreferences: defaultPrefs, event: event)
         hasSharedInitialConsents = true
