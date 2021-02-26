@@ -23,6 +23,7 @@ public class Consent: NSObject, Extension {
     public let runtime: ExtensionRuntime
 
     private var preferencesManager = ConsentPreferencesManager()
+    // True when either default consents have been loaded from configuration and shared or consents from persistence have been loaded and shared
     private var hasSharedInitialConsents = false
 
     // MARK: Extension

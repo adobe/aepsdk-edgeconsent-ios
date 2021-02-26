@@ -37,7 +37,7 @@ enum ConsentConstants {
     }
 
     enum DataStoreKeys {
-        static let CONSENT_PREFERNCES = "consent.preferences"
+        static let CONSENT_PREFERENCES = "consent.preferences"
     }
 
     enum SharedState {
