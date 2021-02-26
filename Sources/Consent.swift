@@ -50,7 +50,10 @@ public class Consent: NSObject, Extension {
         let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
                                                       event: event)
 
-        sharedDefaultConsentsIfNeeded(configurationSharedState, event: event)
+        // only share default consent if config shared state is set and we have not shared an initial consent yet
+        if configurationSharedState?.status == .set && !hasSharedInitialConsents {
+            shareDefaultConsents(configurationSharedState, event: event)
+        }
         return configurationSharedState?.status == .set
     }
 
@@ -140,10 +143,7 @@ public class Consent: NSObject, Extension {
     /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
     /// - Parameter configSharedState: the current shared state for the Configuration extension
     /// - Parameter event: current event the config shared state was versioned on
-    private func sharedDefaultConsentsIfNeeded(_ configSharedState: SharedStateResult?, event: Event) {
-        // only share default consent if config shared state is set and we have not shared an initial consent yet
-        guard configSharedState?.status == .set && !hasSharedInitialConsents else { return }
-
+    private func shareDefaultConsents(_ configSharedState: SharedStateResult?, event: Event) {
         // read default consent from config
         let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
                                                       event: nil)?.value
