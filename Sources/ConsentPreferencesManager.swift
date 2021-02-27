@@ -41,4 +41,14 @@ struct ConsentPreferencesManager {
 
         self.currentPreferences = currentPreferences.merge(with: newPreferences)
     }
+    
+    /// <#Description#>
+    /// - Parameter defaultPreferences: <#defaultPreferences description#>
+    /// - Returns: true if defaults were appended to the existing preferences
+    mutating func appendDefaults(with defaultPreferences: ConsentPreferences) -> Bool {
+        var updatedPrefs = currentPreferences ?? ConsentPreferences(consents: [:])
+        let result = updatedPrefs.appendDefaults(otherPrefs: defaultPreferences) ?? false
+        currentPreferences = updatedPrefs
+        return result
+    }
 }

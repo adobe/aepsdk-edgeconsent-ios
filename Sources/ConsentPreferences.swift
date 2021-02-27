@@ -21,7 +21,7 @@ struct ConsentPreferences: Codable, Equatable {
     #if DEBUG
     var consents: [String: AnyCodable]
     #else
-    private var consents: [String: AnyCodable]
+    private(set) var consents: [String: AnyCodable]
     #endif
 
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
@@ -40,6 +40,15 @@ struct ConsentPreferences: Codable, Equatable {
         consents[ConsentConstants.EventDataKeys.METADATA] = [ConsentConstants.EventDataKeys.TIME: date.iso8601String]
     }
 
+    mutating func appendDefaults(otherPrefs: ConsentPreferences) -> Bool {
+        let originalKeyCount = consents.keys.count
+        for (key, value) in otherPrefs.consents where !consents.keys.contains(key) {
+            consents[key] = value
+        }
+
+        return originalKeyCount != consents.keys.count
+    }
+
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
     /// - Parameter eventData: the event data representing `ConsentPreferences`
     /// - Returns: a `ConsentPreferences` that is represented in the event data, nil if data is not in the correct format
@@ -55,6 +64,21 @@ struct ConsentPreferences: Codable, Equatable {
         }
 
         return consentPreferences
+    }
+
+    static func from(config: [String: Any]) -> ConsentPreferences? {
+        guard let defaultConsents =
+                config[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
+            Log.warning(label: LOG_TAG, "consent.default not set in configuration, use Launch or updateConfiguration API to do so")
+            return nil
+        }
+
+        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
+            Log.warning(label: LOG_TAG, "Unable to encode consent.default, see consents and preferences datatype definition")
+            return nil
+        }
+
+        return defaultPrefs
     }
 
 }

@@ -90,19 +90,15 @@ class ConsentFunctionalTests: XCTestCase {
             "metadata": ["time": date.iso8601String]
         ]
         let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-
-        let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
-        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
-        mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
+        let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
 
         // test
         consent = Consent(runtime: mockRuntime)
         consent.onRegistered()
-        // dummy event to invoke readyForEvent
-        _ = consent.readyForEvent(event)
+        let configUpdateEvent = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: config as [String : Any])
+        mockRuntime.simulateComingEvents(configUpdateEvent)
 
         // verify
-        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
 
         let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
@@ -172,16 +168,13 @@ class ConsentFunctionalTests: XCTestCase {
             "metadata": ["time": date.iso8601String]
         ]
         let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-
-        let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
-        let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
-        mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
+        let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
 
         // test
         consent = Consent(runtime: mockRuntime)
         consent.onRegistered()
-        // dummy event to invoke readyForEvent
-        _ = consent.readyForEvent(event)
+        let configUpdateEvent = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: config as [String : Any])
+        mockRuntime.simulateComingEvents(configUpdateEvent)
         mockRuntime.simulateComingEvents(buildSecondUpdateConsentEvent()) // dispatch update event
 
         // verify
