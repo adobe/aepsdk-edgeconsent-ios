@@ -134,7 +134,7 @@ class ConsentFunctionalTests: XCTestCase {
             "adId": ["val": "n"],
             "metadata": ["time": Date().iso8601String]
         ]
-        
+
         let event = Event(name: "Dummy event", type: EventType.custom, source: EventSource.none, data: nil)
         let configSharedState = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: defaultConsents.asDictionary()]
         mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (configSharedState as [String: Any], .set))
@@ -203,7 +203,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let flatEdgeUpdateEvent = mockRuntime.dispatchedEvents.last?.data?.flattening()
         XCTAssertEqual("n", flatEdgeUpdateEvent?["consents.collect.val"] as? String)
-        XCTAssertEqual("y", flatEdgeUpdateEvent?["consents.adID.val"] as? String)
+        XCTAssertNil(flatEdgeUpdateEvent?["consents.adID.val"]) // edge event should only contain net new consents from buildSecondUpdateConsentEvent()
         XCTAssertEqual(date.iso8601String, flatEdgeUpdateEvent?["consents.metadata.time"] as? String)
     }
 
@@ -290,8 +290,7 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.simulateComingEvents(firstEvent)
 
         // reset TestableExtensionRuntime
-        mockRuntime.createdXdmSharedStates.removeAll()
-        mockRuntime.dispatchedEvents.removeAll()
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
 
         // test
         let secondEvent = buildSecondUpdateConsentEvent()
@@ -302,12 +301,20 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
 
         // verify consent update event
-        let dispatchedEvent = mockRuntime.dispatchedEvents.last!
+        let dispatchedEvent = mockRuntime.dispatchedEvents.first!
         let flatDict = dispatchedEvent.data?.flattening()
 
         XCTAssertEqual("n", flatDict?["consents.collect.val"] as? String)
         XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
-        XCTAssertEqual(secondEvent.timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
+        XCTAssertEqual(firstEvent.timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
+
+        // verify edge update event
+        let edgeEvent = mockRuntime.dispatchedEvents.last!
+        let flatEdgeDict = edgeEvent.data?.flattening()
+
+        XCTAssertEqual("n", flatEdgeDict?["consents.collect.val"] as? String)
+        XCTAssertNil(flatEdgeDict?["consents.adID.val"]) // should only contain updated consents
+        XCTAssertEqual(secondEvent.timestamp.iso8601String, flatEdgeDict?["consents.metadata.time"] as? String)
     }
 
     // MARK: Consent response event handling (consent:preferences)
@@ -391,8 +398,7 @@ class ConsentFunctionalTests: XCTestCase {
         // setup
         mockRuntime.simulateComingEvents(buildFirstUpdateConsentEvent()) // set the consents for the first time
         // reset TestableExtensionRuntime
-        mockRuntime.createdXdmSharedStates.removeAll()
-        mockRuntime.dispatchedEvents.removeAll()
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
 
         let event = buildConsentResponseUpdateEvent()
 
@@ -414,8 +420,7 @@ class ConsentFunctionalTests: XCTestCase {
         // setup
         mockRuntime.simulateComingEvents(buildConsentResponseUpdateEvent()) // set the consents for the first time
         // reset TestableExtensionRuntime
-        mockRuntime.createdXdmSharedStates.removeAll()
-        mockRuntime.dispatchedEvents.removeAll()
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
 
         let event = buildSecondConsentResponseUpdateEvent()
 
@@ -437,8 +442,7 @@ class ConsentFunctionalTests: XCTestCase {
         // setup
         mockRuntime.simulateComingEvents(buildSecondUpdateConsentEvent()) // set the consents for the first time
         // reset TestableExtensionRuntime
-        mockRuntime.createdXdmSharedStates.removeAll()
-        mockRuntime.dispatchedEvents.removeAll()
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
 
         let firstEvent = buildSecondConsentResponseUpdateEvent()
         let secondEvent = buildThirdConsentResponseUpdateEvent()

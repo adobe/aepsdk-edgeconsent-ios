@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.setLogLevel(.trace)
+        let defaultsConsents = ["collect": ["val": "y"], "personalize": ["content": ["val": "n"]]]
+        let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
+        MobileCore.updateConfigurationWith(configDict: defaultConsent)
         MobileCore.registerExtensions([Edge.self, Consent.self], {
             // Use the App id assigned to this application via Adobe Launch
             MobileCore.configureWith(appId: self.LAUNCH_ENVIRONMENT_FILE_ID)

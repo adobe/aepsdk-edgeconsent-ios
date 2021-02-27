@@ -40,7 +40,6 @@ public class Consent: NSObject, Extension {
         // Share existing consents if they exist
         if let existingPreferences = preferencesManager.currentPreferences, !hasSharedInitialConsents {
             updateAndShareConsent(newPreferences: existingPreferences, event: nil)
-            hasSharedInitialConsents = true
         }
     }
 
@@ -74,11 +73,9 @@ public class Consent: NSObject, Extension {
 
         // set metadata
         newPreferences.setTimestamp(date: event.timestamp)
-
         updateAndShareConsent(newPreferences: newPreferences, event: event)
-        if let updatedPreferences = preferencesManager.currentPreferences {
-            dispatchEdgeConsentUpdateEvent(preferences: updatedPreferences)
-        }
+        // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
+        dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
     }
 
     /// Invoked when an event with `EventType.edge` and source `consent:preferences` is dispatched
@@ -128,6 +125,7 @@ public class Consent: NSObject, Extension {
                                   source: EventSource.responseContent,
                                   data: currentPreferencesDict)
         dispatch(event: responseEvent)
+        hasSharedInitialConsents = true
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
@@ -146,10 +144,10 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: current event the config shared state was versioned on
     private func shareDefaultConsents(_ configSharedState: SharedStateResult?, event: Event) {
         // read default consent from config
-        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
-                                                      event: nil)?.value
+        guard let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
+                                                            event: nil)?.value else { return }
         guard let defaultConsents =
-                configurationSharedState?[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
+                configurationSharedState[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
             Log.warning(label: friendlyName, "consent.default not set in configuration, use Launch or updateConfiguration API to do so")
             return
         }
@@ -159,6 +157,5 @@ public class Consent: NSObject, Extension {
         }
 
         updateAndShareConsent(newPreferences: defaultPrefs, event: event)
-        hasSharedInitialConsents = true
     }
 }
