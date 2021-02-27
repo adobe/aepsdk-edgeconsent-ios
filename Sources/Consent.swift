@@ -73,7 +73,7 @@ public class Consent: NSObject, Extension {
 
         // set metadata
         newPreferences.setTimestamp(date: event.timestamp)
-
+        // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
         updateAndShareConsent(newPreferences: newPreferences, event: event)
         dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
     }
