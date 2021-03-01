@@ -30,7 +30,7 @@ struct ContentView: View {
             let currentConsents = ["consents": collectConsent]
             Consent.update(with: currentConsents)
         }.padding()
-        Button("Set consent.default.collect.val = n via updateConfig") {
+        Button("Set consent.default.consents.collect.val = n via updateConfig") {
             let defaultsConsents = ["collect": ["val": "y"]]
             let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
             MobileCore.updateConfigurationWith(configDict: defaultConsent)
