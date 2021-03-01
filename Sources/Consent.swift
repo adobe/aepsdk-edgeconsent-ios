@@ -51,7 +51,6 @@ public class Consent: NSObject, Extension {
     // MARK: Event Listeners
 
     private func receiveConfigurationResponse(event: Event) {
-        // already shared initial state, check for any new default consent values
         guard let config = event.data else { return }
 
         guard let defaultPrefs = ConsentPreferences.from(config: config) else {
