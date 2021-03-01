@@ -16,12 +16,17 @@ import Foundation
 /// The `ConsentPreferencesManager` is responsible for saving and loading consent preferences from persistence as well as merging existing consents with new consent
 struct ConsentPreferencesManager {
     private let datastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
+    private(set) var defaultPreferences: ConsentPreferences?
 
-    /// The current consent preferences stored in local storage, updating this variable will reflect in local storage
+    /// The current consent preferences stored in local storage with default consent values included, updating this variable will reflect in local storage
     private(set) var currentPreferences: ConsentPreferences? {
         get {
-            let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES)
-            return consentPreferences
+            guard let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES) else {
+                // No preferences in datastore, fallback to defaults if they exist
+                return defaultPreferences
+            }
+            // Apply the persisted preferences on top of the default preferences
+            return defaultPreferences?.merge(with: consentPreferences) ?? consentPreferences
         }
 
         set {
@@ -41,14 +46,18 @@ struct ConsentPreferencesManager {
 
         self.currentPreferences = currentPreferences.merge(with: newPreferences)
     }
-    
-    /// <#Description#>
-    /// - Parameter defaultPreferences: <#defaultPreferences description#>
-    /// - Returns: true if defaults were appended to the existing preferences
-    mutating func appendDefaults(with defaultPreferences: ConsentPreferences) -> Bool {
-        var updatedPrefs = currentPreferences ?? ConsentPreferences(consents: [:])
-        let result = updatedPrefs.appendDefaults(otherPrefs: defaultPreferences) ?? false
-        currentPreferences = updatedPrefs
-        return result
+
+    /// Updates the existing default consent preferences with the passed in default consent preferences.
+    /// Duplicate keys will take the value of what is represented in the new consent preferences
+    /// - Parameter newDefaults: new default consent preferences
+    /// - Returns: true if `currentConsents` has been updated as a result of updating the default consents
+    mutating func mergeAndUpdateDefaults(with newDefaults: ConsentPreferences) -> Bool {
+        // Hold temp copy of what current consents are for comparison later
+        let existingPreferences = currentPreferences?.asDictionary() ?? [:]
+        // Update our default preferences
+        self.defaultPreferences = defaultPreferences?.merge(with: newDefaults) ?? newDefaults
+
+        // Check if applying the new defaults would change the computed current preferences
+        return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
     }
 }

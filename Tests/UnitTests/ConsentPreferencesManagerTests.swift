@@ -23,6 +23,8 @@ class ConsentPreferencesManagerTests: XCTestCase {
         mockDatastore = NamedCollectionDataStore(name: "com.adobe.consent")
     }
 
+    // MARK: mergeAndUpdate(...) tests
+
     func testMergeAndUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
@@ -102,5 +104,133 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertEqual(flatCurrentConsents2?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatCurrentConsents2?["consents.collect.val"] as? String, "y")
         XCTAssertNotNil(flatCurrentConsents2?["consents.metadata.time"] as? String)
+    }
+
+    // MARK: mergeAndUpdateDefaults(...) tests
+
+    func testMergeAndUpdateDefaults() {
+        // setup
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect":
+                ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // test
+        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences))
+
+        // verify
+        let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+    }
+
+    func testMergeAndUpdateDefaultsMultipleMerges() {
+        // setup pt. 1
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect":
+                ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // test pt. 1
+        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences))
+
+        // verify pt. 1
+        let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+
+        // setup pt. 2
+        let date = Date()
+        let consents2 = [
+            "collect":
+                ["val": "y"],
+            "metadata": ["time": date.iso8601String]
+        ]
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+
+        // test pt. 2
+        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences2))
+
+        // verify pt. 2
+        let flatDefaultConsents2 = manager.defaultPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatDefaultConsents2?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatDefaultConsents2?["consents.collect.val"] as? String, "y")
+        XCTAssertNotNil(flatDefaultConsents2?["consents.metadata.time"] as? String)
+    }
+
+    func testMergeAndUpdateDefaultsWithExistingConsents_ShouldUpdate() {
+        // setup
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect":
+                ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // test
+        manager.mergeAndUpdate(with: preferences)
+
+        // test
+        let defaultConsents = [
+            "share":
+                ["val": "n"]
+        ]
+        let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
+
+        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: defaultPreferences))
+
+        // verify
+        let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertEqual(flatDefaultConsents?["consents.share.val"] as? String, "n")
+        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+    }
+
+    func testMergeAndUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
+        // setup
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect":
+                ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // test
+        manager.mergeAndUpdate(with: preferences)
+
+        // test
+        let defaultConsents = [
+            "adID":
+                ["val": "n"]
+        ]
+        let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
+
+        XCTAssertFalse(manager.mergeAndUpdateDefaults(with: defaultPreferences))
+
+        // verify
+        let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
     }
 }

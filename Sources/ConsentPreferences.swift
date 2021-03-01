@@ -40,15 +40,6 @@ struct ConsentPreferences: Codable, Equatable {
         consents[ConsentConstants.EventDataKeys.METADATA] = [ConsentConstants.EventDataKeys.TIME: date.iso8601String]
     }
 
-    mutating func appendDefaults(otherPrefs: ConsentPreferences) -> Bool {
-        let originalKeyCount = consents.keys.count
-        for (key, value) in otherPrefs.consents where !consents.keys.contains(key) {
-            consents[key] = value
-        }
-
-        return originalKeyCount != consents.keys.count
-    }
-
     /// Decodes a [String: Any] dictionary into a `ConsentPreferences`
     /// - Parameter eventData: the event data representing `ConsentPreferences`
     /// - Returns: a `ConsentPreferences` that is represented in the event data, nil if data is not in the correct format
@@ -66,6 +57,9 @@ struct ConsentPreferences: Codable, Equatable {
         return consentPreferences
     }
 
+    /// Converts a configuration dictionary into a `ConsentPreferences` if possible
+    /// - Parameter config: a dictionary representing an SDK configuration
+    /// - Returns: `ConsentPreferences` read from the "consent.default" key in the configuration, nil if failure occurs
     static func from(config: [String: Any]) -> ConsentPreferences? {
         guard let defaultConsents =
                 config[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {

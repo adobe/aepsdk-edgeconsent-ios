@@ -37,17 +37,15 @@ public class Consent: NSObject, Extension {
         registerListener(type: EventType.configuration, source: EventSource.responseContent, listener: receiveConfigurationResponse(event:))
 
         // Share existing consents if they exist
-        if let existingPreferences = preferencesManager.currentPreferences {
-            updateAndShareConsent(newPreferences: existingPreferences, event: nil)
+        if preferencesManager.currentPreferences != nil {
+            shareCurrentConsents(event: nil)
         }
     }
 
     public func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
-        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
-                                                      event: event)
-        return configurationSharedState?.status == .set
+        return true
     }
 
     // MARK: Event Listeners
@@ -57,12 +55,11 @@ public class Consent: NSObject, Extension {
         guard let config = event.data else { return }
 
         guard let defaultPrefs = ConsentPreferences.from(config: config) else {
-            Log.warning(label: friendlyName, "Unable to encode consent.default, see consents and preferences datatype definition")
             return
         }
 
-        if preferencesManager.appendDefaults(with: defaultPrefs), let currentPrefs = preferencesManager.currentPreferences {
-            updateAndShareConsent(newPreferences: currentPrefs, event: event)
+        if preferencesManager.mergeAndUpdateDefaults(with: defaultPrefs) {
+            shareCurrentConsents(event: event)
         }
     }
 
@@ -81,7 +78,8 @@ public class Consent: NSObject, Extension {
 
         // set metadata
         newPreferences.setTimestamp(date: event.timestamp)
-        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        shareCurrentConsents(event: event)
         // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
         dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
     }
@@ -101,7 +99,8 @@ public class Consent: NSObject, Extension {
         }
 
         newPreferences.setTimestamp(date: event.timestamp)
-        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        shareCurrentConsents(event: event)
     }
 
     /// Handles the get consent event and dispatches a response event with`EventType.consent` and `EventSource.responseContent`
@@ -117,14 +116,12 @@ public class Consent: NSObject, Extension {
 
     // MARK: Helpers
 
-    /// Updates current preferences, creates a new shared state with the newly updated preferences and dispatches an event
+    /// Creates a new shared state with the newly updated preferences and dispatches an event
     /// with `EventType.consent` and `EventSource.responseContent` containing the updated preferences.
     ///
     /// - Parameters:
-    ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event?) {
-        preferencesManager.mergeAndUpdate(with: newPreferences)
+    private func shareCurrentConsents(event: Event?) {
         let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
         // create shared state first, then dispatch response event
         createXDMSharedState(data: currentPreferencesDict, event: event)
