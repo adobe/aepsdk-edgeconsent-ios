@@ -129,7 +129,6 @@ public class Consent: NSObject, Extension {
                                   source: EventSource.responseContent,
                                   data: currentPreferencesDict)
         dispatch(event: responseEvent)
-        hasSharedInitialConsents = true
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
