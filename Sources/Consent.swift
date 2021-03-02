@@ -40,6 +40,14 @@ public class Consent: NSObject, Extension {
         if preferencesManager.currentPreferences != nil {
             shareCurrentConsents(event: nil)
         }
+        
+        // If there is already a config shared state, attempt to read defaults
+        if let configSharedState =
+            getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, event: nil),
+           configSharedState.status == .set,
+           let config = configSharedState.value {
+            handleConfiguration(config: config, event: nil)
+        }
     }
 
     public func onUnregistered() {}
@@ -53,13 +61,7 @@ public class Consent: NSObject, Extension {
     private func receiveConfigurationResponse(event: Event) {
         guard let config = event.data else { return }
 
-        guard let defaultPrefs = ConsentPreferences.from(config: config) else {
-            return
-        }
-
-        if preferencesManager.mergeAndUpdateDefaults(with: defaultPrefs) {
-            shareCurrentConsents(event: event)
-        }
+        handleConfiguration(config: config, event: event)
     }
 
     /// Invoked when an event with `EventType.consent` and `EventSource.updateConsent` is dispatched by the `EventHub`
@@ -139,5 +141,19 @@ public class Consent: NSObject, Extension {
                           data: preferences.asDictionary())
 
         dispatch(event: event)
+    }
+
+    /// Takes in an SDK configuration and the default consents into the `PreferencesManager`. Will share updated consents if needed
+    /// - Parameters:
+    ///   - config: An SDK configuration
+    ///   - event: optional `Event`
+    private func handleConfiguration(config: [String: Any], event: Event?) {
+        guard let defaultPrefs = ConsentPreferences.from(config: config) else {
+            return
+        }
+
+        if preferencesManager.mergeAndUpdateDefaults(with: defaultPrefs) {
+            shareCurrentConsents(event: event)
+        }
     }
 }

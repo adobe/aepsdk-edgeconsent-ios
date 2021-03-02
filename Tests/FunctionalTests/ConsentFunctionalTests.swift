@@ -46,26 +46,6 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertTrue(mockRuntime.dispatchedEvents.isEmpty)
     }
 
-    private func cacheConsents(_ collectVal: String, _ adIDVal: String, _ date: Date) {
-        let consents = [
-            "collect": ["val": collectVal],
-            "adID": ["val": adIDVal],
-            "metadata": ["time": date.iso8601String]
-        ]
-        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-        mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES, value: cachedPrefs)
-    }
-
-    private func buildConfigUpdateEvent(_ adIDVal: String) -> Event {
-        let consents = [
-            "adID": ["val": adIDVal]
-        ]
-        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
-        let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
-
-        return Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: config as [String: Any])
-    }
-
     func testBootup_CachedConsentsExist_NoConfigDefault() {
         // setup
         let date = Date()
@@ -101,6 +81,33 @@ class ConsentFunctionalTests: XCTestCase {
         consent = Consent(runtime: mockRuntime)
         consent.onRegistered()
         mockRuntime.simulateComingEvents(buildConfigUpdateEvent("y"))
+
+        // verify
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
+
+        let flatSharedState = mockRuntime.createdXdmSharedStates.first?!.flattening()
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+        let flatConsentEvent = consentEvent.data?.flattening()
+
+        XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
+
+        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent.source)
+        XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
+    }
+
+    func testBootup_NoCachedConsents_ConfigDefaultExistViaSharedState() {
+        // setup
+        let consents = [
+            "adID": ["val": "y"]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
+        mockRuntime.simulateSharedState(for: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, data: (config as [String: Any], .set))
+
+        // test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
 
         // verify
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
@@ -710,5 +717,25 @@ class ConsentFunctionalTests: XCTestCase {
                         """.data(using: .utf8)!
         let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
         return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+
+    private func cacheConsents(_ collectVal: String, _ adIDVal: String, _ date: Date) {
+        let consents = [
+            "collect": ["val": collectVal],
+            "adID": ["val": adIDVal],
+            "metadata": ["time": date.iso8601String]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        mockDataStore.setObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES, value: cachedPrefs)
+    }
+
+    private func buildConfigUpdateEvent(_ adIDVal: String) -> Event {
+        let consents = [
+            "adID": ["val": adIDVal]
+        ]
+        let cachedPrefs = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
+
+        return Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: config as [String: Any])
     }
 }
