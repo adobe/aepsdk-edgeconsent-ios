@@ -447,7 +447,6 @@ class ConsentPreferencesTests: XCTestCase {
 
     func testFromConfigTwoConsentsAndTime() {
         // setup
-        let date = Date()
         let json = """
                     {
                      "consent.default": {
@@ -457,9 +456,6 @@ class ConsentPreferencesTests: XCTestCase {
                             },
                             "collect" : {
                               "val" : "n"
-                            },
-                            "metadata" : {
-                              "time" : "\(date.iso8601String)"
                             }
                           }
                       }
@@ -472,7 +468,6 @@ class ConsentPreferencesTests: XCTestCase {
 
         // verify
         XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601String, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
         XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
         XCTAssertEqual("n", preferences?.consents["collect"]?.dictionaryValue!["val"] as? String)
 
