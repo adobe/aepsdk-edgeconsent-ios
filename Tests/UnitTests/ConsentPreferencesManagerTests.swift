@@ -106,9 +106,9 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertNotNil(flatCurrentConsents2?["consents.metadata.time"] as? String)
     }
 
-    // MARK: mergeAndUpdateDefaults(...) tests
+    // MARK: updateDefaults(...) tests
 
-    func testMergeAndUpdateDefaults() {
+    func testupdateDefaults() {
         // setup
         var manager = ConsentPreferencesManager()
         let consents = [
@@ -120,7 +120,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
-        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences))
+        XCTAssertTrue(manager.updateDefaults(with: preferences))
 
         // verify
         let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
@@ -130,7 +130,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
     }
 
-    func testMergeAndUpdateDefaultsMultipleMerges() {
+    func testUpdateDefaultsMultipleMerges() {
         // setup pt. 1
         var manager = ConsentPreferencesManager()
         let consents = [
@@ -142,7 +142,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test pt. 1
-        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences))
+        XCTAssertTrue(manager.updateDefaults(with: preferences))
 
         // verify pt. 1
         let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
@@ -161,17 +161,17 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
         // test pt. 2
-        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: preferences2))
+        XCTAssertTrue(manager.updateDefaults(with: preferences2))
 
         // verify pt. 2
         let flatDefaultConsents2 = manager.defaultPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatDefaultConsents2?["consents.adID.val"] as? String, "y")
+        XCTAssertNil(flatDefaultConsents2?["consents.adID.val"] as? String)
         XCTAssertEqual(flatDefaultConsents2?["consents.collect.val"] as? String, "y")
         XCTAssertNotNil(flatDefaultConsents2?["consents.metadata.time"] as? String)
     }
 
-    func testMergeAndUpdateDefaultsWithExistingConsents_ShouldUpdate() {
+    func testUpdateDefaultsWithExistingConsents_ShouldUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
         let consents = [
@@ -192,7 +192,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
 
-        XCTAssertTrue(manager.mergeAndUpdateDefaults(with: defaultPreferences))
+        XCTAssertTrue(manager.updateDefaults(with: defaultPreferences))
 
         // verify
         let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()
@@ -203,7 +203,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
     }
 
-    func testMergeAndUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
+    func testUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
         // setup
         var manager = ConsentPreferencesManager()
         let consents = [
@@ -224,7 +224,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
 
-        XCTAssertFalse(manager.mergeAndUpdateDefaults(with: defaultPreferences))
+        XCTAssertFalse(manager.updateDefaults(with: defaultPreferences))
 
         // verify
         let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()

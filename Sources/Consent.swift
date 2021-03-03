@@ -152,7 +152,7 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        if preferencesManager.mergeAndUpdateDefaults(with: defaultPrefs) {
+        if preferencesManager.updateDefaults(with: defaultPrefs) {
             shareCurrentConsents(event: event)
         }
     }
