@@ -11,6 +11,7 @@
  */
 
 import AEPConsent
+import AEPCore
 import SwiftUI
 
 struct ContentView: View {
@@ -29,6 +30,11 @@ struct ContentView: View {
             let currentConsents = ["consents": collectConsent]
             Consent.update(with: currentConsents)
         }.padding()
+        Button("Set consent.default.consents.collect.val = y via updateConfig") {
+            let defaultsConsents = ["collect": ["val": "y"]]
+            let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
+            MobileCore.updateConfigurationWith(configDict: defaultConsent)
+        }.padding()
         Button("Get Consents") {
             Consent.getConsents { consents, error in
                 guard error == nil, let consents = consents else { return }
@@ -38,7 +44,9 @@ struct ContentView: View {
             }
         }.padding()
         Text("Current Consents:").padding()
-        Text(currentConsents)
+        ScrollView {
+            Text(currentConsents)
+        }
     }
 }
 

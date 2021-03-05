@@ -21,7 +21,7 @@ struct ConsentPreferences: Codable, Equatable {
     #if DEBUG
     var consents: [String: AnyCodable]
     #else
-    private var consents: [String: AnyCodable]
+    private(set) var consents: [String: AnyCodable]
     #endif
 
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
@@ -55,6 +55,24 @@ struct ConsentPreferences: Codable, Equatable {
         }
 
         return consentPreferences
+    }
+
+    /// Converts a configuration dictionary into a `ConsentPreferences` if possible
+    /// - Parameter config: a dictionary representing an SDK configuration
+    /// - Returns: `ConsentPreferences` read from the "consent.default" key in the configuration, nil if failure occurs
+    static func from(config: [String: Any]) -> ConsentPreferences? {
+        guard let defaultConsents =
+                config[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
+            Log.warning(label: LOG_TAG, "consent.default is not found in configuration. Ensure Consent extension is installed and configured in your mobile property.")
+            return nil
+        }
+
+        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
+            Log.warning(label: LOG_TAG, "Unable to encode consent.default, see consents and preferences datatype definition")
+            return nil
+        }
+
+        return defaultPrefs
     }
 
 }

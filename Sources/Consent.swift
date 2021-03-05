@@ -23,8 +23,6 @@ public class Consent: NSObject, Extension {
     public let runtime: ExtensionRuntime
 
     private var preferencesManager = ConsentPreferencesManager()
-    // True when either default consents have been loaded from configuration and shared or consents from persistence have been loaded and shared
-    private var hasSharedInitialConsents = false
 
     // MARK: Extension
 
@@ -36,27 +34,35 @@ public class Consent: NSObject, Extension {
         registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
         registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
+        registerListener(type: EventType.configuration, source: EventSource.responseContent, listener: receiveConfigurationResponse(event:))
 
         // Share existing consents if they exist
-        if let existingPreferences = preferencesManager.currentPreferences, !hasSharedInitialConsents {
-            updateAndShareConsent(newPreferences: existingPreferences, event: nil)
+        if preferencesManager.currentPreferences != nil {
+            shareCurrentConsents(event: nil)
+        }
+
+        // If there is already a config shared state, attempt to read defaults
+        if let configSharedState =
+            getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, event: nil),
+           configSharedState.status == .set,
+           let config = configSharedState.value {
+            handleConfiguration(config: config, event: nil)
         }
     }
 
     public func onUnregistered() {}
 
     public func readyForEvent(_ event: Event) -> Bool {
-        let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
-                                                      event: event)
-
-        // only share default consent if config shared state is set and we have not shared an initial consent yet
-        if configurationSharedState?.status == .set && !hasSharedInitialConsents {
-            shareDefaultConsents(configurationSharedState, event: event)
-        }
-        return configurationSharedState?.status == .set
+        return true
     }
 
     // MARK: Event Listeners
+
+    private func receiveConfigurationResponse(event: Event) {
+        guard let config = event.data else { return }
+
+        handleConfiguration(config: config, event: event)
+    }
 
     /// Invoked when an event with `EventType.consent` and `EventSource.updateConsent` is dispatched by the `EventHub`
     /// - Parameter event: the consent update request
@@ -73,7 +79,8 @@ public class Consent: NSObject, Extension {
 
         // set metadata
         newPreferences.setTimestamp(date: event.timestamp)
-        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        shareCurrentConsents(event: event)
         // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
         dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
     }
@@ -93,7 +100,8 @@ public class Consent: NSObject, Extension {
         }
 
         newPreferences.setTimestamp(date: event.timestamp)
-        updateAndShareConsent(newPreferences: newPreferences, event: event)
+        preferencesManager.mergeAndUpdate(with: newPreferences)
+        shareCurrentConsents(event: event)
     }
 
     /// Handles the get consent event and dispatches a response event with`EventType.consent` and `EventSource.responseContent`
@@ -109,14 +117,12 @@ public class Consent: NSObject, Extension {
 
     // MARK: Helpers
 
-    /// Updates current preferences, creates a new shared state with the newly updated preferences and dispatches an event
+    /// Creates a new shared state with the newly updated preferences and dispatches an event
     /// with `EventType.consent` and `EventSource.responseContent` containing the updated preferences.
     ///
     /// - Parameters:
-    ///   - newPreferences: the consents to be merged with existing consents
     ///   - event: the event for this consent update
-    private func updateAndShareConsent(newPreferences: ConsentPreferences, event: Event?) {
-        preferencesManager.mergeAndUpdate(with: newPreferences)
+    private func shareCurrentConsents(event: Event?) {
         let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
         // create shared state first, then dispatch response event
         createXDMSharedState(data: currentPreferencesDict, event: event)
@@ -125,7 +131,6 @@ public class Consent: NSObject, Extension {
                                   source: EventSource.responseContent,
                                   data: currentPreferencesDict)
         dispatch(event: responseEvent)
-        hasSharedInitialConsents = true
     }
 
     /// Dispatches event with `EventType.Edge` and `EventSource.updateConsent` with the new consent preferences represented as event data
@@ -138,24 +143,16 @@ public class Consent: NSObject, Extension {
         dispatch(event: event)
     }
 
-    /// If the Consent extension has yet to share initial consents, this function will attempt to read the configuration shared state and share the default consents
-    /// Note: Any default consents loaded from configuration are not dispatched to Edge.
-    /// - Parameter configSharedState: the current shared state for the Configuration extension
-    /// - Parameter event: current event the config shared state was versioned on
-    private func shareDefaultConsents(_ configSharedState: SharedStateResult?, event: Event) {
-        // read default consent from config
-        guard let configurationSharedState = getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME,
-                                                            event: nil)?.value else { return }
-        guard let defaultConsents =
-                configurationSharedState[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
-            Log.warning(label: friendlyName, "consent.default not set in configuration, use Launch or updateConfiguration API to do so")
-            return
-        }
-        guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
-            Log.warning(label: friendlyName, "Unable to encode consent.default, see consents and preferences datatype definition")
-            return
-        }
+    /// Takes in an SDK configuration and the default consents into the `PreferencesManager`. Will share updated consents if needed
+    /// - Parameters:
+    ///   - config: An SDK configuration
+    ///   - event: optional `Event`
+    private func handleConfiguration(config: [String: Any], event: Event?) {
+        // fall back to empty default consents if not found in config
+        let defaultPrefs = ConsentPreferences.from(config: config) ?? ConsentPreferences(consents: [:])
 
-        updateAndShareConsent(newPreferences: defaultPrefs, event: event)
+        if preferencesManager.updateDefaults(with: defaultPrefs) {
+            shareCurrentConsents(event: event)
+        }
     }
 }
