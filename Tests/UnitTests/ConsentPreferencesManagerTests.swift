@@ -15,12 +15,9 @@ import AEPServices
 import XCTest
 
 class ConsentPreferencesManagerTests: XCTestCase {
-    private let preferencesKey = "consent.preferences"
-    private var mockDatastore: NamedCollectionDataStore!
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
-        mockDatastore = NamedCollectionDataStore(name: "com.adobe.consent")
     }
 
     // MARK: mergeAndUpdate(...) tests
@@ -40,8 +37,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.mergeAndUpdate(with: preferences)
 
         // verify
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        let flatStoredConsents = storedPreferences?.asDictionary()?.flattening()
+        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
         let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
         XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
@@ -68,8 +64,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.mergeAndUpdate(with: preferences)
 
         // verify pt. 1
-        let storedPreferences: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        let flatStoredConsents = storedPreferences?.asDictionary()?.flattening()
+        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
         let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
         XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
@@ -93,8 +88,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         manager.mergeAndUpdate(with: preferences2)
 
         // verify pt. 2
-        let storedPreferences2: ConsentPreferences? = mockDatastore.getObject(key: preferencesKey)
-        let flatStoredConsents2 = storedPreferences2?.asDictionary()?.flattening()
+        let flatStoredConsents2 = manager.persistedPreferences?.asDictionary()?.flattening()
         let flatCurrentConsents2 = manager.currentPreferences?.asDictionary()?.flattening()
 
         XCTAssertEqual(flatStoredConsents2?["consents.adID.val"] as? String, "y")
@@ -232,5 +226,37 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
         XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
         XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+    }
+
+    func testUpdateDefaults_RemovalOfDefaultConsent() {
+        // setup default collect and adID
+        var manager = ConsentPreferencesManager()
+        let defaultConsent1 = [
+            "collect": ["val": "n"],
+            "adID": ["val": "y"]
+        ]
+        let defaultpreferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsent1)!)
+        XCTAssertTrue(manager.updateDefaults(with: defaultpreferences1))
+
+        // setup update collect
+        let updatedConsents = [
+            "collect": ["val": "y"]
+        ]
+        let updatedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: updatedConsents)!)
+        manager.mergeAndUpdate(with: updatedPreferences)
+
+        // setup default only collect
+        let defaultConsent2 = [
+            "collect": ["val": "n"]
+        ]
+        let defaultpreferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsent2)!)
+
+        // test pt. 2
+        XCTAssertTrue(manager.updateDefaults(with: defaultpreferences2))
+
+        // verify pt. 2
+        let currentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        XCTAssertNil(currentConsents?["consents.adID.val"] as? String)
+        XCTAssertEqual(currentConsents?["consents.collect.val"] as? String, "y")
     }
 }

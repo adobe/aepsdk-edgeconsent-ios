@@ -40,7 +40,7 @@ public class Consent: NSObject, Extension {
         if preferencesManager.currentPreferences != nil {
             shareCurrentConsents(event: nil)
         }
-        
+
         // If there is already a config shared state, attempt to read defaults
         if let configSharedState =
             getSharedState(extensionName: ConsentConstants.SharedState.Configuration.STATE_OWNER_NAME, event: nil),

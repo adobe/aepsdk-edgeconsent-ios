@@ -17,16 +17,10 @@ import Foundation
 struct ConsentPreferencesManager {
     private let datastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
     private(set) var defaultPreferences: ConsentPreferences?
-
-    /// The current consent preferences stored in local storage with default consent values included, updating this variable will reflect in local storage
-    private(set) var currentPreferences: ConsentPreferences? {
+    private(set) var persistedPreferences: ConsentPreferences? {
         get {
-            guard let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES) else {
-                // No preferences in datastore, fallback to defaults if they exist
-                return defaultPreferences
-            }
-            // Apply the persisted preferences on top of the default preferences
-            return defaultPreferences?.merge(with: consentPreferences) ?? consentPreferences
+            let consentPreferences: ConsentPreferences? = datastore.getObject(key: ConsentConstants.DataStoreKeys.CONSENT_PREFERENCES)
+            return consentPreferences
         }
 
         set {
@@ -34,17 +28,27 @@ struct ConsentPreferencesManager {
         }
     }
 
-    /// Updates the existing consent preferences with the passed in consent preferences.
+    /// The current consent preferences stored in local storage with default consent values included, updating this variable will reflect in local storage
+    var currentPreferences: ConsentPreferences? {
+        guard let persistedPreferences = persistedPreferences else {
+            // No preferences in datastore, fallback to defaults if they exist
+            return defaultPreferences
+        }
+        // Apply the persisted preferences on top of the default preferences
+        return defaultPreferences?.merge(with: persistedPreferences) ?? persistedPreferences
+    }
+
+    /// Updates the existing persisted consent preferences with the passed in consent preferences.
     /// Duplicate keys will take the value of what is represented in the new consent preferences
     /// - Parameters:
     ///   - newPreferences: new consent preferences
     mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) {
-        guard let currentPreferences = currentPreferences else {
-            self.currentPreferences = newPreferences
+        guard let persistedPreferences = persistedPreferences else {
+            self.persistedPreferences = newPreferences
             return
         }
 
-        self.currentPreferences = currentPreferences.merge(with: newPreferences)
+        self.persistedPreferences = persistedPreferences.merge(with: newPreferences)
     }
 
     /// Updates and replaces the existing default consent preferences with the passed in default consent preferences.
