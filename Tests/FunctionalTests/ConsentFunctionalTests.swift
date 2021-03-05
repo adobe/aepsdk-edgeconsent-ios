@@ -96,6 +96,50 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
     }
 
+    func testBootup_NoCachedConsents_ConfigDefaultExist_thenDefaultsRemovedWithEmptyConfig() {
+        // setup
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        mockRuntime.simulateComingEvents(buildConfigUpdateEvent("y"))
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // test
+        let emptyConfig = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: [:])
+        mockRuntime.simulateComingEvents(emptyConfig)
+
+        // verify
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.first!
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+
+        let expected = ["consents": [:]] as [String: [String: String]]
+        XCTAssertEqual(expected, sharedState as? [String: [String: String]])
+        XCTAssertEqual(expected, consentEvent.data as? [String: [String: String]])
+    }
+
+    func testBootup_NoCachedConsents_ConfigDefaultExist_thenDefaultsRemovedWithEmptyConsents() {
+        // setup
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+        mockRuntime.simulateComingEvents(buildConfigUpdateEvent("y"))
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // test
+        let emptyConfig = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: ["consents": [:]])
+        mockRuntime.simulateComingEvents(emptyConfig)
+
+        // verify
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count)
+
+        let sharedState = mockRuntime.createdXdmSharedStates.first!
+        let consentEvent = mockRuntime.dispatchedEvents.first!
+
+        let expected = ["consents": [:]] as [String: [String: String]]
+        XCTAssertEqual(expected, sharedState as? [String: [String: String]])
+        XCTAssertEqual(expected, consentEvent.data as? [String: [String: String]])
+    }
+
     func testBootup_NoCachedConsents_ConfigDefaultExistViaSharedState() {
         // setup
         let consents = [

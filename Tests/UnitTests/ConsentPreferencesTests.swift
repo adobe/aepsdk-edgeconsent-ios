@@ -408,6 +408,26 @@ class ConsentPreferencesTests: XCTestCase {
         XCTAssertNil(preferences)
     }
 
+    func testFromConfigWithValidEmptyConsents() {
+        // setup
+        let json = """
+                    {
+                      "consent.default": {
+                          "consents" : {
+                          }
+                      }
+                    }
+                   """.data(using: .utf8)!
+
+        // test decode
+        let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
+        let preferences = ConsentPreferences.from(config: config!)
+
+        // verify
+        XCTAssertNotNil(preferences)
+        XCTAssertTrue(preferences?.consents.isEmpty ?? false)
+    }
+
     func testFromConfigWithValidConsentAndTime() {
         // setup
         let date = Date()

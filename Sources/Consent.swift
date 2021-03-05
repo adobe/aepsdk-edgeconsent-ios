@@ -148,9 +148,8 @@ public class Consent: NSObject, Extension {
     ///   - config: An SDK configuration
     ///   - event: optional `Event`
     private func handleConfiguration(config: [String: Any], event: Event?) {
-        guard let defaultPrefs = ConsentPreferences.from(config: config) else {
-            return
-        }
+        // fall back to empty default consents if not found in config
+        let defaultPrefs = ConsentPreferences.from(config: config) ?? ConsentPreferences(consents: [:])
 
         if preferencesManager.updateDefaults(with: defaultPrefs) {
             shareCurrentConsents(event: event)
