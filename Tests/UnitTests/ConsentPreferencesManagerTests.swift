@@ -195,12 +195,12 @@ class ConsentPreferencesManagerTests: XCTestCase {
         XCTAssertTrue(manager.updateDefaults(with: defaultPreferences))
 
         // verify
-        let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
 
-        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertEqual(flatDefaultConsents?["consents.share.val"] as? String, "n")
-        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertEqual(flatCurrentConsents?["consents.share.val"] as? String, "n")
+        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
