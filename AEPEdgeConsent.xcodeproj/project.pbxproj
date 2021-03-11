@@ -199,13 +199,13 @@
 		2170713D25BB5BEA0052BACE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				21A9E29725D1DF430089690E /* Public */,
 				2170713E25BB5BEA0052BACE /* AEPEdgeConsent.h */,
 				2170719725BB5F9B0052BACE /* ConsentConstants.swift */,
 				2170719025BB5F1A0052BACE /* Consent.swift */,
 				21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */,
 				21C095B225BB9060006C1CFE /* ConsentPreferences.swift */,
 				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
-				21A9E29725D1DF430089690E /* Public */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
 			);
 			path = Sources;
@@ -214,9 +214,9 @@
 		2170714825BB5BEB0052BACE /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				21C0963825BF49C8006C1CFE /* Mocks */,
 				21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */,
 				21C0960725BF3429006C1CFE /* ConsentPreferencesTests.swift */,
-				21C0963825BF49C8006C1CFE /* Mocks */,
 				2170714B25BB5BEB0052BACE /* Info.plist */,
 			);
 			name = UnitTests;
@@ -226,9 +226,9 @@
 		2170716625BB5CDC0052BACE /* FunctionalTests */ = {
 			isa = PBXGroup;
 			children = (
+				21A9E2B625D1EDB90089690E /* Helpers */,
 				2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */,
 				21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */,
-				21A9E2B625D1EDB90089690E /* Helpers */,
 				2170716925BB5CDC0052BACE /* Info.plist */,
 			);
 			name = FunctionalTests;
