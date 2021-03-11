@@ -12,12 +12,12 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for AEPConsent.
-FOUNDATION_EXPORT double AEPConsentVersionNumber;
+//! Project version number for AEPEdgeConsent.
+FOUNDATION_EXPORT double AEPEdgeConsentVersionNumber;
 
-//! Project version string for AEPConsent.
-FOUNDATION_EXPORT const unsigned char AEPConsentVersionString[];
+//! Project version string for AEPEdgeConsent.
+FOUNDATION_EXPORT const unsigned char AEPEdgeConsentVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <AEPConsent/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <AEPEdgeConsent/PublicHeader.h>
 
 

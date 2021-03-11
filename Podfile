@@ -4,10 +4,10 @@ platform :ios, '10.0'
 # Comment the next line if you don't want to use dynamic frameworks
 use_frameworks!
 
-workspace 'AEPConsent'
-project 'AEPConsent.xcodeproj'
+workspace 'AEPEdgeConsent'
+project 'AEPEdgeConsent.xcodeproj'
 
-target 'AEPConsent' do
+target 'AEPEdgeConsent' do
   pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
   pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
   pod 'AEPRulesEngine'
@@ -29,7 +29,7 @@ target 'FunctionalTests' do
   pod 'AEPEdge'
 end
 
-target 'AEPConsentTestApp' do
+target 'TestApp' do
   pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
   pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v3.0.1'
   pod 'AEPRulesEngine'
