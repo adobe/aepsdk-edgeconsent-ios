@@ -52,7 +52,7 @@ lint-autocorrect:
 	(swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources SampleApps/)
+	(swiftlint lint Sources TestApp/)
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))

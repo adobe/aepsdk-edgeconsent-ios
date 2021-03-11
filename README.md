@@ -29,7 +29,6 @@ end
 # for extension development, include AEPCore, AEPEdge, AEPEdgeConsent, and their dependencies
 target 'YOUR_TARGET_NAME' do
     pod 'AEPEdgeConsent'
-    pod 'AEPEdge'
   	pod 'AEPCore'
 end
 ```
@@ -50,7 +49,7 @@ Enter the URL for the AEPEdgeConsent package repository: `https://github.com/ado
 
 When prompted, make sure you change the branch to `main`. (Once the repo is public, we will reference specific tags/versions instead of a branch)
 
-Alternatively, if your project has a `Package.swift` file, you can add AEPConsent directly to your dependencies:
+Alternatively, if your project has a `Package.swift` file, you can add AEPEdgeConsent directly to your dependencies:
 
 ```
 dependencies: [
