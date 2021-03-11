@@ -10,9 +10,9 @@
  governing permissions and limitations under the License.
  */
 
-import AEPEdgeConsent
 import AEPCore
 import AEPEdge
+import AEPEdgeConsent
 import UIKit
 
 @main
