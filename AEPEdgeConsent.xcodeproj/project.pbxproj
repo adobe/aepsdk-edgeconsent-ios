@@ -920,7 +920,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/UnitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -940,7 +939,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B1F5689382A831549A58FF19 /* Pods-UnitTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/UnitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -960,7 +958,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0727261FE0B261DEDF99E120 /* Pods-FunctionalTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/FunctionalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -980,7 +977,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DFFF1D550E9043E23668437A /* Pods-FunctionalTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/FunctionalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
