@@ -69,7 +69,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
@@ -91,7 +91,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
 
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
     }
@@ -162,7 +162,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
 
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
     }
@@ -189,7 +189,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("y", flatSharedState?["consents.adID.val"] as? String)
         XCTAssertEqual(date.iso8601String, flatSharedState?["consents.metadata.time"] as? String)
 
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentEvent?["consents.adID.val"] as? String)
@@ -217,7 +217,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let consentEvent = mockRuntime.dispatchedEvents[1]
         let flatConsentUpdateEvent = consentEvent.data?.flattening()
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentUpdateEvent?["consents.collect.val"] as? String)
         XCTAssertEqual("y", flatConsentUpdateEvent?["consents.adID.val"] as? String)
@@ -248,7 +248,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let consentEvent = mockRuntime.dispatchedEvents.first!
         let flatConsentUpdateEvent = consentEvent.data?.flattening()
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("y", flatConsentUpdateEvent?["consents.adID.val"] as? String)
 
@@ -258,7 +258,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let consentEvent2 = mockRuntime.dispatchedEvents.last!
         let flatConsentUpdateEvent2 = consentEvent2.data?.flattening()
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("n", flatConsentUpdateEvent2?["consents.adID.val"] as? String)
     }
@@ -296,7 +296,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let consentEvent = mockRuntime.dispatchedEvents.first!
         let flatConsentUpdateEvent = consentEvent.data?.flattening()
-        XCTAssertEqual(EventType.consent, consentEvent.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
         XCTAssertEqual("y", flatConsentUpdateEvent?["consents.adID.val"] as? String)
         XCTAssertEqual("n", flatConsentUpdateEvent?["consents.collect.val"] as? String)
@@ -310,7 +310,7 @@ class ConsentFunctionalTests: XCTestCase {
 
         let consentEvent2 = mockRuntime.dispatchedEvents.last!
         let flatConsentUpdateEvent2 = consentEvent2.data?.flattening()
-        XCTAssertEqual(EventType.consent, consentEvent2.type)
+        XCTAssertEqual(EventType.edgeConsent, consentEvent2.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent2.source)
         XCTAssertEqual("y", flatConsentUpdateEvent2?["consents.adID.val"] as? String)
         XCTAssertEqual("n", flatConsentUpdateEvent2?["consents.collect.val"] as? String)
@@ -323,7 +323,7 @@ class ConsentFunctionalTests: XCTestCase {
     /// No event should be dispatched and no shared state should be created
     func testUpdateConsentNilData() {
         // setup
-        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: nil)
+        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: nil)
 
         // test
         mockRuntime.simulateComingEvents(consentUpdateEvent)
@@ -336,7 +336,7 @@ class ConsentFunctionalTests: XCTestCase {
     /// No event should be dispatched and no shared state should be created
     func testUpdateConsentEmptyData() {
         // setup
-        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: [:])
+        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: [:])
 
         // test
         mockRuntime.simulateComingEvents(consentUpdateEvent)
@@ -349,7 +349,7 @@ class ConsentFunctionalTests: XCTestCase {
     /// No event should be dispatched and no shared state should be created
     func testUpdateConsentWrongData() {
         // setup
-        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: ["wrong": "format"])
+        let consentUpdateEvent = Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: ["wrong": "format"])
 
         // test
         mockRuntime.simulateComingEvents(consentUpdateEvent)
@@ -583,7 +583,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent responseContent
 
         // verify event dispatched: consent preferences updated
-        XCTAssertEqual(EventType.consent, mockRuntime.dispatchedEvents[0].type)
+        XCTAssertEqual(EventType.edgeConsent, mockRuntime.dispatchedEvents[0].type)
         XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
         let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
         XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
@@ -602,7 +602,7 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent responseContent + edge consentUpdate
 
         // verify event dispatched: consent preferences updated
-        XCTAssertEqual(EventType.consent, mockRuntime.dispatchedEvents[0].type)
+        XCTAssertEqual(EventType.edgeConsent, mockRuntime.dispatchedEvents[0].type)
         XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
         let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
         XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
@@ -628,7 +628,7 @@ class ConsentFunctionalTests: XCTestCase {
                    """.data(using: .utf8)!
 
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
-        return Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: eventData)
+        return Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: eventData)
     }
 
     private func buildSecondUpdateConsentEvent() -> Event {
@@ -642,7 +642,7 @@ class ConsentFunctionalTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
-        return Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: eventData)
+        return Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: eventData)
     }
 
     private func buildConsentUpdateEventWithMetadata() -> (Event, Date) {
@@ -664,7 +664,7 @@ class ConsentFunctionalTests: XCTestCase {
                    """.data(using: .utf8)!
 
         let eventData = try! JSONSerialization.jsonObject(with: rawEventData, options: []) as? [String: Any]
-        return (Event(name: "Consent Update", type: EventType.consent, source: EventSource.updateConsent, data: eventData), date)
+        return (Event(name: "Consent Update", type: EventType.edgeConsent, source: EventSource.updateConsent, data: eventData), date)
     }
 
     private func buildConsentResponseUpdateEvent() -> Event {

@@ -39,7 +39,7 @@ class ConsentPublicAPITests: XCTestCase {
         // setup
         let expectation = XCTestExpectation(description: "getConsents should dispatch an event")
         expectation.assertForOverFulfill = true
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.requestContent) { _ in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.edgeConsent, source: EventSource.requestContent) { _ in
             expectation.fulfill()
         }
 
@@ -66,7 +66,7 @@ class ConsentPublicAPITests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.updateConsent) { event in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.edgeConsent, source: EventSource.updateConsent) { event in
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
             let equal = NSDictionary(dictionary: consents.asDictionary()!).isEqual(to: (dispatchedConsents?.asDictionary())!) // consents in update event should be equal
             XCTAssertTrue(equal)
