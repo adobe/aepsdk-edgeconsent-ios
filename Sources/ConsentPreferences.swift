@@ -63,7 +63,7 @@ struct ConsentPreferences: Codable, Equatable {
     static func from(config: [String: Any]) -> ConsentPreferences? {
         guard let defaultConsents =
                 config[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
-            Log.warning(label: LOG_TAG, "consent.default is not found in configuration. Ensure Consent extension is installed and configured in your mobile property.")
+            Log.warning(label: LOG_TAG, "Missing consent.default in configuration. Install and configure Consent extension in your mobile property.")
             return nil
         }
 

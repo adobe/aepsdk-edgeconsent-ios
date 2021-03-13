@@ -10,8 +10,8 @@
  governing permissions and limitations under the License.
  */
 
-@testable import AEPConsent
 @testable import AEPCore
+@testable import AEPEdgeConsent
 import XCTest
 
 class ConsentPublicAPITests: XCTestCase {
@@ -39,7 +39,7 @@ class ConsentPublicAPITests: XCTestCase {
         // setup
         let expectation = XCTestExpectation(description: "getConsents should dispatch an event")
         expectation.assertForOverFulfill = true
-        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.requestConsent) { _ in
+        EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.consent, source: EventSource.requestContent) { _ in
             expectation.fulfill()
         }
 

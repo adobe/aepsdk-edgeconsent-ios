@@ -1,8 +1,8 @@
 
-export EXTENSION_NAME = AEPConsent
+export EXTENSION_NAME = AEPEdgeConsent
 PROJECT_NAME = $(EXTENSION_NAME)
 TARGET_NAME_XCFRAMEWORK = $(EXTENSION_NAME).xcframework
-SCHEME_NAME_XCFRAMEWORK = AEPConsentXCF
+SCHEME_NAME_XCFRAMEWORK = $(EXTENSION_NAME)XCF
 
 SIMULATOR_ARCHIVE_PATH = ./build/ios_simulator.xcarchive/Products/Library/Frameworks/
 IOS_ARCHIVE_PATH = ./build/ios.xcarchive/Products/Library/Frameworks/
@@ -52,7 +52,7 @@ lint-autocorrect:
 	(swiftlint autocorrect --format)
 
 lint:
-	(swiftlint lint Sources SampleApps/)
+	(swiftlint lint Sources TestApp/)
 
 check-version:
 	(sh ./Script/version.sh $(VERSION))

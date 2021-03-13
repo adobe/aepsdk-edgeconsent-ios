@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-  s.name             = "AEPConsent"
+  s.name             = "AEPEdgeConsent"
   s.version          = "1.0.0-alpha.1"
-  s.summary          = "Experience Platform Consent extension for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
+  s.summary          = "Experience Platform Consent Collection extension for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
-                       The Experience Platform Consent extension enables sending data to the Adobe Experience Consent from a mobile device using the v5 Adobe Experience Platform SDK.
+                       The Experience Platform Consent Collection extension enables consent preferences collection from a mobile app when using the Adobe Experience Platform Mobile SDK and the Edge Network extension.
                        DESC
 
   s.homepage         = "https://github.com/adobe/aepsdk-consentedge-ios.git"

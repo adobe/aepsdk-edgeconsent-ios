@@ -31,7 +31,7 @@ let package = Package(
     dependencies: [
         .package(name: \"AEPCore\", url: \"https://github.com/adobe/aepsdk-core-ios.git\", .branch(\"main\")),
         .package(name: \"AEPEdge\", url: \"https://github.com/adobe/aepsdk-edge-ios.git\", .branch(\"main\")),
-        .package(name: \"AEPConsent\", path: \"../\")
+        .package(name: \"AEPEdgeConsent\", path: \"../\")
     ],
     targets: [
         .target(
@@ -43,7 +43,7 @@ let package = Package(
                 .product(name: \"AEPServices\", package: \"AEPCore\"),
                 .product(name: \"AEPSignal\", package: \"AEPCore\"),
                 .product(name: \"AEPEdge\", package: \"AEPEdge\"),
-                .product(name: \"AEPConsent\", package: \"AEPConsent\"),
+                .product(name: \"AEPEdgeConsent\", package: \"AEPEdgeConsent\"),
             ])
     ]
 )

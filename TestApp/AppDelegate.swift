@@ -10,14 +10,13 @@
  governing permissions and limitations under the License.
  */
 
-import AEPConsent
 import AEPCore
-import AEPEdge
+import AEPEdgeConsent
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let LAUNCH_ENVIRONMENT_FILE_ID = "3805cb8645dd/b806fe3cdf67/launch-30ab4de52eaf-development"
+    private let LAUNCH_ENVIRONMENT_FILE_ID = ""
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaultsConsents = ["collect": ["val": "y"], "personalize": ["content": ["val": "n"]]]
         let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
         MobileCore.updateConfigurationWith(configDict: defaultConsent)
-        MobileCore.registerExtensions([Edge.self, Consent.self], {
+        MobileCore.registerExtensions([Consent.self], {
             // Use the App id assigned to this application via Adobe Launch
             MobileCore.configureWith(appId: self.LAUNCH_ENVIRONMENT_FILE_ID)
         })

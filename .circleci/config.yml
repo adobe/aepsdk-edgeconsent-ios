@@ -75,7 +75,7 @@ jobs:
       # code coverage
       - run:
           name: Upload Code Coverage Report
-          command: bash <(curl -s https://codecov.io/bash) -v -X s3 -c -D "./build/out" -J "AEPConsent" -t ${CODECOV_TOKEN}
+          command: bash <(curl -s https://codecov.io/bash) -v -X s3 -c -D "./build/out" -J "AEPEdgeConsent" -t ${CODECOV_TOKEN}
 
       # verify XCFramework archive builds
       - run:

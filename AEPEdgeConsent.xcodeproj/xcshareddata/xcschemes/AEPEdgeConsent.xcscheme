@@ -5,6 +5,22 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2170713A25BB5BEA0052BACE"
+               BuildableName = "AEPEdgeConsent.framework"
+               BlueprintName = "AEPEdgeConsent"
+               ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -16,10 +32,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2170716425BB5CDC0052BACE"
-               BuildableName = "FunctionalTests.xctest"
-               BlueprintName = "FunctionalTests"
-               ReferencedContainer = "container:AEPConsent.xcodeproj">
+               BlueprintIdentifier = "2170714325BB5BEB0052BACE"
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+               ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -41,6 +57,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2170713A25BB5BEA0052BACE"
+            BuildableName = "AEPEdgeConsent.framework"
+            BlueprintName = "AEPEdgeConsent"
+            ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
