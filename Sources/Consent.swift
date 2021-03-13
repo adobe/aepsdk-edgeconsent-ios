@@ -14,7 +14,7 @@ import AEPCore
 import AEPServices
 import Foundation
 
-@objc(AEPConsent)
+@objc(AEPMobileEdgeConsent)
 public class Consent: NSObject, Extension {
     public let name = ConsentConstants.EXTENSION_NAME
     public let friendlyName = ConsentConstants.FRIENDLY_NAME

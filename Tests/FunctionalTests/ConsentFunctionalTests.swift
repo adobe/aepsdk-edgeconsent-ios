@@ -10,8 +10,8 @@
  governing permissions and limitations under the License.
  */
 
-@testable import AEPConsent
 import AEPCore
+@testable import AEPEdgeConsent
 import AEPServices
 import XCTest
 

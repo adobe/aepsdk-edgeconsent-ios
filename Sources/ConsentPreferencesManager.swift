@@ -16,10 +16,10 @@ import Foundation
 /// The `ConsentPreferencesManager` is responsible for saving and loading consent preferences from persistence as well as merging existing consents with new consent
 struct ConsentPreferencesManager {
     private let datastore = NamedCollectionDataStore(name: ConsentConstants.EXTENSION_NAME)
-    
+
     /// Default preferences as received from Configuration update events
     private(set) var defaultPreferences: ConsentPreferences?
-    
+
     /// Persisted preferences as set by the user via the Consent APIs and Konductor response events
     private(set) var persistedPreferences: ConsentPreferences? {
         get {

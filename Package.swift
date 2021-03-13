@@ -16,16 +16,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "AEPConsent",
+    name: "AEPEdgeConsent",
     platforms: [.iOS(.v10)],
     products: [
-        .library(name: "AEPConsent", targets: ["AEPConsent"])
+        .library(name: "AEPEdgeConsent", targets: ["AEPEdgeConsent"])
     ],
     dependencies: [
         .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .branch("main"))
     ],
     targets: [
-        .target(name: "AEPConsent",
+        .target(name: "AEPEdgeConsent",
                 dependencies: ["AEPCore"],
                 path: "Sources"),
         .testTarget(name: "FunctionalTests",

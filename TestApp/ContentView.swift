@@ -10,15 +10,15 @@
  governing permissions and limitations under the License.
  */
 
-import AEPConsent
 import AEPCore
+import AEPEdgeConsent
 import SwiftUI
 
 struct ContentView: View {
     @State var currentConsents = ""
 
     var body: some View {
-        Text("AEPConsent Test App")
+        Text("AEPEdgeConsent Test App")
             .padding().font(.title)
         Button("Collect Consent - Yes") {
             let collectConsent = ["collect": ["val": "y"]]
