@@ -31,8 +31,8 @@ public class Consent: NSObject, Extension {
     }
 
     public func onRegistered() {
-        registerListener(type: EventType.consent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
-        registerListener(type: EventType.consent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
+        registerListener(type: EventType.edgeConsent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
+        registerListener(type: EventType.edgeConsent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
         registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveConsentResponse(event:))
         registerListener(type: EventType.configuration, source: EventSource.responseContent, listener: receiveConfigurationResponse(event:))
 
@@ -64,7 +64,7 @@ public class Consent: NSObject, Extension {
         handleConfiguration(config: config, event: event)
     }
 
-    /// Invoked when an event with `EventType.consent` and `EventSource.updateConsent` is dispatched by the `EventHub`
+    /// Invoked when an event with `EventType.edgeConsent` and `EventSource.updateConsent` is dispatched by the `EventHub`
     /// - Parameter event: the consent update request
     private func receiveUpdateConsent(event: Event) {
         guard let consentsDict = event.data else {
@@ -104,12 +104,12 @@ public class Consent: NSObject, Extension {
         shareCurrentConsents(event: event)
     }
 
-    /// Handles the get consent event and dispatches a response event with`EventType.consent` and `EventSource.responseContent`
+    /// Handles the get consent event and dispatches a response event with`EventType.edgeConsent` and `EventSource.responseContent`
     /// - Parameter event: the event requesting consents
     private func receiveRequestContent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary()
         let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
-                                                      type: EventType.consent,
+                                                      type: EventType.edgeConsent,
                                                       source: EventSource.responseContent,
                                                       data: data)
         dispatch(event: responseEvent)
@@ -118,7 +118,7 @@ public class Consent: NSObject, Extension {
     // MARK: Helpers
 
     /// Creates a new shared state with the newly updated preferences and dispatches an event
-    /// with `EventType.consent` and `EventSource.responseContent` containing the updated preferences.
+    /// with `EventType.edgeConsent` and `EventSource.responseContent` containing the updated preferences.
     ///
     /// - Parameters:
     ///   - event: the event for this consent update
@@ -127,7 +127,7 @@ public class Consent: NSObject, Extension {
         // create shared state first, then dispatch response event
         createXDMSharedState(data: currentPreferencesDict, event: event)
         let responseEvent = Event(name: ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED,
-                                  type: EventType.consent,
+                                  type: EventType.edgeConsent,
                                   source: EventSource.responseContent,
                                   data: currentPreferencesDict)
         dispatch(event: responseEvent)
