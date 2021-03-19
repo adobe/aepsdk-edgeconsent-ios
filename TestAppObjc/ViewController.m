@@ -11,8 +11,11 @@
 //
 
 #import "ViewController.h"
+@import AEPEdgeConsent;
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UITextView *txtFieldConsent;
+@property (weak, nonatomic) IBOutlet UILabel *extensionLabel;
 
 @end
 
@@ -20,7 +23,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [_extensionLabel setText:[NSString stringWithFormat:@"AEPEdgeConsent : %@", [AEPMobileEdgeConsent extensionVersion]]];
+    
+}
+
+- (IBAction)changeDefault:(id)sender {
+    NSMutableDictionary *config = [[NSMutableDictionary alloc] init];
+    [config setValue:@{@"consents" : @{ @"collect": @{@"val": @"p"}}} forKey:@"consent.default"];
+}
+
+- (IBAction)collectConsentNO:(id)sender {
+    [AEPMobileEdgeConsent updateWithConsents:@{@"consents": @{ @"collect": @{@"val": @"n"}}}];
+}
+
+- (IBAction)collectConsentYES:(id)sender {
+    [AEPMobileEdgeConsent updateWithConsents:@{@"consents": @{ @"collect": @{@"val": @"y"}}}];
+}
+
+- (IBAction)getConsent:(id)sender {
+    [AEPMobileEdgeConsent getConsents:^(NSDictionary *consent, NSError *error){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.txtFieldConsent setText:[NSString stringWithFormat:@"%@",consent]];
+        });        
+    }];
 }
 
 

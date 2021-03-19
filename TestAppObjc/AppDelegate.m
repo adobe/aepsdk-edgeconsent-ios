@@ -12,6 +12,11 @@
 
 #import "AppDelegate.h"
 
+@import AEPCore;
+@import AEPServices;
+@import AEPEdgeConsent;
+
+
 @interface AppDelegate ()
 
 @end
@@ -20,7 +25,19 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [AEPMobileCore setLogLevel: AEPLogLevelTrace];
+    [AEPMobileCore registerExtensions:@[AEPMobileEdgeConsent.class] completion:nil];
+    
+    //[defaultConsents
+    NSMutableDictionary *config = [[NSMutableDictionary alloc] init];
+    [config setValue:@{@"consents" : @{ @"collect": @{@"val": @"n"}}} forKey:@"consent.default"];
+    
+    
+    [AEPMobileCore updateConfiguration:config];
+    [AEPMobileCore configureWithAppId:@"<Your_AppID>"];
+
+
+    
     return YES;
 }
 
