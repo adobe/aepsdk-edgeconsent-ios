@@ -12,6 +12,7 @@
 
 #import "ViewController.h"
 @import AEPEdgeConsent;
+@import AEPCore;
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *txtFieldConsent;
@@ -24,12 +25,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_extensionLabel setText:[NSString stringWithFormat:@"AEPEdgeConsent : %@", [AEPMobileEdgeConsent extensionVersion]]];
-    
 }
 
 - (IBAction)changeDefault:(id)sender {
     NSMutableDictionary *config = [[NSMutableDictionary alloc] init];
     [config setValue:@{@"consents" : @{ @"collect": @{@"val": @"p"}}} forKey:@"consent.default"];
+    [AEPMobileCore updateConfiguration:config];
 }
 
 - (IBAction)collectConsentNO:(id)sender {
@@ -47,6 +48,5 @@
         });        
     }];
 }
-
 
 @end

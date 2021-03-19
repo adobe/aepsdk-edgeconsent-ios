@@ -19,7 +19,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qdw-VN-TGu">
                                 <rect key="frame" x="0.0" y="80" width="414" height="816"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AEPEdgeConsent Test App ObjC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYG-pX-Cdd">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AEPEdgeConsent Test App ObjC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="hYG-pX-Cdd">
                                         <rect key="frame" x="51.5" y="0.0" width="311" height="25.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                         <nil key="textColor"/>
@@ -84,9 +84,8 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="Jsx-9E-he7">
-                                <rect key="frame" x="11" y="32" width="138" height="21"/>
+                                <rect key="frame" x="11" y="32" width="394" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="138" id="0ii-wI-caf"/>
                                     <constraint firstAttribute="height" constant="21" id="gSB-Ze-UnW"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -99,6 +98,7 @@
                         <constraints>
                             <constraint firstItem="qdw-VN-TGu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="80" id="Lj0-a2-Jjf"/>
                             <constraint firstItem="qdw-VN-TGu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Rpg-LQ-4Zy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Jsx-9E-he7" secondAttribute="trailing" constant="9" id="TAv-iH-ttG"/>
                             <constraint firstItem="Jsx-9E-he7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="11" id="TjH-H1-ab7"/>
                             <constraint firstItem="qdw-VN-TGu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Uk2-cU-pir"/>
                             <constraint firstAttribute="bottom" secondItem="qdw-VN-TGu" secondAttribute="bottom" id="Y3W-LE-Tbv"/>
