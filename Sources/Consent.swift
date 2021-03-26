@@ -100,9 +100,12 @@ public class Consent: NSObject, Extension {
         }
 
         if preferencesManager.mergeAndUpdate(with: newPreferences) {
-            // preferences were updated, update the metadata
-            newPreferences.setTimestamp(date: event.timestamp)
-            preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
+            if newPreferences.consents[ConsentConstants.EventDataKeys.METADATA] == nil {
+                // preferences were updated without providing metadata, update the metadata
+                newPreferences.setTimestamp(date: event.timestamp)
+                preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
+            }
+            
             shareCurrentConsents(event: event)
         }
     }
