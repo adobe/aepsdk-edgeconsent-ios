@@ -105,7 +105,7 @@ public class Consent: NSObject, Extension {
                 newPreferences.setTimestamp(date: event.timestamp)
                 preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
             }
-            
+
             shareCurrentConsents(event: event)
         }
     }

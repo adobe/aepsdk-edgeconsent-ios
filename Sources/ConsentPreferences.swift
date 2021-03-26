@@ -75,4 +75,13 @@ struct ConsentPreferences: Codable, Equatable {
         return defaultPrefs
     }
 
+    /// Determines if two `ConsentPreferences` are equal
+    /// - Parameters:
+    ///   - lhs: a `ConsentPreferences`
+    ///   - rhs: a `ConsentPreferences`
+    /// - Returns: true if they are equal, otherwise false
+    static func == (lhs: ConsentPreferences, rhs: ConsentPreferences) -> Bool {
+        return NSDictionary(dictionary: lhs.asDictionary() ?? [:]).isEqual(to: rhs.asDictionary() ?? [:])
+    }
+
 }

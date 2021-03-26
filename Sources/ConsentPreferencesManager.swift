@@ -55,12 +55,12 @@ struct ConsentPreferencesManager {
         }
 
         // Hold temp copy of what current consents are for comparison later
-        let existingPreferences = currentPreferences?.asDictionary() ?? [:]
+        let existingPreferences = currentPreferences
         // Update our persisted preferences
         self.persistedPreferences = persistedPreferences.merge(with: newPreferences)
 
         // Check if applying the new preferences would change the computed current preferences
-        return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
+        return existingPreferences != currentPreferences
     }
 
     /// Updates and replaces the existing default consent preferences with the passed in default consent preferences.
@@ -68,11 +68,11 @@ struct ConsentPreferencesManager {
     /// - Returns: true if `currentConsents` has been updated as a result of updating the default consents
     mutating func updateDefaults(with newDefaults: ConsentPreferences) -> Bool {
         // Hold temp copy of what current consents are for comparison later
-        let existingPreferences = currentPreferences?.asDictionary() ?? [:]
+        let existingPreferences = currentPreferences
         // Update our default preferences
         self.defaultPreferences = newDefaults
 
         // Check if applying the new defaults would change the computed current preferences
-        return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
+        return existingPreferences != currentPreferences
     }
 }
