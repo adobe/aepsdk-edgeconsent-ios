@@ -59,7 +59,7 @@ struct ConsentPreferencesManager {
         // Update our persisted preferences
         self.persistedPreferences = persistedPreferences.merge(with: newPreferences)
 
-        // Check if applying the new Konductor response would change the computed current preferences
+        // Check if applying the new preferences would change the computed current preferences
         return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
     }
 
