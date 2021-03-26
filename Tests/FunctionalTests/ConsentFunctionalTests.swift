@@ -606,6 +606,26 @@ class ConsentFunctionalTests: XCTestCase {
         XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
         XCTAssertEqual(mockRuntime.dispatchedEvents[0].timestamp.iso8601String, flatDict?["consents.metadata.time"] as? String)
     }
+    
+    func testResponse_dispatchConsentResponseContent_usesResponseMetadata() {
+        // setup
+        let date = Date()
+        let event = buildConsentResponseUpdateEvent(date: date)
+
+        // test
+        mockRuntime.simulateComingEvents(event)
+
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(1, mockRuntime.dispatchedEvents.count) // consent responseContent
+
+        // verify event dispatched: consent preferences updated
+        XCTAssertEqual(EventType.edgeConsent, mockRuntime.dispatchedEvents[0].type)
+        XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
+        let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
+        XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
+        XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
+        XCTAssertEqual(date.iso8601String, flatDict?["consents.metadata.time"] as? String)
+    }
 
     func testUpdateConsentRequest_dispatchConsentResponseContent() {
         // setup
@@ -693,6 +713,29 @@ class ConsentFunctionalTests: XCTestCase {
                                     },
                                     "adID": {
                                         "val":"n"
+                                    }
+                                }
+                            ],
+                            "type": "consent:preferences"
+                        }
+                        """.data(using: .utf8)!
+        let eventData = try! JSONSerialization.jsonObject(with: handleJson, options: []) as? [String: Any]
+        return Event(name: "Consent Response", type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, data: eventData)
+    }
+    
+    private func buildConsentResponseUpdateEvent(date: Date) -> Event {
+        let handleJson = """
+                        {
+                            "payload": [
+                                {
+                                    "collect": {
+                                        "val":"y"
+                                    },
+                                    "adID": {
+                                        "val":"n"
+                                    },
+                                    "metadata" : {
+                                      "time" : "\(date.iso8601String)"
                                     }
                                 }
                             ],
