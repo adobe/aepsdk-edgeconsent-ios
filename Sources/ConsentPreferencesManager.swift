@@ -46,13 +46,21 @@ struct ConsentPreferencesManager {
     /// Duplicate keys will take the value of what is represented in the new consent preferences
     /// - Parameters:
     ///   - newPreferences: new consent preferences
-    mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) {
+    /// - Returns: True if the persisted preferences have changed, false if they have remained unmodified
+    @discardableResult
+    mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) -> Bool {
         guard let persistedPreferences = persistedPreferences else {
             self.persistedPreferences = newPreferences
-            return
+            return true
         }
 
+        // Hold temp copy of what current consents are for comparison later
+        let existingPreferences = currentPreferences?.asDictionary() ?? [:]
+        // Update our persisted preferences
         self.persistedPreferences = persistedPreferences.merge(with: newPreferences)
+
+        // Check if applying the new Konductor response would change the computed current preferences
+        return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
     }
 
     /// Updates and replaces the existing default consent preferences with the passed in default consent preferences.

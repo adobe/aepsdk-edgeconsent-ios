@@ -34,7 +34,35 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test
-        manager.mergeAndUpdate(with: preferences)
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
+
+        // verify
+        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
+        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+
+        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+
+        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
+        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
+        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+    }
+
+    func testMergeAndUpdateShouldReturnFalse() {
+        // setup
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect":
+                ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": Date().iso8601String]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // test
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
+        XCTAssertFalse(manager.mergeAndUpdate(with: preferences))
 
         // verify
         let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
@@ -61,7 +89,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
         // test pt. 1
-        manager.mergeAndUpdate(with: preferences)
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
 
         // verify pt. 1
         let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
@@ -85,7 +113,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
         // test pt. 2
-        manager.mergeAndUpdate(with: preferences2)
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences2))
 
         // verify pt. 2
         let flatStoredConsents2 = manager.persistedPreferences?.asDictionary()?.flattening()

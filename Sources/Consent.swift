@@ -99,9 +99,12 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        newPreferences.setTimestamp(date: event.timestamp)
-        preferencesManager.mergeAndUpdate(with: newPreferences)
-        shareCurrentConsents(event: event)
+        if preferencesManager.mergeAndUpdate(with: newPreferences) {
+            // preferences were updated, update the metadata
+            newPreferences.setTimestamp(date: event.timestamp)
+            preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
+            shareCurrentConsents(event: event)
+        }
     }
 
     /// Handles the get consent event and dispatches a response event with`EventType.edgeConsent` and `EventSource.responseContent`
