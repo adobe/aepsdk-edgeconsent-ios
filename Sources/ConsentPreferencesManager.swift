@@ -46,13 +46,21 @@ struct ConsentPreferencesManager {
     /// Duplicate keys will take the value of what is represented in the new consent preferences
     /// - Parameters:
     ///   - newPreferences: new consent preferences
-    mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) {
+    /// - Returns: True if the persisted preferences have changed, false if they have remained unmodified
+    @discardableResult
+    mutating func mergeAndUpdate(with newPreferences: ConsentPreferences) -> Bool {
         guard let persistedPreferences = persistedPreferences else {
             self.persistedPreferences = newPreferences
-            return
+            return true
         }
 
+        // Hold temp copy of what current consents are for comparison later
+        let existingPreferences = currentPreferences
+        // Update our persisted preferences
         self.persistedPreferences = persistedPreferences.merge(with: newPreferences)
+
+        // Check if applying the new preferences would change the computed current preferences
+        return existingPreferences != currentPreferences
     }
 
     /// Updates and replaces the existing default consent preferences with the passed in default consent preferences.
@@ -60,11 +68,11 @@ struct ConsentPreferencesManager {
     /// - Returns: true if `currentConsents` has been updated as a result of updating the default consents
     mutating func updateDefaults(with newDefaults: ConsentPreferences) -> Bool {
         // Hold temp copy of what current consents are for comparison later
-        let existingPreferences = currentPreferences?.asDictionary() ?? [:]
+        let existingPreferences = currentPreferences
         // Update our default preferences
         self.defaultPreferences = newDefaults
 
         // Check if applying the new defaults would change the computed current preferences
-        return !NSDictionary(dictionary: existingPreferences).isEqual(to: currentPreferences?.asDictionary() ?? [:])
+        return existingPreferences != currentPreferences
     }
 }
