@@ -68,12 +68,12 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the consent update request
     private func receiveUpdateConsent(event: Event) {
         guard let consentsDict = event.data else {
-            Log.debug(label: friendlyName, "Consent - Consent data not found in consent event request. Dropping event.")
+            Log.debug(label: ConsentConstants.LOG_TAG, "Consent - Consent data not found in consent event request. Dropping event.")
             return
         }
 
         guard var newPreferences = ConsentPreferences.from(eventData: consentsDict) else {
-            Log.debug(label: friendlyName, "Consent - Unable to decode consent data into a ConsentPreferences. Dropping event.")
+            Log.debug(label: ConsentConstants.LOG_TAG, "Consent - Unable to decode consent data into a ConsentPreferences. Dropping event.")
             return
         }
 
@@ -89,13 +89,14 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the server-side consent preferences response event
     private func receiveEdgeConsentPreferenceHandle(event: Event) {
         guard let payload = event.data?[ConsentConstants.EventDataKeys.PAYLOAD] as? [Any] else {
-            Log.debug(label: friendlyName, "Consent - consent:preferences handle missing payload. Dropping event.")
+            Log.debug(label: ConsentConstants.LOG_TAG, "Consent - consent:preferences handle missing payload. Dropping event.")
             return
         }
 
         let consentsDict = [ConsentConstants.EventDataKeys.CONSENTS: payload.first]
         guard var newPreferences = ConsentPreferences.from(eventData: consentsDict as [String: Any]) else {
-            Log.debug(label: friendlyName, "Consent - Unable to decode consent:preferences handle data into a ConsentPreferences. Dropping event.")
+            Log.debug(label: ConsentConstants.LOG_TAG,
+                      "Consent - Unable to decode consent:preferences handle data into a ConsentPreferences. Dropping event.")
             return
         }
 

@@ -15,7 +15,7 @@ import Foundation
 
 /// Represents an XDM consent preferences which contains a list of consents along with a timestamp of last updated
 struct ConsentPreferences: Codable, Equatable {
-    private static let LOG_TAG = ConsentConstants.FRIENDLY_NAME
+    private static let LOG_TAG = ConsentConstants.LOG_TAG
 
     /// Consents for the given preferences
     #if DEBUG
