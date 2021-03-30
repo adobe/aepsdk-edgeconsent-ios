@@ -15,7 +15,7 @@ import Foundation
 
 /// Represents an XDM consent preferences which contains a list of consents along with a timestamp of last updated
 struct ConsentPreferences: Codable, Equatable {
-    private static let LOG_TAG = "ConsentPreferences"
+    private static let LOG_TAG = ConsentConstants.FRIENDLY_NAME
 
     /// Consents for the given preferences
     #if DEBUG
@@ -45,12 +45,12 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: a `ConsentPreferences` that is represented in the event data, nil if data is not in the correct format
     static func from(eventData: [String: Any]) -> ConsentPreferences? {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: eventData) else {
-            Log.debug(label: LOG_TAG, "Unable to serialize consent event data.")
+            Log.debug(label: LOG_TAG, "ConsentPreferences - Unable to serialize consent event data.")
             return nil
         }
 
         guard let consentPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: jsonData) else {
-            Log.debug(label: LOG_TAG, "Unable to decode consent data into a ConsentPreferences.")
+            Log.debug(label: LOG_TAG, "ConsentPreferences - Unable to decode consent data into a ConsentPreferences.")
             return nil
         }
 
@@ -63,12 +63,12 @@ struct ConsentPreferences: Codable, Equatable {
     static func from(config: [String: Any]) -> ConsentPreferences? {
         guard let defaultConsents =
                 config[ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT] as? [String: Any] else {
-            Log.warning(label: LOG_TAG, "Missing consent.default in configuration. Install and configure Consent extension in your mobile property.")
+            Log.warning(label: LOG_TAG, "ConsentPreferences - Missing consent.default in configuration. Install and configure Consent extension in your mobile property.")
             return nil
         }
 
         guard let defaultPrefs = ConsentPreferences.from(eventData: defaultConsents) else {
-            Log.warning(label: LOG_TAG, "Unable to encode consent.default, see consents and preferences datatype definition")
+            Log.warning(label: LOG_TAG, "ConsentPreferences - Unable to encode consent.default, see consents and preferences datatype definition")
             return nil
         }
 
