@@ -26,11 +26,10 @@ target 'YOUR_TARGET_NAME' do
     pod 'AEPEdgeIdentity'
 end
 
-# for extension development, include AEPCore, AEPEdge, AEPEdgeConsent, and their dependencies
+# for extension development, include AEPCore, AEPEdgeConsent, and their dependencies
 target 'YOUR_TARGET_NAME' do
     pod 'AEPEdgeConsent'
     pod 'AEPCore'
-    pod 'AEPEdge'
 end
 ```
 

@@ -15,7 +15,7 @@ import Foundation
 enum ConsentConstants {
     static let EXTENSION_NAME = "com.adobe.edge.consent"
     static let FRIENDLY_NAME = "Consent"
-    static let EXTENSION_VERSION = "1.0.0-alpha.1"
+    static let EXTENSION_VERSION = "1.0.0"
     static let LOG_TAG = FRIENDLY_NAME
 
     enum EventDataKeys {
@@ -29,8 +29,8 @@ enum ConsentConstants {
         static let CONSENT_UPDATE_REQUEST = "Consent Update Request"
         static let EDGE_CONSENT_UPDATE = "Edge Consent Update Request"
         static let CONSENT_PREFERENCES_UPDATED = "Consent Preferences Updated"
-        static let CONSENTS_REQUEST = "Consents Request"
-        static let CONSENT_RESPONSE = "Get Consents Response"
+        static let GET_CONSENTS_REQUEST = "Get Consents Request"
+        static let GET_CONSENTS_RESPONSE = "Get Consents Response"
     }
 
     enum EventSource {
