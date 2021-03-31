@@ -33,7 +33,9 @@ public class Consent: NSObject, Extension {
     public func onRegistered() {
         registerListener(type: EventType.edgeConsent, source: EventSource.updateConsent, listener: receiveUpdateConsent(event:))
         registerListener(type: EventType.edgeConsent, source: EventSource.requestContent, listener: receiveRequestContent(event:))
-        registerListener(type: EventType.edge, source: ConsentConstants.EventSource.CONSENT_PREFERENCES, listener: receiveEdgeConsentPreferenceHandle(event:))
+        registerListener(type: EventType.edge,
+                         source: ConsentConstants.EventSource.CONSENT_PREFERENCES,
+                         listener: receiveEdgeConsentPreferenceHandle(event:))
         registerListener(type: EventType.configuration, source: EventSource.responseContent, listener: receiveConfigurationResponse(event:))
 
         // Share existing consents if they exist

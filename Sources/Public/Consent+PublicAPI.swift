@@ -19,7 +19,10 @@ import Foundation
     /// - Parameter completion: invoked with the current consent preferences or an `AEPError` if an unexpected error occurs or the request timed out.
     @objc(getConsents:)
     static func getConsents(completion: @escaping ([String: Any]?, Error?) -> Void) {
-        let event = Event(name: ConsentConstants.EventNames.CONSENTS_REQUEST, type: EventType.edgeConsent, source: EventSource.requestContent, data: nil)
+        let event = Event(name: ConsentConstants.EventNames.CONSENTS_REQUEST,
+                          type: EventType.edgeConsent,
+                          source: EventSource.requestContent,
+                          data: nil)
 
         MobileCore.dispatch(event: event) { responseEvent in
             guard let responseEvent = responseEvent else {
