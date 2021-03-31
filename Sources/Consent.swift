@@ -117,7 +117,7 @@ public class Consent: NSObject, Extension {
     /// - Parameter event: the event requesting consents
     private func receiveRequestContent(event: Event) {
         let data = preferencesManager.currentPreferences?.asDictionary()
-        let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.CONSENT_RESPONSE,
+        let responseEvent = event.createResponseEvent(name: ConsentConstants.EventNames.GET_CONSENTS_RESPONSE,
                                                       type: EventType.edgeConsent,
                                                       source: EventSource.responseContent,
                                                       data: data)
