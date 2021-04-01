@@ -26,7 +26,18 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2170713A25BB5BEA0052BACE"
+            BuildableName = "AEPEdgeConsent.framework"
+            BlueprintName = "AEPEdgeConsent"
+            ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -35,6 +46,16 @@
                BlueprintIdentifier = "2170714325BB5BEB0052BACE"
                BuildableName = "UnitTests.xctest"
                BlueprintName = "UnitTests"
+               ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2170716425BB5CDC0052BACE"
+               BuildableName = "FunctionalTests.xctest"
+               BlueprintName = "FunctionalTests"
                ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
             </BuildableReference>
          </TestableReference>
