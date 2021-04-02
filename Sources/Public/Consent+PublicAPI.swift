@@ -15,10 +15,17 @@ import Foundation
 
 @objc public extension Consent {
 
-    /// Retrieves the current consent preferences stored in the Consent extension.
-    /// - Parameter completion: invoked with the current consent preferences or an `AEPError` if an unexpected error occurs or the request timed out.
+    /// Retrieves the current consent preferences stored in the Consent extension
+    /// - Parameter completion: The completion handler is invoked with the current consent preferences and an optional error
+    /// - Parameter consents:  The current consent preferences as `[String: Any]`
+    /// - Parameter error:  An `AEPError`  if an unexpected error occurs or the request timed out
+    ///
+    /// Output example:
+    /// ```
+    /// ["consents": ["collect": ["val": "y"]]]
+    /// ```
     @objc(getConsents:)
-    static func getConsents(completion: @escaping ([String: Any]?, Error?) -> Void) {
+    static func getConsents(completion: @escaping (_ consents: [String: Any]?, _ error: Error?) -> Void) {
         let event = Event(name: ConsentConstants.EventNames.GET_CONSENTS_REQUEST,
                           type: EventType.edgeConsent,
                           source: EventSource.requestContent,
@@ -41,6 +48,11 @@ import Foundation
 
     /// Merges the existing consents with the given consents. Duplicate keys will take the value of those passed in the API
     /// - Parameter consents: consents to be merged with the existing consents
+    ///
+    /// Input example:
+    /// ```
+    /// ["consents": ["collect": ["val": "y"]]]
+    /// ```
     @objc(updateWithConsents:)
     static func update(with consents: [String: Any]) {
         let event = Event(name: ConsentConstants.EventNames.CONSENT_UPDATE_REQUEST,
