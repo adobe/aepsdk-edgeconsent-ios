@@ -6,34 +6,20 @@ PODS:
   - AEPServices (3.1.0)
 
 DEPENDENCIES:
-  - AEPCore (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `staging`)
-  - AEPServices (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `staging`)
+  - AEPCore
+  - AEPServices
 
 SPEC REPOS:
   trunk:
+    - AEPCore
     - AEPRulesEngine
-
-EXTERNAL SOURCES:
-  AEPCore:
-    :branch: staging
-    :git: https://github.com/adobe/aepsdk-core-ios.git
-  AEPServices:
-    :branch: staging
-    :git: https://github.com/adobe/aepsdk-core-ios.git
-
-CHECKOUT OPTIONS:
-  AEPCore:
-    :commit: d311c2936684aac1b0430b1e68e92984255e6d43
-    :git: https://github.com/adobe/aepsdk-core-ios.git
-  AEPServices:
-    :commit: d311c2936684aac1b0430b1e68e92984255e6d43
-    :git: https://github.com/adobe/aepsdk-core-ios.git
+    - AEPServices
 
 SPEC CHECKSUMS:
   AEPCore: 026568b04d8c302ad801a6b4ed6ec3c160817ef6
   AEPRulesEngine: 8bbc694fce6900cd33b2496c7d4b33ee2eeffc46
   AEPServices: cc1ec2987185ab01d62f6d41be0bb94a1b892efb
 
-PODFILE CHECKSUM: 265e2308f413c61d1319bd59b1459d54d9ebbd36
+PODFILE CHECKSUM: 4417aab26de0ba46fdf9d77b5ab95f40d252d13e
 
 COCOAPODS: 1.10.1
