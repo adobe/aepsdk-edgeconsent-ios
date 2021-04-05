@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qdw-VN-TGu">
+                                <rect key="frame" x="0.0" y="80" width="414" height="816"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AEPEdgeConsent Test App ObjC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="hYG-pX-Cdd">
+                                        <rect key="frame" x="51.5" y="0.0" width="311" height="25.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nD-Os-shP">
+                                        <rect key="frame" x="120" y="53.5" width="174" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="5jw-D0-OGM"/>
+                                        </constraints>
+                                        <state key="normal" title="Set Collect Consent - NO"/>
+                                        <connections>
+                                            <action selector="collectConsentNO:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cxQ-Ic-9Fn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zMK-tg-QLf">
+                                        <rect key="frame" x="117.5" y="111.5" width="179" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="T7L-zp-qPM"/>
+                                        </constraints>
+                                        <state key="normal" title="Set Collect Consent - YES"/>
+                                        <connections>
+                                            <action selector="collectConsentYES:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GHR-si-YKf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKm-uE-LJ3">
+                                        <rect key="frame" x="85.5" y="169.5" width="243" height="30"/>
+                                        <state key="normal" title="Update Default Consent to Pending"/>
+                                        <connections>
+                                            <action selector="changeDefault:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZL8-1q-HXk"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axz-2D-MPt">
+                                        <rect key="frame" x="160" y="227.5" width="94" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="U8v-GS-ajy"/>
+                                        </constraints>
+                                        <state key="normal" title="Get Consents"/>
+                                        <connections>
+                                            <action selector="getConsent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O3n-Th-4ti"/>
+                                        </connections>
+                                    </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Place Holder for Consent data" translatesAutoresizingMaskIntoConstraints="NO" id="a2T-Rq-R0Y">
+                                        <rect key="frame" x="87" y="285.5" width="240" height="300"/>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="h9B-JN-YsB"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="sKB-Qi-BP9"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oig-o8-AaQ">
+                                        <rect key="frame" x="87" y="613.5" width="240" height="202.5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="a2T-Rq-R0Y" firstAttribute="leading" secondItem="qdw-VN-TGu" secondAttribute="leading" constant="87" id="p9f-5G-KI4"/>
+                                    <constraint firstItem="5nD-Os-shP" firstAttribute="top" secondItem="hYG-pX-Cdd" secondAttribute="bottom" constant="28" id="rsa-Dk-MLy"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="Jsx-9E-he7">
+                                <rect key="frame" x="11" y="32" width="394" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="gSB-Ze-UnW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qdw-VN-TGu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="80" id="Lj0-a2-Jjf"/>
+                            <constraint firstItem="qdw-VN-TGu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Rpg-LQ-4Zy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Jsx-9E-he7" secondAttribute="trailing" constant="9" id="TAv-iH-ttG"/>
+                            <constraint firstItem="Jsx-9E-he7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="11" id="TjH-H1-ab7"/>
+                            <constraint firstItem="qdw-VN-TGu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Uk2-cU-pir"/>
+                            <constraint firstAttribute="bottom" secondItem="qdw-VN-TGu" secondAttribute="bottom" id="Y3W-LE-Tbv"/>
+                            <constraint firstItem="Jsx-9E-he7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="32" id="fgt-Ib-nAr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="extensionLabel" destination="Jsx-9E-he7" id="bHZ-h2-Ltl"/>
+                        <outlet property="txtFieldConsent" destination="a2T-Rq-R0Y" id="6Qr-Sc-wUa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="130.58035714285714"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
