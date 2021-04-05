@@ -28,11 +28,8 @@ echo "
 platform :ios, '10.0'
 target '$PROJECT_NAME' do
   use_frameworks!
-  pod 'AEPCore', '~> 3.0.0'
-  pod 'AEPIdentity', '~> 3.0.0'
-  pod 'AEPLifecycle', '~> 3.0.0'
-  pod 'AEPServices', '~> 3.0.0'
-  pod 'AEPSignal', '~> 3.0.0'
+  pod 'AEPCore', '~> 3.1.0'
+  pod 'AEPServices', '~> 3.1.0'
   pod 'AEPRulesEngine', '~> 1.0.0'
   pod 'AEPEdge', '~> 1.0.0'
   pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
