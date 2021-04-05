@@ -16,16 +16,15 @@ import Foundation
 @objc public extension Consent {
 
     /// Retrieves the current consent preferences stored in the Consent extension
-    /// - Parameter completion: The completion handler is invoked with the current consent preferences and an optional error
-    /// - Parameter consents:  The current consent preferences as `[String: Any]`
-    /// - Parameter error:  An `AEPError`  if an unexpected error occurs or the request timed out
+    /// - Parameter completion: invoked with the current consent preferences as `[String: Any]` or
+    ///                         an `AEPError` if an unexpected error occurs or the request timed out.
     ///
     /// Output example:
     /// ```
     /// ["consents": ["collect": ["val": "y"]]]
     /// ```
     @objc(getConsents:)
-    static func getConsents(completion: @escaping (_ consents: [String: Any]?, _ error: Error?) -> Void) {
+    static func getConsents(completion: @escaping ([String: Any]?, Error?) -> Void) {
         let event = Event(name: ConsentConstants.EventNames.GET_CONSENTS_REQUEST,
                           type: EventType.edgeConsent,
                           source: EventSource.requestContent,
