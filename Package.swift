@@ -22,7 +22,7 @@ let package = Package(
         .library(name: "AEPEdgeConsent", targets: ["AEPEdgeConsent"])
     ],
     dependencies: [
-        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .branch("main")),
+        .package(url: "https://github.com/adobe/aepsdk-core-ios.git", .upToNextMajor(from: "3.1.0")),
         .package(url: "https://github.com/adobe/aepsdk-edge-ios.git", .upToNextMajor(from: "1.1.0"))
     ],
     targets: [
