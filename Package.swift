@@ -27,7 +27,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "AEPEdgeConsent",
-                dependencies: ["AEPCore"],
+                dependencies: ["AEPCore", "AEPEdge"],
                 path: "Sources"),
         .testTarget(name: "FunctionalTests",
                     dependencies: ["AEPCore"],
