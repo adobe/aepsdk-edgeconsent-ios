@@ -53,12 +53,12 @@ Alternatively, if your project has a `Package.swift` file, you can add AEPEdgeCo
 
 ```
 dependencies: [
-	.package(url: "https://github.com/adobe/aepsdk-edgeconsent-ios.git", .branch: "main"),
+    .package(url: "https://github.com/adobe/aepsdk-edgeconsent-ios.git", .upToNextMajor(from: "1.0.0"))
+],
 targets: [
-   	.target(name: "YourTarget",
-    				dependencies: ["AEPEdgeConsent"],
-          	path: "your/path"),
-    ]
+    .target(name: "YourTarget",
+            dependencies: ["AEPEdgeConsent"],
+            path: "your/path")    
 ]
 ```
 
