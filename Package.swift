@@ -28,12 +28,6 @@ let package = Package(
     targets: [
         .target(name: "AEPEdgeConsent",
                 dependencies: ["AEPCore", "AEPEdge"],
-                path: "Sources"),
-        .testTarget(name: "FunctionalTests",
-                    dependencies: ["AEPCore"],
-                    path: "Tests/FunctionalTests"),
-        .testTarget(name: "UnitTests",
-                    dependencies: ["AEPCore"],
-                    path: "Tests/UnitTests")
+                path: "Sources")
     ]
 )
