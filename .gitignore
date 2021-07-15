@@ -93,3 +93,8 @@ fastlane/test_output
 
 ## Cocoapods
 Pods/
+
+## Bundler
+.bundle/
+vender/
+
