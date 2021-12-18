@@ -7,6 +7,8 @@ use_frameworks!
 workspace 'AEPEdgeConsent'
 project 'AEPEdgeConsent.xcodeproj'
 
+pod 'SwiftLint', '0.44.0'
+
 target 'AEPEdgeConsent' do
   pod 'AEPCore'
   pod 'AEPServices'
