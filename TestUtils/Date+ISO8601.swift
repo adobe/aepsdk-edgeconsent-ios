@@ -14,6 +14,10 @@ import Foundation
 
 extension Date {
     var iso8601String: String {
-        return ISO8601DateFormatter().string(from: self)
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        return formatter.string(from: self)
     }
 }
