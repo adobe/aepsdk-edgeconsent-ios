@@ -370,7 +370,8 @@
 			children = (
 				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
 			);
-			path = TestUtils;
+			name = TestUtils;
+			path = Tests/TestUtils;
 			sourceTree = "<group>";
 		};
 		E687966F0979FCD2463265A7 /* Frameworks */ = {
