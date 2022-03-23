@@ -13,7 +13,7 @@
 import Foundation
 
 extension Date {
-    var iso8601String: String {
+    var iso8601UTCWithMillisecondsString: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
