@@ -7,10 +7,10 @@ Pod::Spec.new do |s|
                        The Experience Platform Consent Collection extension enables consent preferences collection from a mobile app when using the Adobe Experience Platform Mobile SDK and the Edge Network extension.
                        DESC
 
-  s.homepage         = "https://github.com/adobe/aepsdk-consentedge-ios.git"
+  s.homepage         = "https://github.com/adobe/aepsdk-edgeconsent-ios.git"
   s.license          = { :type => "Apache License, Version 2.0", :file => "LICENSE" }
   s.author           = "Adobe Experience Platform SDK Team"
-  s.source           = { :git => "https://github.com/adobe/aepsdk-consentedge-ios.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/adobe/aepsdk-edgeconsent-ios.git", :tag => s.version.to_s }
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.1'
 
