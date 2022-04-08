@@ -26,6 +26,10 @@ public class TestableExtensionRuntime: ExtensionRuntime {
 
     public init() {}
 
+    public func getHistoricalEvents(_ requests: [EventHistoryRequest], enforceOrder: Bool, handler: @escaping ([EventHistoryResult]) -> Void) {
+        handler([])
+    }
+
     // MARK: - ExtensionRuntime methods implementation
     public func unregisterExtension() {
         // no-op

@@ -1,29 +1,43 @@
 PODS:
-  - AEPCore (3.3.1):
-    - AEPRulesEngine (= 1.0.1)
-    - AEPServices (= 3.3.1)
-  - AEPRulesEngine (1.0.1)
-  - AEPServices (3.3.1)
+  - AEPCore (3.5.0):
+    - AEPRulesEngine (>= 1.1.0)
+    - AEPServices (>= 3.5.0)
+  - AEPRulesEngine (1.1.0)
+  - AEPServices (3.5.0)
   - SwiftLint (0.44.0)
 
 DEPENDENCIES:
-  - AEPCore
-  - AEPServices
+  - AEPCore (from `https://github.com/adobe/aepsdk-core-ios`, branch `staging`)
+  - AEPServices (from `https://github.com/adobe/aepsdk-core-ios`, branch `staging`)
   - SwiftLint (= 0.44.0)
 
 SPEC REPOS:
   trunk:
-    - AEPCore
     - AEPRulesEngine
-    - AEPServices
     - SwiftLint
 
+EXTERNAL SOURCES:
+  AEPCore:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-core-ios
+  AEPServices:
+    :branch: staging
+    :git: https://github.com/adobe/aepsdk-core-ios
+
+CHECKOUT OPTIONS:
+  AEPCore:
+    :commit: bbbb9748e04d28b28411dc104adab6f785877959
+    :git: https://github.com/adobe/aepsdk-core-ios
+  AEPServices:
+    :commit: bbbb9748e04d28b28411dc104adab6f785877959
+    :git: https://github.com/adobe/aepsdk-core-ios
+
 SPEC CHECKSUMS:
-  AEPCore: fc1398728b6b2a4dcc8dc96455f69ec144e087c0
-  AEPRulesEngine: 5075ed294026a12e37bd26fe260f74604d205354
-  AEPServices: c49e7b6ef17ec9f874b015f68ac7d2436235282f
+  AEPCore: a3b4159038df33b63ebdab227342cd57d8ded1b0
+  AEPRulesEngine: bb2927ed5501ddf9754c66e97f8d2b1cf8e33b19
+  AEPServices: 2e869a387b67c04ab5f3f647026412ff410efbb0
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: df8c969b5e4f98f7d1df738b00d9511b06b4b07f
+PODFILE CHECKSUM: 6add71a4263a66493af8069c8ee0ccef25cf6ae4
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
