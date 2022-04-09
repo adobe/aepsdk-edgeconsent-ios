@@ -29,7 +29,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -56,7 +56,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -84,7 +84,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -108,7 +108,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents2 = [
             "collect":
                 ["val": "y"],
-            "metadata": ["time": date.iso8601String]
+            "metadata": ["time": date.iso8601UTCWithMillisecondsString]
         ]
         let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
@@ -137,7 +137,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -159,7 +159,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -178,7 +178,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let consents2 = [
             "collect":
                 ["val": "y"],
-            "metadata": ["time": date.iso8601String]
+            "metadata": ["time": date.iso8601UTCWithMillisecondsString]
         ]
         let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
@@ -200,7 +200,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
@@ -232,7 +232,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
             "collect":
                 ["val": "n"],
             "adID": ["val": "y"],
-            "metadata": ["time": Date().iso8601String]
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 

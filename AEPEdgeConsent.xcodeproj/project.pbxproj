@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		212C60CD25E570CC00CCECF9 /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
 		2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
 		21639FCC25E70FCA000D95E5 /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21639FCB25E70FCA000D95E5 /* MockDataStore.swift */; };
@@ -57,6 +56,8 @@
 		B6F6623E2604B3C600BB6DD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6F6623C2604B3C600BB6DD2 /* LaunchScreen.storyboard */; };
 		B6F662412604B3C600BB6DD2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F662402604B3C600BB6DD2 /* main.m */; };
 		B6F6627A2604B8E400BB6DD2 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F662792604B8E400BB6DD2 /* SceneDelegate.m */; };
+		BFCDF45E27E93675005C4849 /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
+		BFCDF45F27E93676005C4849 /* Date+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */; };
 		D31B97D4D03E8FC4C48ACE7C /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */; };
 		E79F67AB7413663981CF93AC /* Pods_FunctionalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */; };
 /* End PBXBuildFile section */
@@ -216,6 +217,7 @@
 				2170713D25BB5BEA0052BACE /* Sources */,
 				2170714825BB5BEB0052BACE /* UnitTests */,
 				2170716625BB5CDC0052BACE /* FunctionalTests */,
+				BFCDF45D27E93662005C4849 /* TestUtils */,
 				21D4BAA925E9724E00DD11AF /* TestApp */,
 				B6F6622D2604B3C600BB6DD2 /* TestAppObjc */,
 				2170713C25BB5BEA0052BACE /* Products */,
@@ -245,7 +247,6 @@
 				2170719025BB5F1A0052BACE /* Consent.swift */,
 				21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */,
 				21C095B225BB9060006C1CFE /* ConsentPreferences.swift */,
-				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
 				2170713F25BB5BEA0052BACE /* Info.plist */,
 			);
 			path = Sources;
@@ -362,6 +363,15 @@
 				92DB1E0C3563831104A5EC54 /* Pods-TestAppObjc.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BFCDF45D27E93662005C4849 /* TestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */,
+			);
+			name = TestUtils;
+			path = Tests/TestUtils;
 			sourceTree = "<group>";
 		};
 		E687966F0979FCD2463265A7 /* Frameworks */ = {
@@ -794,7 +804,6 @@
 				2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */,
 				2170719125BB5F1A0052BACE /* Consent.swift in Sources */,
 				217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */,
-				212C60CD25E570CC00CCECF9 /* Date+ISO8601.swift in Sources */,
 				21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,6 +815,7 @@
 				21C0964725BF4A21006C1CFE /* MockDataStore.swift in Sources */,
 				21C0963325BF4928006C1CFE /* ConsentPreferencesManagerTests.swift in Sources */,
 				2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */,
+				BFCDF45E27E93675005C4849 /* Date+ISO8601.swift in Sources */,
 				21C0960825BF3429006C1CFE /* ConsentPreferencesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,6 +824,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFCDF45F27E93676005C4849 /* Date+ISO8601.swift in Sources */,
 				2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */,
 				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
 				21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */,
@@ -1044,7 +1055,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1075,7 +1086,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
