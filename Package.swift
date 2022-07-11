@@ -17,7 +17,7 @@ import PackageDescription
 
 let package = Package(
     name: "AEPEdgeConsent",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v10), .tvOS(.v10)],
     products: [
         .library(name: "AEPEdgeConsent", targets: ["AEPEdgeConsent"])
     ],

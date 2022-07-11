@@ -46,8 +46,14 @@
 		21D4BAB425E9724F00DD11AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */; };
 		21D4BAB725E9724F00DD11AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB525E9724F00DD11AF /* LaunchScreen.storyboard */; };
 		21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */; };
+		2EDF6188287CC84D007DCFCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */; };
+		2EDF6189287CC84D007DCFCC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */; };
+		2EDF618A287CC84D007DCFCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAE25E9724F00DD11AF /* ContentView.swift */; };
+		2EDF618F287CC84D007DCFCC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */; };
+		2EDF6190287CC84D007DCFCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB025E9724F00DD11AF /* Assets.xcassets */; };
+		3291A25C2E80858944AAC9AC /* Pods_TestAppSwifttvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6D93A5BC0C63292BC77094 /* Pods_TestAppSwifttvOS.framework */; };
 		5315EB7C6D2C36C7CC1E3730 /* Pods_TestAppObjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCBAC6830BB47181AFA3767F /* Pods_TestAppObjc.framework */; };
-		6B037380F86CE0CDCC61F52D /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2844EEEE0F43EC8C3402F6 /* Pods_TestApp.framework */; };
+		A2189185F569A1DE1DDC701A /* Pods_TestAppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3717A696576E43771809F67 /* Pods_TestAppSwift.framework */; };
 		A76DB87DF38557D301FE8FFB /* Pods_AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F2BA9980B1427F6F3090E65 /* Pods_AEPEdgeConsent.framework */; };
 		B6F662302604B3C600BB6DD2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F6622F2604B3C600BB6DD2 /* AppDelegate.m */; };
 		B6F662362604B3C600BB6DD2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F662352604B3C600BB6DD2 /* ViewController.m */; };
@@ -91,6 +97,13 @@
 			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
 			remoteInfo = AEPConsent;
 		};
+		2EDF6185287CC84D007DCFCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
+			remoteInfo = AEPConsent;
+		};
 		B6F662642604B86500BB6DD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
@@ -126,7 +139,7 @@
 		21C0963225BF4928006C1CFE /* ConsentPreferencesManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManagerTests.swift; sourceTree = "<group>"; };
 		21C0963925BF49D4006C1CFE /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		21D0F20B25C1EA410091FFBD /* Date+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ISO8601.swift"; sourceTree = "<group>"; };
-		21D4BAA825E9724E00DD11AF /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21D4BAA825E9724E00DD11AF /* TestAppSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		21D4BAAE25E9724F00DD11AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -137,11 +150,15 @@
 		21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
 		289C6872756ECECA7D6D8D9D /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FunctionalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EDF6195287CC84D007DCFCC /* TestAppSwifttvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppSwifttvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EDF6196287CC84D007DCFCC /* TestAppSwift copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TestAppSwift copy-Info.plist"; path = "/Users/abhadra/Documents/git/forked/aepsdk/aepsdk-edgeconsent-ios/TestAppSwift copy-Info.plist"; sourceTree = "<absolute>"; };
 		4264AE6C14EE17A5E3331965 /* Pods-TestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp.debug.xcconfig"; path = "Target Support Files/Pods-TestApp/Pods-TestApp.debug.xcconfig"; sourceTree = "<group>"; };
+		4DD5EEF2C49FBBB054A1FA15 /* Pods-TestAppSwifttvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppSwifttvOS.release.xcconfig"; path = "Target Support Files/Pods-TestAppSwifttvOS/Pods-TestAppSwifttvOS.release.xcconfig"; sourceTree = "<group>"; };
 		62795EC2D00BF03568DE0BF6 /* Pods-AEPConsentTestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsentTestApp.debug.xcconfig"; path = "Target Support Files/Pods-AEPConsentTestApp/Pods-AEPConsentTestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		67A9E8CF346C499B1627877D /* Pods-TestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApp.release.xcconfig"; path = "Target Support Files/Pods-TestApp/Pods-TestApp.release.xcconfig"; sourceTree = "<group>"; };
-		6F2844EEEE0F43EC8C3402F6 /* Pods_TestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C6D93A5BC0C63292BC77094 /* Pods_TestAppSwifttvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestAppSwifttvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		92DB1E0C3563831104A5EC54 /* Pods-TestAppObjc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjc.release.xcconfig"; path = "Target Support Files/Pods-TestAppObjc/Pods-TestAppObjc.release.xcconfig"; sourceTree = "<group>"; };
+		984CA1F4BE8DBE8B2B0C4B9C /* Pods-TestAppSwifttvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppSwifttvOS.debug.xcconfig"; path = "Target Support Files/Pods-TestAppSwifttvOS/Pods-TestAppSwifttvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9F2BA9980B1427F6F3090E65 /* Pods_AEPEdgeConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AEPEdgeConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1F5689382A831549A58FF19 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		B6E68F3AF3B6638165648996 /* Pods-TestAppObjc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppObjc.debug.xcconfig"; path = "Target Support Files/Pods-TestAppObjc/Pods-TestAppObjc.debug.xcconfig"; sourceTree = "<group>"; };
@@ -157,12 +174,15 @@
 		B6F662402604B3C600BB6DD2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B6F662782604B8E400BB6DD2 /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		B6F662792604B8E400BB6DD2 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		C3717A696576E43771809F67 /* Pods_TestAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC35D13FA6B8B9627895DDD /* Pods-AEPConsent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsent.debug.xcconfig"; path = "Target Support Files/Pods-AEPConsent/Pods-AEPConsent.debug.xcconfig"; sourceTree = "<group>"; };
 		D2EDAF787EB8FEB8083A1651 /* Pods-AEPEdgeConsent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPEdgeConsent.debug.xcconfig"; path = "Target Support Files/Pods-AEPEdgeConsent/Pods-AEPEdgeConsent.debug.xcconfig"; sourceTree = "<group>"; };
+		D3DAAFD4DEB0EB61AE619A36 /* Pods-TestAppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppSwift.debug.xcconfig"; path = "Target Support Files/Pods-TestAppSwift/Pods-TestAppSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		DFFF1D550E9043E23668437A /* Pods-FunctionalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunctionalTests.release.xcconfig"; path = "Target Support Files/Pods-FunctionalTests/Pods-FunctionalTests.release.xcconfig"; sourceTree = "<group>"; };
 		EE24E02FBBC34F250A39C88B /* Pods-AEPConsent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPConsent.release.xcconfig"; path = "Target Support Files/Pods-AEPConsent/Pods-AEPConsent.release.xcconfig"; sourceTree = "<group>"; };
 		F794546E9F057BC8D14036AA /* Pods-AEPEdgeConsent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AEPEdgeConsent.release.xcconfig"; path = "Target Support Files/Pods-AEPEdgeConsent/Pods-AEPEdgeConsent.release.xcconfig"; sourceTree = "<group>"; };
 		FCBAC6830BB47181AFA3767F /* Pods_TestAppObjc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestAppObjc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE3A2A77565F04B1FAF53830 /* Pods-TestAppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppSwift.release.xcconfig"; path = "Target Support Files/Pods-TestAppSwift/Pods-TestAppSwift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,7 +216,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B037380F86CE0CDCC61F52D /* Pods_TestApp.framework in Frameworks */,
+				A2189185F569A1DE1DDC701A /* Pods_TestAppSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2EDF618B287CC84D007DCFCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3291A25C2E80858944AAC9AC /* Pods_TestAppSwifttvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +251,7 @@
 				2170713C25BB5BEA0052BACE /* Products */,
 				B82A3AA7E7C85EC910C031D0 /* Pods */,
 				E687966F0979FCD2463265A7 /* Frameworks */,
+				2EDF6196287CC84D007DCFCC /* TestAppSwift copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,8 +261,9 @@
 				2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */,
 				2170714425BB5BEB0052BACE /* UnitTests.xctest */,
 				2170716525BB5CDC0052BACE /* FunctionalTests.xctest */,
-				21D4BAA825E9724E00DD11AF /* TestApp.app */,
+				21D4BAA825E9724E00DD11AF /* TestAppSwift.app */,
 				B6F6622C2604B3C600BB6DD2 /* TestAppObjc.app */,
+				2EDF6195287CC84D007DCFCC /* TestAppSwifttvOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -361,6 +391,10 @@
 				67A9E8CF346C499B1627877D /* Pods-TestApp.release.xcconfig */,
 				B6E68F3AF3B6638165648996 /* Pods-TestAppObjc.debug.xcconfig */,
 				92DB1E0C3563831104A5EC54 /* Pods-TestAppObjc.release.xcconfig */,
+				D3DAAFD4DEB0EB61AE619A36 /* Pods-TestAppSwift.debug.xcconfig */,
+				FE3A2A77565F04B1FAF53830 /* Pods-TestAppSwift.release.xcconfig */,
+				984CA1F4BE8DBE8B2B0C4B9C /* Pods-TestAppSwifttvOS.debug.xcconfig */,
+				4DD5EEF2C49FBBB054A1FA15 /* Pods-TestAppSwifttvOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -380,8 +414,9 @@
 				28D5C062DDFEA9266F94C735 /* Pods_FunctionalTests.framework */,
 				067A0FE95E92A8DBB660F113 /* Pods_UnitTests.framework */,
 				9F2BA9980B1427F6F3090E65 /* Pods_AEPEdgeConsent.framework */,
-				6F2844EEEE0F43EC8C3402F6 /* Pods_TestApp.framework */,
 				FCBAC6830BB47181AFA3767F /* Pods_TestAppObjc.framework */,
+				C3717A696576E43771809F67 /* Pods_TestAppSwift.framework */,
+				8C6D93A5BC0C63292BC77094 /* Pods_TestAppSwifttvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -460,9 +495,9 @@
 			productReference = 2170716525BB5CDC0052BACE /* FunctionalTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		21D4BAA725E9724E00DD11AF /* TestApp */ = {
+		21D4BAA725E9724E00DD11AF /* TestAppSwift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "TestApp" */;
+			buildConfigurationList = 21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "TestAppSwift" */;
 			buildPhases = (
 				41E0E475F4B39DCF2E0D3BE0 /* [CP] Check Pods Manifest.lock */,
 				21D4BAA425E9724E00DD11AF /* Sources */,
@@ -475,9 +510,29 @@
 			dependencies = (
 				21D4BADE25E9766B00DD11AF /* PBXTargetDependency */,
 			);
-			name = TestApp;
+			name = TestAppSwift;
 			productName = AEPConsentTestApp;
-			productReference = 21D4BAA825E9724E00DD11AF /* TestApp.app */;
+			productReference = 21D4BAA825E9724E00DD11AF /* TestAppSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2EDF6183287CC84D007DCFCC /* TestAppSwifttvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2EDF6192287CC84D007DCFCC /* Build configuration list for PBXNativeTarget "TestAppSwifttvOS" */;
+			buildPhases = (
+				2EDF6186287CC84D007DCFCC /* [CP] Check Pods Manifest.lock */,
+				2EDF6187287CC84D007DCFCC /* Sources */,
+				2EDF618B287CC84D007DCFCC /* Frameworks */,
+				2EDF618D287CC84D007DCFCC /* Resources */,
+				2EDF6191287CC84D007DCFCC /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2EDF6184287CC84D007DCFCC /* PBXTargetDependency */,
+			);
+			name = TestAppSwifttvOS;
+			productName = AEPConsentTestApp;
+			productReference = 2EDF6195287CC84D007DCFCC /* TestAppSwifttvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B6F6622B2604B3C600BB6DD2 /* TestAppObjc */ = {
@@ -547,8 +602,9 @@
 				2170714325BB5BEB0052BACE /* UnitTests */,
 				2170716425BB5CDC0052BACE /* FunctionalTests */,
 				2170719C25BB60A20052BACE /* AEPEdgeConsentXCF */,
-				21D4BAA725E9724E00DD11AF /* TestApp */,
+				21D4BAA725E9724E00DD11AF /* TestAppSwift */,
 				B6F6622B2604B3C600BB6DD2 /* TestAppObjc */,
+				2EDF6183287CC84D007DCFCC /* TestAppSwifttvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -582,6 +638,15 @@
 				21D4BAB725E9724F00DD11AF /* LaunchScreen.storyboard in Resources */,
 				21D4BAB425E9724F00DD11AF /* Preview Assets.xcassets in Resources */,
 				21D4BAB125E9724F00DD11AF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2EDF618D287CC84D007DCFCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2EDF618F287CC84D007DCFCC /* Preview Assets.xcassets in Resources */,
+				2EDF6190287CC84D007DCFCC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +696,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    ./Pods/SwiftLint/swiftlint lint --config ${SRCROOT}/.swiftlint.yml Sources\nelse\n    echo \"warning: SwiftLint is not installed, please run the pod install command from the project root directory.\"\nfi\n\n";
+		};
+		2EDF6186287CC84D007DCFCC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TestAppSwifttvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2EDF6191287CC84D007DCFCC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TestAppSwifttvOS/Pods-TestAppSwifttvOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TestAppSwifttvOS/Pods-TestAppSwifttvOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestAppSwifttvOS/Pods-TestAppSwifttvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2F2F6FB0A75D34F2B2AD37E2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -686,7 +790,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TestApp-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TestAppSwift-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -760,15 +864,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TestApp/Pods-TestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TestAppSwift/Pods-TestAppSwift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TestApp/Pods-TestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TestAppSwift/Pods-TestAppSwift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestApp/Pods-TestApp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestAppSwift/Pods-TestAppSwift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F91C6111602B04F79742ED93 /* [CP] Check Pods Manifest.lock */ = {
@@ -845,6 +949,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2EDF6187287CC84D007DCFCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2EDF6188287CC84D007DCFCC /* AppDelegate.swift in Sources */,
+				2EDF6189287CC84D007DCFCC /* SceneDelegate.swift in Sources */,
+				2EDF618A287CC84D007DCFCC /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B6F662282604B3C600BB6DD2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -878,6 +992,11 @@
 			isa = PBXTargetDependency;
 			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
 			targetProxy = 21D4BADD25E9766B00DD11AF /* PBXContainerItemProxy */;
+		};
+		2EDF6184287CC84D007DCFCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
+			targetProxy = 2EDF6185287CC84D007DCFCC /* PBXContainerItemProxy */;
 		};
 		B6F662652604B86500BB6DD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -971,8 +1090,11 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1028,8 +1150,11 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1112,7 +1237,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.AEPEdgeConsentTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Debug;
 		};
@@ -1131,7 +1256,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.AEPEdgeConsentTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Release;
 		};
@@ -1150,7 +1275,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.FunctionalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Debug;
 		};
@@ -1169,7 +1294,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.FunctionalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = Release;
 		};
@@ -1195,7 +1320,7 @@
 		};
 		21D4BAB925E9724F00DD11AF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4264AE6C14EE17A5E3331965 /* Pods-TestApp.debug.xcconfig */;
+			baseConfigurationReference = D3DAAFD4DEB0EB61AE619A36 /* Pods-TestAppSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1217,7 +1342,7 @@
 		};
 		21D4BABA25E9724F00DD11AF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 67A9E8CF346C499B1627877D /* Pods-TestApp.release.xcconfig */;
+			baseConfigurationReference = FE3A2A77565F04B1FAF53830 /* Pods-TestAppSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1234,6 +1359,56 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2EDF6193287CC84D007DCFCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 984CA1F4BE8DBE8B2B0C4B9C /* Pods-TestAppSwifttvOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.TestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
+			};
+			name = Debug;
+		};
+		2EDF6194287CC84D007DCFCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DD5EEF2C49FBBB054A1FA15 /* Pods-TestAppSwifttvOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.consent.TestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 			};
 			name = Release;
 		};
@@ -1325,11 +1500,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "TestApp" */ = {
+		21D4BABB25E9724F00DD11AF /* Build configuration list for PBXNativeTarget "TestAppSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				21D4BAB925E9724F00DD11AF /* Debug */,
 				21D4BABA25E9724F00DD11AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2EDF6192287CC84D007DCFCC /* Build configuration list for PBXNativeTarget "TestAppSwifttvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2EDF6193287CC84D007DCFCC /* Debug */,
+				2EDF6194287CC84D007DCFCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
