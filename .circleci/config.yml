@@ -94,7 +94,7 @@ jobs:
 
       - run:
           name: Upload Code Coverage Reports for AEPEdgeConsent tvOS
-          command: bash ./codecov -v -X s3 -c -D "./build/out" -J "AEPCore tvOS"
+          command: bash ./codecov -v -X s3 -c -D "./build/out" -J "AEPEdgeConsent tvOS"
 
       # verify XCFramework archive builds
       - run:
