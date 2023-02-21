@@ -31,6 +31,14 @@ public class TestableExtensionRuntime: ExtensionRuntime {
     }
 
     // MARK: - ExtensionRuntime methods implementation
+    public func getSharedState(extensionName: String, event: Event?, barrier: Bool, resolution: SharedStateResolution) -> SharedStateResult? {
+        return getSharedState(extensionName: extensionName, event: event, barrier: barrier)
+    }
+
+    public func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool, resolution: SharedStateResolution) -> SharedStateResult? {
+        return getXDMSharedState(extensionName: extensionName, event: event, barrier: barrier)
+    }
+    
     public func unregisterExtension() {
         // no-op
     }
@@ -61,10 +69,6 @@ public class TestableExtensionRuntime: ExtensionRuntime {
         return mockedSharedStates["\(extensionName)"]
     }
 
-    public func getSharedState(extensionName: String, event: Event?, barrier: Bool, resolution: SharedStateResolution) -> SharedStateResult? {
-        return getSharedState(extensionName: extensionName, event: event, barrier: barrier)
-    }
-
     public func createXDMSharedState(data: [String: Any], event: Event?) {
         createdXdmSharedStates += [data]
     }
@@ -81,10 +85,6 @@ public class TestableExtensionRuntime: ExtensionRuntime {
             return mockedXdmSharedStates["\(extensionName)-\(id)"] ?? mockedXdmSharedStates["\(extensionName)"]
         }
         return mockedXdmSharedStates["\(extensionName)"]
-    }
-
-    public func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool, resolution: SharedStateResolution) -> SharedStateResult? {
-        return getXDMSharedState(extensionName: extensionName, event: event, barrier: barrier)
     }
 
     public func startEvents() {}

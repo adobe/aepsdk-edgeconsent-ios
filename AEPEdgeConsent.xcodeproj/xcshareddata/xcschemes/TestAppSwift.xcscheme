@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "21D4BAA725E9724E00DD11AF"
-               BuildableName = "TestApp.app"
-               BlueprintName = "TestApp"
+               BuildableName = "TestAppSwift.app"
+               BlueprintName = "TestAppSwift"
                ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "21D4BAA725E9724E00DD11AF"
-            BuildableName = "TestApp.app"
-            BlueprintName = "TestApp"
+            BuildableName = "TestAppSwift.app"
+            BlueprintName = "TestAppSwift"
             ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "21D4BAA725E9724E00DD11AF"
-            BuildableName = "TestApp.app"
-            BlueprintName = "TestApp"
+            BuildableName = "TestAppSwift.app"
+            BlueprintName = "TestAppSwift"
             ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
