@@ -38,7 +38,7 @@ public class TestableExtensionRuntime: ExtensionRuntime {
     public func getXDMSharedState(extensionName: String, event: Event?, barrier: Bool, resolution: SharedStateResolution) -> SharedStateResult? {
         return getXDMSharedState(extensionName: extensionName, event: event, barrier: barrier)
     }
-    
+
     public func unregisterExtension() {
         // no-op
     }

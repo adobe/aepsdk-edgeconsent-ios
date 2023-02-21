@@ -24,17 +24,17 @@ target 'FunctionalTests' do
   pod 'AEPServices'
 end
 
-target 'TestAppSwift' do
+target 'TestApp' do
   pod 'AEPCore'
   pod 'AEPServices'
 end
 
-target 'TestAppSwifttvOS' do
+target 'TestApptvOS' do
   pod 'AEPCore'
   pod 'AEPServices'
 end
 
-target 'TestAppObjc' do
+target 'TestAppObjC' do
   pod 'AEPCore'
   pod 'AEPServices'
 end
