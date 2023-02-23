@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "AEPEdgeConsent"
-  s.version          = "1.0.1"
+  s.version          = "1.1.0"
   s.summary          = "Experience Platform Consent Collection extension for Adobe Experience Platform Mobile SDK. Written and maintained by Adobe."
 
   s.description      = <<-DESC
