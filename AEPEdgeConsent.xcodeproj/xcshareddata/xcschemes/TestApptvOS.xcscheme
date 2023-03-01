@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1200"
+   LastUpgradeVersion = "1340"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2170714325BB5BEB0052BACE"
-               BuildableName = "UnitTests.xctest"
-               BlueprintName = "UnitTests"
+               BlueprintIdentifier = "2EDF6183287CC84D007DCFCC"
+               BuildableName = "TestApptvOS.app"
+               BlueprintName = "TestApptvOS"
                ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2170714325BB5BEB0052BACE"
-               BuildableName = "UnitTests.xctest"
-               BlueprintName = "UnitTests"
-               ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2EDF6183287CC84D007DCFCC"
+            BuildableName = "TestApptvOS.app"
+            BlueprintName = "TestApptvOS"
+            ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2170714325BB5BEB0052BACE"
-            BuildableName = "UnitTests.xctest"
-            BlueprintName = "UnitTests"
+            BlueprintIdentifier = "2EDF6183287CC84D007DCFCC"
+            BuildableName = "TestApptvOS.app"
+            BlueprintName = "TestApptvOS"
             ReferencedContainer = "container:AEPEdgeConsent.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
