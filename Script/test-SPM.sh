@@ -73,18 +73,6 @@ xcodebuild build -scheme TestProject -destination 'generic/platform=iOS'
 echo '############# Build for x86_64 iOS simulator ###############'
 xcodebuild build -scheme TestProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
 
-
-...
-let package = Package(
-    name: \"TestProject\",
-    defaultLocalization: \"en-US\",
-    platforms: [
-        .iOS(.v10), .tvOS(.v10)
-    ],
-    products: [
-        .library(
-...
-
 # Archive for generic tvOS device
 echo '############# Archive for generic tvOS device ###############'
 xcodebuild archive -scheme TestProject -destination 'generic/platform=tvOS'
