@@ -56,7 +56,7 @@ build-app: setup
 	@echo "######################################################################"
 	@echo "### Building $(TEST_APP_TVOS_SCHEME)"
 	@echo "######################################################################"
-	xcodebuild clean build -workspace $(PROJECT_NAME).xcworkspace -scheme $(TEST_APP_TVOS_SCHEME) -make buildestination 'generic/platform=tvOS Simulator'
+	xcodebuild clean build -workspace $(PROJECT_NAME).xcworkspace -scheme $(TEST_APP_TVOS_SCHEME) -destination 'generic/platform=tvOS Simulator'
 
 archive: pod-update
 	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/ios.xcarchive" -sdk iphoneos -destination="iOS" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
