@@ -26,6 +26,12 @@ setup-tools: install-githook
 clean:
 	rm -rf build
 
+clean-ios-test-files:
+	rm -rf iosresults.xcresult
+
+clean-tvos-test-files:
+	rm -rf tvosresults.xcresult
+
 pod-repo-update:
 	pod repo update
 
@@ -89,13 +95,15 @@ build-app: setup
 	@echo "######################################################################"
 	xcodebuild clean build -workspace $(PROJECT_NAME).xcworkspace -scheme $(TEST_APP_TVOS_SCHEME) -destination 'generic/platform=tvOS Simulator'
 
-test-ios:
+test: test-ios test-tvos
+
+test-ios: clean-ios-test-files
 	@echo "######################################################################"
 	@echo "### Testing iOS"
 	@echo "######################################################################"
 	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -destination 'platform=iOS Simulator,name=iPhone 14' -derivedDataPath build/out -resultBundlePath iosresults.xcresult -enableCodeCoverage YES
 
-test-tvos:
+test-tvos: clean-tvos-test-files
 	@echo "######################################################################"
 	@echo "### Testing tvOS"
 	@echo "######################################################################"
@@ -105,16 +113,16 @@ install-githook:
 	./tools/git-hooks/setup.sh
 
 lint-autocorrect:
-	(./Pods/SwiftLint/swiftlint  autocorrect --format)
+	./Pods/SwiftLint/swiftlint  autocorrect
 
 lint:
-	(./Pods/SwiftLint/swiftlint lint Sources TestApp/)
+	./Pods/SwiftLint/swiftlint lint Sources TestApp
 
 check-version:
-	(sh ./Script/version.sh $(VERSION))
+	sh ./Script/version.sh $(VERSION)
 
 test-SPM-integration:
-	(sh ./Script/test-SPM.sh)
+	sh ./Script/test-SPM.sh
 
 test-podspec:
-	(sh ./Script/test-podspec.sh)
+	sh ./Script/test-podspec.sh
