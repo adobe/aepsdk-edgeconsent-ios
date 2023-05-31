@@ -37,7 +37,7 @@ pod-update: pod-repo-update
 	pod update
 
 ci-pod-install:
-	(bundle exec pod install --repo-update)
+	bundle exec pod install --repo-update
 
 ci-archive: ci-pod-update _archive
 
