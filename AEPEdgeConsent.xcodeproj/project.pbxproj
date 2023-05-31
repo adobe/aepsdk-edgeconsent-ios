@@ -1243,7 +1243,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1275,7 +1275,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
