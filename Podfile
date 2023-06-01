@@ -10,33 +10,34 @@ project 'AEPEdgeConsent.xcodeproj'
 pod 'SwiftLint', '0.44.0'
 
 target 'AEPEdgeConsent' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v2.0.0'
 end
 
 target 'UnitTests' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
 end
 
 target 'FunctionalTests' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
 end
 
 target 'TestApp' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
 end
 
 target 'TestApptvOS' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
 end
 
 target 'TestAppObjC' do
-  pod 'AEPCore'
-  pod 'AEPServices'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
 end
 
 post_install do |pi|

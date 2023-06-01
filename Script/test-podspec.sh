@@ -28,10 +28,10 @@ echo "
 platform :ios, '11.0'
 target '$PROJECT_NAME' do
   use_frameworks!
-  pod 'AEPCore'
-  pod 'AEPServices'
-  pod 'AEPRulesEngine'
-  pod 'AEPEdge'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v2.0.0'
+  pod 'AEPEdge', :git => 'https://github.com/adobe/aepsdk-edge-ios.git', :branch => 'dev'
   pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
 end
 " >>Podfile
@@ -70,10 +70,10 @@ echo "
 platform :tvos, '11.0'
 target '$PROJECT_NAME' do
   use_frameworks!
-  pod 'AEPCore'
-  pod 'AEPServices'
-  pod 'AEPRulesEngine'
-  pod 'AEPEdge'
+  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
+  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v2.0.0'
+  pod 'AEPEdge', :git => 'https://github.com/adobe/aepsdk-edge-ios.git', :branch => 'dev'
   pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
 end
 " >>Podfile
