@@ -28,8 +28,8 @@ echo "
 platform :ios, '11.0'
 target '$PROJECT_NAME' do
   use_frameworks!
-  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'staging'
-  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'staging'
+  pod 'AEPCore', '~> 4.0'
+  pod 'AEPServices', '~> 4.0'
   pod 'AEPRulesEngine', '~> 4.0'
   pod 'AEPEdge', :git => 'https://github.com/adobe/aepsdk-edge-ios.git', :branch => 'dev'
   pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
@@ -70,8 +70,8 @@ echo "
 platform :tvos, '11.0'
 target '$PROJECT_NAME' do
   use_frameworks!
-  pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'staging'
-  pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'staging'
+  pod 'AEPCore', '~> 4.0'
+  pod 'AEPServices', '~> 4.0'
   pod 'AEPRulesEngine', '~> 4.0'
   pod 'AEPEdge', :git => 'https://github.com/adobe/aepsdk-edge-ios.git', :branch => 'dev'
   pod 'AEPEdgeConsent', :path => '../AEPEdgeConsent.podspec'
