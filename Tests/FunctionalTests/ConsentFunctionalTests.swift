@@ -126,7 +126,7 @@ class ConsentFunctionalTests: XCTestCase {
         mockRuntime.resetDispatchedEventAndCreatedSharedStates()
 
         // test
-        let emptyConfig = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: ["consents": [String : Any]()])
+        let emptyConfig = Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: ["consents": [:]])
         mockRuntime.simulateComingEvents(emptyConfig)
 
         // verify

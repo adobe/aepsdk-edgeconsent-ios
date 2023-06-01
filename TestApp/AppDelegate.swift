@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         MobileCore.setLogLevel(.trace)
-        let defaultsConsents: [String : Any] = ["collect": ["val": "y"], "personalize": ["content": ["val": "n"]]]
+        let defaultsConsents = ["collect": ["val": "y"], "personalize": ["content": ["val": "n"]]]
         let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
         MobileCore.updateConfigurationWith(configDict: defaultConsent)
         MobileCore.registerExtensions([Consent.self], {
