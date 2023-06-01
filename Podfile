@@ -12,7 +12,6 @@ pod 'SwiftLint', '0.44.0'
 target 'AEPEdgeConsent' do
   pod 'AEPCore', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
   pod 'AEPServices', :git => 'https://github.com/adobe/aepsdk-core-ios.git', :branch => 'dev-v4.0.0'
-  pod 'AEPRulesEngine', :git => 'https://github.com/adobe/aepsdk-rulesengine-ios.git', :branch => 'dev-v2.0.0'
 end
 
 target 'UnitTests' do
