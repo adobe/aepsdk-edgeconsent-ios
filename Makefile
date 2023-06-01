@@ -113,7 +113,7 @@ install-githook:
 	./tools/git-hooks/setup.sh
 
 lint-autocorrect:
-	./Pods/SwiftLint/swiftlint autocorrect
+	./Pods/SwiftLint/swiftlint --fix
 
 lint:
 	./Pods/SwiftLint/swiftlint lint Sources TestApp
