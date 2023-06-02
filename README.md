@@ -7,7 +7,7 @@
 
 ## About this project
 
-The AEP Consent Collection extension enables consent preferences collection from the mobile application when using the [Adobe Experience Platform SDK](https://developer.adobe.com/client-sdks) and the Edge Network extension.
+The AEP Consent Collection mobile extension enables consent preferences collection from the mobile application when using the [Adobe Experience Platform SDK](https://developer.adobe.com/client-sdks) and the Edge Network extension.
 
 ## Requirements
 - Xcode 14.1 (or newer)
