@@ -466,9 +466,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify current consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents2)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents2)))
     }
 }
