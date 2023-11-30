@@ -12,9 +12,11 @@
 
 @testable import AEPCore
 @testable import AEPEdgeConsent
+import AEPServices
+import AEPTestUtils
 import XCTest
 
-class ConsentPublicAPITests: XCTestCase {
+class ConsentPublicAPITests: XCTestCase, AnyCodableAsserts {
 
     override func setUp() {
         EventHub.reset()
@@ -56,7 +58,7 @@ class ConsentPublicAPITests: XCTestCase {
 
     /// Ensures that update consents API dispatches the correct event with correct event data
     func testUpdateConsents() {
-        // setup
+        // Setup
         let consents = [
             "consents": [
                 "collect":
@@ -67,16 +69,28 @@ class ConsentPublicAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.edgeConsent, source: EventSource.updateConsent) { event in
+            // Verify - Consents in update event should be equal
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
-            let equal = NSDictionary(dictionary: consents.asDictionary()!).isEqual(to: (dispatchedConsents?.asDictionary())!) // consents in update event should be equal
-            XCTAssertTrue(equal)
+
+            let expectedConsentsJSON = #"""
+            {
+              "consents": {
+                "collect": {
+                  "val": "y"
+                }
+              }
+            }
+            """#
+
+            self.assertEqual(expected: self.getAnyCodable(expectedConsentsJSON)!, 
+                             actual: AnyCodable(AnyCodable.from(dictionary: dispatchedConsents?.asDictionary())))
             expectation.fulfill()
         }
 
-        // test
+        // Test
         Consent.update(with: consents)
 
-        // verify
+        // Verify
         wait(for: [expectation], timeout: 1)
     }
 
