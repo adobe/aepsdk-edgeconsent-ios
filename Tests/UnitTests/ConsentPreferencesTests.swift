@@ -12,28 +12,29 @@
 
 @testable import AEPEdgeConsent
 import AEPServices
+import AEPTestUtils
 import XCTest
 
-class ConsentPreferencesTests: XCTestCase {
+class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
 
     // MARK: Codable tests
 
     func testEncodeEmptyJson() {
-        // setup
+        // Setup
         let json = """
                    {
                    }
                    """
 
-        // test
+        // Test
         let preferences = try? JSONDecoder().decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testEncodeInvalidJson() {
-        // setup
+        // Setup
         let json = """
                    {
                     "key1": "val1",
@@ -41,15 +42,15 @@ class ConsentPreferencesTests: XCTestCase {
                    }
                    """
 
-        // test
+        // Test
         let preferences = try? JSONDecoder().decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testEncodeOneConsentWithTime() {
-        // setup
+        // Setup
         let date = Date()
         let json = """
                     {
@@ -64,28 +65,40 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """
 
-        // test decode
+        // Test decode
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "metadata": {
+            "time": "\#(date.iso8601UTCWithMillisecondsString)"
+          },
+          "adID": {
+            "val": "y"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601UTCWithMillisecondsString, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertNil(preferences?.consents["collect"])
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
 
     func testEncodeTwoConsentsWithTime() {
-        // setup
+        // Setup
         let date = Date()
         let json = """
                     {
@@ -103,22 +116,37 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """
 
-        // test decode
+        // Test decode
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "metadata": {
+            "time": "\#(date.iso8601UTCWithMillisecondsString)"
+          },
+          "adID": {
+            "val": "y"
+          },
+          "collect": {
+            "val": "n"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601UTCWithMillisecondsString, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertEqual("n", preferences?.consents["collect"]?.dictionaryValue!["val"] as? String)
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
@@ -126,22 +154,22 @@ class ConsentPreferencesTests: XCTestCase {
     // MARK: From event data tests
 
     func testFromEmptyEventData() {
-        // setup
+        // Setup
         let json = """
                    {
                    }
                    """.data(using: .utf8)!
 
-        // test
+        // Test
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testFromInvalidEventData() {
-        // setup
+        // Setup
         let json = """
                    {
                     "key1": "val1",
@@ -149,16 +177,16 @@ class ConsentPreferencesTests: XCTestCase {
                    }
                    """.data(using: .utf8)!
 
-        // test
+        // Test
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testFromEventDataWithValidConsentAndTime() {
-        // setup
+        // Setup
         let date = Date()
         let json = """
                     {
@@ -173,27 +201,39 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
 
-        // test decode
+        // Test decode
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "metadata": {
+            "time": "\#(date.iso8601UTCWithMillisecondsString)"
+          },
+          "adID": {
+            "val": "y"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601UTCWithMillisecondsString, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertNil(preferences?.consents["collect"])
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
 
     func testFromEventDataTwoConsentsAndTime() {
-        // setup
+        // Setup
         let date = Date()
         let json = """
                     {
@@ -211,21 +251,36 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
 
-        // test decode
+        // Test decode
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "metadata": {
+            "time": "\#(date.iso8601UTCWithMillisecondsString)"
+          },
+          "adID": {
+            "val": "y"
+          },
+          "collect": {
+            "val": "n"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601UTCWithMillisecondsString, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertEqual("n", preferences?.consents["collect"]?.dictionaryValue!["val"] as? String)
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
@@ -233,22 +288,22 @@ class ConsentPreferencesTests: XCTestCase {
     // MARK: Merge Tests
 
     func testMergeWithNilPreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: nil)
 
-        // verify
+        // Verify
         XCTAssertEqual(preferences, mergedPreferences)
     }
 
     func testMergeWithEmptyPreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
@@ -260,10 +315,10 @@ class ConsentPreferencesTests: XCTestCase {
         ]
         let emptyPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: emptyConsents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: emptyPreferences)
 
-        // verify
+        // Verify
         let expectedConsents = [
             "adID": ["val": "y"],
             "metadata": ["time": date.iso8601UTCWithMillisecondsString]
@@ -275,23 +330,23 @@ class ConsentPreferencesTests: XCTestCase {
     }
 
     func testMergeWithSamePreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: preferences)
 
-        // verify
+        // Verify
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: preferences.consents)!)
         XCTAssertTrue(equal)
     }
 
     func testMergeWithNoMatchingConsentsPreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
@@ -305,10 +360,10 @@ class ConsentPreferencesTests: XCTestCase {
         ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
-        // verify
+        // Verify
         let expectedConsents = [
             "adID": ["val": "y"],
             "collect": ["val": "y"],
@@ -321,7 +376,7 @@ class ConsentPreferencesTests: XCTestCase {
     }
 
     func testMergeWithSomeMatchingConsentsPreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "collect": ["val": "n"],
@@ -335,10 +390,10 @@ class ConsentPreferencesTests: XCTestCase {
         ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
-        // verify
+        // Verify
         let expectedConsents = [
             "adID": ["val": "n"],
             "collect": ["val": "n"],
@@ -351,7 +406,7 @@ class ConsentPreferencesTests: XCTestCase {
     }
 
     func testMergeWithAllMatchingConsentsPreferences() {
-        // setup
+        // Setup
         let consents = [
             "adID": ["val": "y"],
             "collect": ["val": "n"],
@@ -366,10 +421,10 @@ class ConsentPreferencesTests: XCTestCase {
         ]
         let otherPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: otherConsents)!)
 
-        // test
+        // Test
         let mergedPreferences = preferences.merge(with: otherPreferences)
 
-        // verify
+        // Verify
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: mergedPreferences.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: otherPreferences.consents)!)
         XCTAssertTrue(equal)
     }
@@ -377,22 +432,22 @@ class ConsentPreferencesTests: XCTestCase {
     // MARK: from(config) tests
 
     func testFromEmptyConfig() {
-        // setup
+        // Setup
         let json = """
                    {
                    }
                    """.data(using: .utf8)!
 
-        // test
+        // Test
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testFromInvalidConfig() {
-        // setup
+        // Setup
         let json = """
                    {
                     "key1": "val1",
@@ -400,16 +455,16 @@ class ConsentPreferencesTests: XCTestCase {
                    }
                    """.data(using: .utf8)!
 
-        // test
+        // Test
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
 
-        // verify
+        // Verify
         XCTAssertNil(preferences)
     }
 
     func testFromConfigWithValidEmptyConsents() {
-        // setup
+        // Setup
         let json = """
                     {
                       "consent.default": {
@@ -419,17 +474,17 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
 
-        // test decode
+        // Test decode
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
 
-        // verify
+        // Verify
         XCTAssertNotNil(preferences)
         XCTAssertTrue(preferences?.consents.isEmpty ?? false)
     }
 
     func testFromConfigWithValidConsentAndTime() {
-        // setup
+        // Setup
         let date = Date()
         let json = """
                     {
@@ -446,27 +501,39 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
 
-        // test decode
+        // Test decode
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "metadata": {
+            "time": "\#(date.iso8601UTCWithMillisecondsString)"
+          },
+          "adID": {
+            "val": "y"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual(date.iso8601UTCWithMillisecondsString, preferences?.consents["metadata"]?.dictionaryValue!["time"] as? String)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertNil(preferences?.consents["collect"])
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
 
     func testFromConfigTwoConsentsAndTime() {
-        // setup
+        // Setup
         let json = """
                     {
                      "consent.default": {
@@ -482,22 +549,34 @@ class ConsentPreferencesTests: XCTestCase {
                     }
                    """.data(using: .utf8)!
 
-        // test decode
+        // Test decode
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
+        
+        // Verify
+        let expectedConsentsJSON = #"""
+        {
+          "adID": {
+            "val": "y"
+          },
+          "collect": {
+            "val": "n"
+          }
+        }
+        """#
+        
+        // Verify consents
+        assertExactMatch(
+            expected: getAnyCodable(expectedConsentsJSON)!,
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
+            pathOptions: CollectionEqualCount(paths: nil))
 
-        // verify
-        XCTAssertNotNil(preferences)
-        XCTAssertEqual("y", preferences?.consents["adID"]?.dictionaryValue!["val"] as? String)
-        XCTAssertEqual("n", preferences?.consents["collect"]?.dictionaryValue!["val"] as? String)
-
-        // test encode
+        // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
         let encodedPreferences = try? JSONDecoder().decode(ConsentPreferences.self, from: encodedData!)
 
-        // verify encoding
+        // Verify encoding
         let equal = NSDictionary(dictionary: AnyCodable.toAnyDictionary(dictionary: preferences?.consents)!).isEqual(to: AnyCodable.toAnyDictionary(dictionary: encodedPreferences?.consents)!)
         XCTAssertTrue(equal)
     }
-
 }
