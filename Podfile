@@ -17,11 +17,13 @@ end
 target 'UnitTests' do
   pod 'AEPCore'
   pod 'AEPServices'
+  pod 'AEPTestUtils', :git => 'https://github.com/adobe/aepsdk-testutils-ios.git', :branch => 'network-helper-feature2'
 end
 
 target 'FunctionalTests' do
   pod 'AEPCore'
   pod 'AEPServices'
+  pod 'AEPTestUtils', :git => 'https://github.com/adobe/aepsdk-testutils-ios.git', :branch => 'network-helper-feature2'
 end
 
 target 'TestApp' do
