@@ -434,7 +434,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState_pt2 = mockRuntime.createdXdmSharedStates.last!
         let consentEvent_pt2 = mockRuntime.dispatchedEvents.last!
 
-        // new default for "share" should be added to current consents
+        // New default for "share" should be added to current consents
         let expectedConsentsJSON_pt2 = #"""
         {
           "consents": {
@@ -976,16 +976,6 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent responseContent + edge consentUpdate
 
         // Verify event dispatched: consent preferences updated
-        XCTAssertEqual(EventType.edgeConsent, mockRuntime.dispatchedEvents[0].type)
-        XCTAssertEqual(EventSource.responseContent, mockRuntime.dispatchedEvents[0].source)
-        let flatDict = mockRuntime.dispatchedEvents[0].data?.flattening()
-        XCTAssertEqual("y", flatDict?["consents.collect.val"] as? String)
-        XCTAssertEqual("n", flatDict?["consents.adID.val"] as? String)
-        XCTAssertEqual(event.timestamp.iso8601UTCWithMillisecondsString, flatDict?["consents.metadata.time"] as? String)
-
-        XCTAssertEqual(EventType.edge, mockRuntime.dispatchedEvents[1].type)
-        XCTAssertEqual(EventSource.updateConsent, mockRuntime.dispatchedEvents[1].source)
-
         let consentEvent = mockRuntime.dispatchedEvents[0]
         let edgeEvent = mockRuntime.dispatchedEvents[1]
 
