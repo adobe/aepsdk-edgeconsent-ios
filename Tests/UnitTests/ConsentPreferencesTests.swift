@@ -83,10 +83,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
@@ -137,10 +136,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
@@ -218,10 +216,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
@@ -271,10 +268,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
@@ -518,10 +514,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
@@ -566,10 +561,9 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify consents
-        assertExactMatch(
+        assertEqual(
             expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)),
-            pathOptions: CollectionEqualCount(paths: nil))
+            actual: AnyCodable(AnyCodable.from(dictionary: preferences?.consents)))
 
         // Test encode
         let encodedData = try? JSONEncoder().encode(preferences)
