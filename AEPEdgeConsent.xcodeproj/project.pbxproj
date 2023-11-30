@@ -23,7 +23,6 @@
 /* Begin PBXBuildFile section */
 		2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
 		2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
-		21639FCC25E70FCA000D95E5 /* MockDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21639FCB25E70FCA000D95E5 /* MockDataStore.swift */; };
 		2170714525BB5BEB0052BACE /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
 		2170714C25BB5BEB0052BACE /* AEPEdgeConsent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2170713E25BB5BEA0052BACE /* AEPEdgeConsent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */; };
@@ -32,7 +31,6 @@
 		2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719725BB5F9B0052BACE /* ConsentConstants.swift */; };
 		217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */; };
 		21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */; };
-		21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */; };
 		21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2B025D1EDB10089690E /* MockExtension.swift */; };
 		21B544E12DB5DE2F4C3315CB /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 877A8AACD6D02629093E37AA /* Pods_UnitTests.framework */; };
 		21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B225BB9060006C1CFE /* ConsentPreferences.swift */; };
@@ -45,7 +43,6 @@
 		21D4BAB125E9724F00DD11AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB025E9724F00DD11AF /* Assets.xcassets */; };
 		21D4BAB425E9724F00DD11AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */; };
 		21D4BAB725E9724F00DD11AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21D4BAB525E9724F00DD11AF /* LaunchScreen.storyboard */; };
-		21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */; };
 		2EDF6188287CC84D007DCFCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAA25E9724E00DD11AF /* AppDelegate.swift */; };
 		2EDF6189287CC84D007DCFCC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAC25E9724F00DD11AF /* SceneDelegate.swift */; };
 		2EDF618A287CC84D007DCFCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D4BAAE25E9724F00DD11AF /* ContentView.swift */; };
@@ -115,7 +112,6 @@
 /* Begin PBXFileReference section */
 		09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApptvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2158820825E57C4C005B830B /* Dictionary+Flatten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Flatten.swift"; sourceTree = "<group>"; };
-		21639FCB25E70FCA000D95E5 /* MockDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataStore.swift; sourceTree = "<group>"; };
 		2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPEdgeConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2170713E25BB5BEA0052BACE /* AEPEdgeConsent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPEdgeConsent.h; sourceTree = "<group>"; };
 		2170713F25BB5BEA0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -128,7 +124,6 @@
 		2170719725BB5F9B0052BACE /* ConsentConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentConstants.swift; sourceTree = "<group>"; };
 		217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Consent+PublicAPI.swift"; sourceTree = "<group>"; };
 		21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPublicAPITests.swift; sourceTree = "<group>"; };
-		21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventHub+Testable.swift"; sourceTree = "<group>"; };
 		21A9E2B025D1EDB10089690E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 		21C095B225BB9060006C1CFE /* ConsentPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferences.swift; sourceTree = "<group>"; };
 		21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManager.swift; sourceTree = "<group>"; };
@@ -143,7 +138,6 @@
 		21D4BAB325E9724F00DD11AF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		21D4BAB625E9724F00DD11AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21D4BAB825E9724F00DD11AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestableExtensionRuntime.swift; sourceTree = "<group>"; };
 		27A17A616D290052F8E830C3 /* Pods-TestApptvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestApptvOS.release.xcconfig"; path = "Target Support Files/Pods-TestApptvOS/Pods-TestApptvOS.release.xcconfig"; sourceTree = "<group>"; };
 		2EDF6195287CC84D007DCFCC /* TestApptvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApptvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F2C06AA47E441327CE220B2 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -306,11 +300,8 @@
 		21A9E2B625D1EDB90089690E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				21E80A3025BF6EAD00011C18 /* TestableExtensionRuntime.swift */,
-				21A9E2AA25D1ED910089690E /* EventHub+Testable.swift */,
 				21A9E2B025D1EDB10089690E /* MockExtension.swift */,
 				2158820825E57C4C005B830B /* Dictionary+Flatten.swift */,
-				21639FCB25E70FCA000D95E5 /* MockDataStore.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -982,9 +973,6 @@
 				BFCDF45F27E93676005C4849 /* Date+ISO8601.swift in Sources */,
 				2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */,
 				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
-				21A9E2AB25D1ED910089690E /* EventHub+Testable.swift in Sources */,
-				21E80A3125BF6EAD00011C18 /* TestableExtensionRuntime.swift in Sources */,
-				21639FCC25E70FCA000D95E5 /* MockDataStore.swift in Sources */,
 				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);
