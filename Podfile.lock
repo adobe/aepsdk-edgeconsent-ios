@@ -12,7 +12,7 @@ PODS:
 DEPENDENCIES:
   - AEPCore
   - AEPServices
-  - AEPTestUtils (from `https://github.com/adobe/aepsdk-testutils-ios.git`, branch `network-helper-feature2`)
+  - AEPTestUtils (from `https://github.com/adobe/aepsdk-testutils-ios.git`, branch `feature/latest`)
   - SwiftLint (= 0.52.0)
 
 SPEC REPOS:
@@ -24,12 +24,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   AEPTestUtils:
-    :branch: network-helper-feature2
+    :branch: feature/latest
     :git: https://github.com/adobe/aepsdk-testutils-ios.git
 
 CHECKOUT OPTIONS:
   AEPTestUtils:
-    :commit: fa9e4a0b603fbc20bf4d610d7bdee6144fe860bf
+    :commit: 6f2da7c3619b97978c7bd5300496bc23c92421e8
     :git: https://github.com/adobe/aepsdk-testutils-ios.git
 
 SPEC CHECKSUMS:
@@ -39,6 +39,6 @@ SPEC CHECKSUMS:
   AEPTestUtils: 756e5997318be74584057d7628941c737d358640
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: c2d4239e9d9a62791f175fadd498f9feba014504
+PODFILE CHECKSUM: 218641fe0518aa2f923c3bbe7abb6b3bdf49b11b
 
 COCOAPODS: 1.12.0
