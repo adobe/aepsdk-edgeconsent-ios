@@ -69,7 +69,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -81,7 +81,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
@@ -117,7 +117,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -132,7 +132,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
@@ -198,7 +198,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         // Test decode
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -210,7 +210,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
@@ -245,7 +245,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         // Test decode
         let eventData = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(eventData: eventData!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -260,7 +260,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
@@ -492,7 +492,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         // Test decode
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -504,7 +504,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
@@ -537,7 +537,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         // Test decode
         let config = try! JSONSerialization.jsonObject(with: json, options: []) as? [String: Any]
         let preferences = ConsentPreferences.from(config: config!)
-        
+
         // Verify
         let expectedConsentsJSON = """
         {
@@ -549,7 +549,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
 
