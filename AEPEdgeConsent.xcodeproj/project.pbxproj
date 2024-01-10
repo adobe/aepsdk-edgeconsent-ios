@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
-		2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158820825E57C4C005B830B /* Dictionary+Flatten.swift */; };
 		2170714525BB5BEB0052BACE /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
 		2170714C25BB5BEB0052BACE /* AEPEdgeConsent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2170713E25BB5BEA0052BACE /* AEPEdgeConsent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */; };
@@ -111,7 +109,6 @@
 
 /* Begin PBXFileReference section */
 		09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApptvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2158820825E57C4C005B830B /* Dictionary+Flatten.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Flatten.swift"; sourceTree = "<group>"; };
 		2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AEPEdgeConsent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2170713E25BB5BEA0052BACE /* AEPEdgeConsent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AEPEdgeConsent.h; sourceTree = "<group>"; };
 		2170713F25BB5BEA0052BACE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -301,7 +298,6 @@
 			isa = PBXGroup;
 			children = (
 				21A9E2B025D1EDB10089690E /* MockExtension.swift */,
-				2158820825E57C4C005B830B /* Dictionary+Flatten.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -960,7 +956,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				21C0963325BF4928006C1CFE /* ConsentPreferencesManagerTests.swift in Sources */,
-				2158821225E5A729005B830B /* Dictionary+Flatten.swift in Sources */,
 				BFCDF45E27E93675005C4849 /* Date+ISO8601.swift in Sources */,
 				21C0960825BF3429006C1CFE /* ConsentPreferencesTests.swift in Sources */,
 			);
@@ -971,7 +966,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFCDF45F27E93676005C4849 /* Date+ISO8601.swift in Sources */,
-				2158820925E57C4C005B830B /* Dictionary+Flatten.swift in Sources */,
 				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
 				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
