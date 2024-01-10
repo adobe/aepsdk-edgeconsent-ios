@@ -718,12 +718,17 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             },
             "metadata": {
               "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
+            },
+            "personalize": {
+              "content": {
+                "val": "y"
+              }
             }
           }
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithExistingConsentsOverridden() {
