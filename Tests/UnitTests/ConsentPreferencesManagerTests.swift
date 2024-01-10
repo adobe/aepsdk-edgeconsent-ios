@@ -40,7 +40,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         // Verify
         let storedConsents = manager.persistedPreferences?.asDictionary()
         let currentConsents = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = """
         {
           "consents": {
@@ -56,7 +56,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify stored consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -88,7 +88,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         // Verify
         let storedConsents = manager.persistedPreferences?.asDictionary()
         let currentConsents = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = """
         {
           "consents": {
@@ -104,7 +104,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """
-        
+
         // Verify stored consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -131,11 +131,11 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test pt. 1
         XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
-        
+
         // Verify pt. 1
         let storedConsents = manager.persistedPreferences?.asDictionary()
         let currentConsents = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -151,7 +151,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify stored consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -175,11 +175,11 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test pt. 2
         XCTAssertTrue(manager.mergeAndUpdate(with: preferences_pt2))
-        
+
         // Verify pt. 2
         let storedConsents_pt2 = manager.persistedPreferences?.asDictionary()
         let currentConsents_pt2 = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON_pt2 = #"""
         {
           "consents": {
@@ -195,7 +195,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify stored consents
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
@@ -224,10 +224,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test
         XCTAssertTrue(manager.updateDefaults(with: preferences))
-        
+
         // Verify
         let defaultConsents = manager.defaultPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -243,7 +243,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify default consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -264,10 +264,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test pt. 1
         XCTAssertTrue(manager.updateDefaults(with: preferences))
-        
+
         // Verify pt. 1
         let defaultConsents = manager.defaultPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -283,7 +283,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify default consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -301,10 +301,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test pt. 2
         XCTAssertTrue(manager.updateDefaults(with: preferences2))
-        
+
         // Verify pt. 2
         let defaultConsents_pt2 = manager.defaultPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON_pt2 = #"""
         {
           "consents": {
@@ -317,7 +317,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify default consents
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
@@ -347,10 +347,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
 
         XCTAssertTrue(manager.updateDefaults(with: defaultPreferences))
-        
+
         // Verify
         let currentConsents = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -369,7 +369,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -399,10 +399,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         let defaultPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsents)!)
 
         XCTAssertFalse(manager.updateDefaults(with: defaultPreferences))
-        
+
         // Verify
         let currentConsents = manager.currentPreferences?.asDictionary()
-        
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -418,7 +418,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON,
@@ -451,7 +451,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
         // Test
         XCTAssertTrue(manager.updateDefaults(with: defaultpreferences2))
-        
+
         // Verify
         var currentConsents = manager.currentPreferences?.asDictionary()
 
@@ -464,7 +464,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
           }
         }
         """#
-        
+
         // Verify current consents
         assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
     }
