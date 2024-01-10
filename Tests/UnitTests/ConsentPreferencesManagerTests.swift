@@ -322,7 +322,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
             actual: defaultConsents_pt2,
-            pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), CollectionEqualCount(paths: nil))
+            pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldUpdate() {
@@ -453,14 +453,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         XCTAssertTrue(manager.updateDefaults(with: defaultpreferences2))
         
         // Verify
-        var currentConsents2 = manager.currentPreferences?.asDictionary()
-        var currentConsentsDictionary = currentConsents2?["consents"] as! [String: Any]
-
-        var val: [String: Any?] = [:]
-        val.updateValue(nil, forKey: "val")
-        let adID: [String: Any] = ["adID": val]
-        currentConsentsDictionary["adID"] = val
-        currentConsents2?["consents"] = currentConsentsDictionary
+        var currentConsents = manager.currentPreferences?.asDictionary()
 
         let expectedConsentsJSON = #"""
         {
@@ -473,6 +466,6 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify current consents
-        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents2, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
+        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
     }
 }
