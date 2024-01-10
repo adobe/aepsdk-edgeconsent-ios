@@ -72,7 +72,7 @@ class ConsentPublicAPITests: XCTestCase, AnyCodableAsserts {
             // Verify - Consents in update event should be equal
             let dispatchedConsents = ConsentPreferences.from(eventData: event.data!)
 
-            let expectedConsentsJSON = #"""
+            let expectedConsentsJSON = """
             {
               "consents": {
                 "collect": {
@@ -80,10 +80,10 @@ class ConsentPublicAPITests: XCTestCase, AnyCodableAsserts {
                 }
               }
             }
-            """#
+            """
 
-            self.assertEqual(expected: self.getAnyCodable(expectedConsentsJSON)!, 
-                             actual: AnyCodable(AnyCodable.from(dictionary: dispatchedConsents?.asDictionary())))
+            self.assertEqual(expected: expectedConsentsJSON,
+                             actual: dispatchedConsents?.asDictionary())
             expectation.fulfill()
         }
 
