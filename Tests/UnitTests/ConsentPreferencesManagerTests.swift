@@ -41,7 +41,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         let storedConsents = manager.persistedPreferences?.asDictionary()
         let currentConsents = manager.currentPreferences?.asDictionary()
         
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
           "consents": {
             "adID": {
@@ -55,18 +55,18 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
         
         // Verify stored consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: storedConsents)),
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents)),
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -89,7 +89,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         let storedConsents = manager.persistedPreferences?.asDictionary()
         let currentConsents = manager.currentPreferences?.asDictionary()
         
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
           "consents": {
             "adID": {
@@ -103,18 +103,18 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
         
         // Verify stored consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: storedConsents)),
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents)),
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -154,14 +154,14 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify stored consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: storedConsents)),
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents)),
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Setup pt. 2 - Update `collect` `val` to "y"
@@ -198,14 +198,14 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify stored consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: storedConsents_pt2)),
+            expected: expectedConsentsJSON_pt2,
+            actual: storedConsents_pt2,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents_pt2)),
+            expected: expectedConsentsJSON_pt2,
+            actual: currentConsents_pt2,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -246,8 +246,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify default consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: defaultConsents)),
+            expected: expectedConsentsJSON,
+            actual: defaultConsents,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -286,8 +286,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify default consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: defaultConsents)),
+            expected: expectedConsentsJSON,
+            actual: defaultConsents,
             typeMatchPaths: ["consents.metadata.time"])
 
         // Setup pt. 2 - Update removes `adID` `val`
@@ -320,8 +320,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify default consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: defaultConsents_pt2)),
+            expected: expectedConsentsJSON_pt2,
+            actual: defaultConsents_pt2,
             pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), CollectionEqualCount(paths: nil))
     }
 
@@ -372,8 +372,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents)),
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -421,8 +421,8 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         
         // Verify current consents
         assertExactMatch(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents)),
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
             typeMatchPaths: ["consents.metadata.time"])
     }
 
@@ -453,8 +453,15 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         XCTAssertTrue(manager.updateDefaults(with: defaultpreferences2))
         
         // Verify
-        let currentConsents2 = manager.currentPreferences?.asDictionary()
-        
+        var currentConsents2 = manager.currentPreferences?.asDictionary()
+        var currentConsentsDictionary = currentConsents2?["consents"] as! [String: Any]
+
+        var val: [String: Any?] = [:]
+        val.updateValue(nil, forKey: "val")
+        let adID: [String: Any] = ["adID": val]
+        currentConsentsDictionary["adID"] = val
+        currentConsents2?["consents"] = currentConsentsDictionary
+
         let expectedConsentsJSON = #"""
         {
           "consents": {
@@ -466,8 +473,6 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         """#
         
         // Verify current consents
-        assertEqual(
-            expected: getAnyCodable(expectedConsentsJSON)!,
-            actual: AnyCodable(AnyCodable.from(dictionary: currentConsents2)))
+        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents2, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 }
