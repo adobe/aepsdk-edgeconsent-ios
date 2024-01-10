@@ -71,16 +71,16 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
-          "metadata": {
-            "time": "\#(date.iso8601UTCWithMillisecondsString)"
-          },
           "adID": {
             "val": "y"
+          },
+          "metadata": {
+            "time": "\(date.iso8601UTCWithMillisecondsString)"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
@@ -119,19 +119,19 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = try? decoder.decode(ConsentPreferences.self, from: json.data(using: .utf8)!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
-          "metadata": {
-            "time": "\#(date.iso8601UTCWithMillisecondsString)"
-          },
           "adID": {
             "val": "y"
           },
           "collect": {
             "val": "n"
+          },
+          "metadata": {
+            "time": "\(date.iso8601UTCWithMillisecondsString)"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
@@ -200,16 +200,16 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = ConsentPreferences.from(eventData: eventData!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
-          "metadata": {
-            "time": "\#(date.iso8601UTCWithMillisecondsString)"
-          },
           "adID": {
             "val": "y"
+          },
+          "metadata": {
+            "time": "\(date.iso8601UTCWithMillisecondsString)"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
@@ -247,19 +247,19 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = ConsentPreferences.from(eventData: eventData!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
-          "metadata": {
-            "time": "\#(date.iso8601UTCWithMillisecondsString)"
-          },
           "adID": {
             "val": "y"
           },
           "collect": {
             "val": "n"
+          },
+          "metadata": {
+            "time": "\(date.iso8601UTCWithMillisecondsString)"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
@@ -494,16 +494,16 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = ConsentPreferences.from(config: config!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
-          "metadata": {
-            "time": "\#(date.iso8601UTCWithMillisecondsString)"
-          },
           "adID": {
             "val": "y"
+          },
+          "metadata": {
+            "time": "\(date.iso8601UTCWithMillisecondsString)"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
@@ -539,7 +539,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         let preferences = ConsentPreferences.from(config: config!)
         
         // Verify
-        let expectedConsentsJSON = #"""
+        let expectedConsentsJSON = """
         {
           "adID": {
             "val": "y"
@@ -548,7 +548,7 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
             "val": "n"
           }
         }
-        """#
+        """
         
         // Verify consents
         assertEqual(expected: expectedConsentsJSON, actual: preferences?.consents)
