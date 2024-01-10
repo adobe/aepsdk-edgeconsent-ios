@@ -65,29 +65,29 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "n"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "n"
+            },
             "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
 
     }
 
@@ -103,7 +103,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -111,15 +111,15 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_thenDefaultsRemovedWithEmptyConfig() {
@@ -139,17 +139,17 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {}
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        // Validate consent event
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_thenDefaultsRemovedWithEmptyConsents() {
@@ -169,17 +169,17 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {}
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        // Validate consent event
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExistViaSharedState() {
@@ -201,7 +201,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -209,15 +209,15 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_CachedConsentsExist_ConfigDefaultExist() {
@@ -237,29 +237,29 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "n"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "n"
+            },
             "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_MergesWithNew() {
@@ -278,45 +278,45 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let consentEvent = mockRuntime.dispatchedEvents[1]
         let edgeUpdateEvent = mockRuntime.dispatchedEvents.last!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "n"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "n"
+            },
             "metadata": {
-              "time": "\#(secondUpdateConsentEvent.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(secondUpdateConsentEvent.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
 
         // Edge event should only contain net new consents from buildSecondUpdateConsentEvent()
-        let expectedEdgeEventJSON = #"""
+        let expectedEdgeEvent = """
         {
           "consents": {
             "collect": {
               "val": "n"
             },
             "metadata": {
-              "time": "\#(secondUpdateConsentEvent.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(secondUpdateConsentEvent.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
-        assertEqual(expected: getAnyCodable(expectedEdgeEventJSON)!,
-                    actual: getAnyCodable(edgeUpdateEvent))
+        """
+
+        assertExactMatch(expected: expectedEdgeEvent, actual: edgeUpdateEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_DefaultsUpdated() {
@@ -336,7 +336,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -344,21 +344,21 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
 
         // Verify updating defaults
-        let sharedState_pt2 = mockRuntime.createdXdmSharedStates.last!
-        let consentEvent_pt2 = mockRuntime.dispatchedEvents.last!
+        let sharedState_afterUpdate = mockRuntime.createdXdmSharedStates.last!
+        let consentEvent_afterUpdate = mockRuntime.dispatchedEvents.last!
 
-        let expectedConsentsJSON_pt2 = #"""
+        let expectedConsents_afterUpdate = """
         {
           "consents": {
             "adID": {
@@ -366,15 +366,15 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState_pt2)))
+        // Validate shared state pt 2
+        assertExactMatch(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
 
-        XCTAssertEqual(EventType.edgeConsent, consentEvent_pt2.type)
-        XCTAssertEqual(EventSource.responseContent, consentEvent_pt2.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-                    actual: getAnyCodable(consentEvent_pt2))
+        // Validate consent event pt 2
+        XCTAssertEqual(EventType.edgeConsent, consentEvent_afterUpdate.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent_afterUpdate.source)
+        assertExactMatch(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
     }
 
     func testBootup_CachedConsentsExist_ConfigDefaultExist_DefaultsUpdated() {
@@ -406,7 +406,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let sharedState = mockRuntime.createdXdmSharedStates.first!
         let consentEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -416,26 +416,26 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
               "val": "n"
             },
             "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
 
+        // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
 
         // Verify consent update caused by "share" consent
-        let sharedState_pt2 = mockRuntime.createdXdmSharedStates.last!
-        let consentEvent_pt2 = mockRuntime.dispatchedEvents.last!
+        let sharedState_afterUpdate = mockRuntime.createdXdmSharedStates.last!
+        let consentEvent_afterUpdate = mockRuntime.dispatchedEvents.last!
 
         // New default for "share" should be added to current consents
-        let expectedConsentsJSON_pt2 = #"""
+        let expectedConsents_afterUpdate = """
         {
           "consents": {
             "adID": {
@@ -443,24 +443,24 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             },
             "collect": {
               "val": "n"
+            },
+            "metadata": {
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             },
             "share": {
               "val": "y"
-            },
-            "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState_pt2)))
+        // Validate shared state
+        assertExactMatch(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
 
-        XCTAssertEqual(EventType.edgeConsent, consentEvent_pt2.type)
-        XCTAssertEqual(EventSource.responseContent, consentEvent_pt2.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON_pt2)!,
-                    actual: getAnyCodable(consentEvent_pt2))
+        // Validate consent event
+        XCTAssertEqual(EventType.edgeConsent, consentEvent_afterUpdate.type)
+        XCTAssertEqual(EventSource.responseContent, consentEvent_afterUpdate.source)
+        assertExactMatch(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
     }
 
     // MARK: Consent update event processing
@@ -515,7 +515,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -525,14 +525,13 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
               "val": "y"
             },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(dispatchedEvent))
+        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
     }
 
     func testUpdateConsentHappyIgnoresMetadataDate() {
@@ -547,7 +546,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.last!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -557,15 +556,14 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
               "val": "y"
             },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
         XCTAssertNotEqual(event.timestamp, metadataDate)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(dispatchedEvent))
+        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
     }
 
     func testUpdateConsentMergeWithExistingHappy() {
@@ -587,7 +585,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify consent update event
         let dispatchedEvent = mockRuntime.dispatchedEvents.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
             "adID": {
@@ -597,33 +595,32 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
               "val": "n"
             },
             "metadata": {
-              "time": "\#(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(dispatchedEvent))
+        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
 
         // Verify edge update event
         let edgeEvent = mockRuntime.dispatchedEvents.last!
 
-        let expectedEdgeEventJSON = #"""
+        let expectedEdgeEvent = """
         {
           "consents": {
             "collect": {
               "val": "n"
             },
             "metadata": {
-              "time": "\#(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedEdgeEventJSON)!,
-                    actual: getAnyCodable(edgeEvent))
+        // Should only contain updated consents
+        assertExactMatch(expected: expectedEdgeEvent, actual: edgeEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
     }
 
     // MARK: Consent response event handling (consent:preferences)
@@ -678,24 +675,23 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithEmptyExistingConsentsIgnoresExtraneous() {
@@ -711,24 +707,23 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertExactMatch(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithExistingConsentsOverridden() {
@@ -747,24 +742,23 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.first!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithExistingConsentsMerged() {
@@ -783,24 +777,23 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.last!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
     }
 
     func testMultipleValidResponsesWithExistingConsentsMerged() {
@@ -820,24 +813,23 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify shared state
         let sharedState = mockRuntime.createdXdmSharedStates.last!
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "y"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(secondEvent.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: AnyCodable(AnyCodable.from(dictionary: sharedState)))
+        assertExactMatch(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponsesWithExistingConsentsUnchanged() {
@@ -869,26 +861,25 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify event dispatched: consent preferences updated
         let consentEvent = mockRuntime.dispatchedEvents[0]
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testResponse_dispatchConsentResponseContent_usesResponseMetadata() {
@@ -905,26 +896,25 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify event dispatched: consent preferences updated
         let consentEvent = mockRuntime.dispatchedEvents[0]
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testResponse_dispatchConsentResponseContent_multipleSameResponse() {
@@ -943,26 +933,25 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify event dispatched: consent preferences updated
         let consentEvent = mockRuntime.dispatchedEvents[0]
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(date.iso8601UTCWithMillisecondsString)"
+              "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
     }
 
     func testUpdateConsentRequest_dispatchConsentResponseContent() {
@@ -979,26 +968,25 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let consentEvent = mockRuntime.dispatchedEvents[0]
         let edgeEvent = mockRuntime.dispatchedEvents[1]
 
-        let expectedConsentsJSON = #"""
+        let expectedConsents = """
         {
           "consents": {
-            "collect": {
-              "val": "y"
-            },
             "adID": {
               "val": "n"
             },
+            "collect": {
+              "val": "y"
+            },
             "metadata": {
-              "time": "\#(event.timestamp.iso8601UTCWithMillisecondsString)"
+              "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
           }
         }
-        """#
+        """
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertEqual(expected: getAnyCodable(expectedConsentsJSON)!,
-                    actual: getAnyCodable(consentEvent))
+        assertExactMatch(expected: expectedConsents, actual: consentEvent)
 
         // Verify edge update event
         XCTAssertEqual(EventType.edge, edgeEvent.type)
