@@ -1,14 +1,18 @@
 PODS:
-  - AEPCore (4.0.0):
+  - AEPCore (4.2.2):
     - AEPRulesEngine (>= 4.0.0)
-    - AEPServices (>= 4.0.0)
+    - AEPServices (>= 4.2.2)
   - AEPRulesEngine (4.0.0)
-  - AEPServices (4.0.0)
+  - AEPServices (4.2.2)
+  - AEPTestUtils (1.0.0-beta):
+    - AEPCore (>= 4.0.0)
+    - AEPServices (>= 4.0.0)
   - SwiftLint (0.52.0)
 
 DEPENDENCIES:
   - AEPCore
   - AEPServices
+  - AEPTestUtils (from `https://github.com/adobe/aepsdk-testutils-ios.git`, branch `feature/latest`)
   - SwiftLint (= 0.52.0)
 
 SPEC REPOS:
@@ -18,12 +22,23 @@ SPEC REPOS:
     - AEPServices
     - SwiftLint
 
+EXTERNAL SOURCES:
+  AEPTestUtils:
+    :branch: feature/latest
+    :git: https://github.com/adobe/aepsdk-testutils-ios.git
+
+CHECKOUT OPTIONS:
+  AEPTestUtils:
+    :commit: 604f47c7e10215b0835dc61282e07175ae78befe
+    :git: https://github.com/adobe/aepsdk-testutils-ios.git
+
 SPEC CHECKSUMS:
-  AEPCore: dd7cd69696c768c610e6adc0307032985a381c7e
+  AEPCore: 3c0367f3454ae9950ae1f92f0d5f417ed747a49b
   AEPRulesEngine: 458450a34922823286ead045a0c2bd8c27e224c6
-  AEPServices: ca493988df250d84fda050124ff7549bcc43c65f
+  AEPServices: cc895946c9fb56a74334bf3950a3b067b073fcd1
+  AEPTestUtils: 756e5997318be74584057d7628941c737d358640
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: e2fec44cc73171e3ba5e5c0192e6f7dbdc60359d
+PODFILE CHECKSUM: 218641fe0518aa2f923c3bbe7abb6b3bdf49b11b
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3

@@ -12,9 +12,10 @@
 
 @testable import AEPEdgeConsent
 import AEPServices
+import AEPTestUtils
 import XCTest
 
-class ConsentPreferencesManagerTests: XCTestCase {
+class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
 
     override func setUp() {
         ServiceProvider.shared.namedKeyValueService = MockDataStore()
@@ -23,7 +24,7 @@ class ConsentPreferencesManagerTests: XCTestCase {
     // MARK: mergeAndUpdate(...) tests
 
     func testMergeAndUpdate() {
-        // setup
+        // Setup
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -33,24 +34,48 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
 
-        // verify
-        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
-        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify
+        let storedConsents = manager.persistedPreferences?.asDictionary()
+        let currentConsents = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = """
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
+            pathOptions: 
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testMergeAndUpdateShouldReturnFalse() {
-        // setup
+        // Setup
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -60,25 +85,49 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
         XCTAssertFalse(manager.mergeAndUpdate(with: preferences))
 
-        // verify
-        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
-        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify
+        let storedConsents = manager.persistedPreferences?.asDictionary()
+        let currentConsents = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = """
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testMergeAndUpdateMultipleMerges() {
-        // setup pt. 1
+        // Setup pt. 1
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -88,50 +137,98 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test pt. 1
+        // Test pt. 1
         XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
 
-        // verify pt. 1
-        let flatStoredConsents = manager.persistedPreferences?.asDictionary()?.flattening()
-        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify pt. 1
+        let storedConsents = manager.persistedPreferences?.asDictionary()
+        let currentConsents = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatStoredConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatStoredConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatStoredConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
-        // setup pt. 2
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
+
+        // Setup pt. 2 - Update `collect` `val` to "y"
         let date = Date()
-        let consents2 = [
+        let consents_pt2 = [
             "collect":
                 ["val": "y"],
             "metadata": ["time": date.iso8601UTCWithMillisecondsString]
         ]
-        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+        let preferences_pt2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents_pt2)!)
 
-        // test pt. 2
-        XCTAssertTrue(manager.mergeAndUpdate(with: preferences2))
+        // Test pt. 2
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences_pt2))
 
-        // verify pt. 2
-        let flatStoredConsents2 = manager.persistedPreferences?.asDictionary()?.flattening()
-        let flatCurrentConsents2 = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify pt. 2
+        let storedConsents_pt2 = manager.persistedPreferences?.asDictionary()
+        let currentConsents_pt2 = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatStoredConsents2?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatStoredConsents2?["consents.collect.val"] as? String, "y")
-        XCTAssertNotNil(flatStoredConsents2?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON_pt2 = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "y"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
 
-        XCTAssertEqual(flatCurrentConsents2?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatCurrentConsents2?["consents.collect.val"] as? String, "y")
-        XCTAssertNotNil(flatCurrentConsents2?["consents.metadata.time"] as? String)
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON_pt2,
+            actual: storedConsents_pt2,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON_pt2,
+            actual: currentConsents_pt2,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     // MARK: updateDefaults(...) tests
 
     func testupdateDefaults() {
-        // setup
+        // Setup
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -141,19 +238,39 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         XCTAssertTrue(manager.updateDefaults(with: preferences))
 
-        // verify
-        let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
+        // Verify
+        let defaultConsents = manager.defaultPreferences?.asDictionary()
 
-        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
+
+        // Verify default consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: defaultConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaultsMultipleMerges() {
-        // setup pt. 1
+        // Setup pt. 1
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -163,17 +280,37 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test pt. 1
+        // Test pt. 1
         XCTAssertTrue(manager.updateDefaults(with: preferences))
 
-        // verify pt. 1
-        let flatDefaultConsents = manager.defaultPreferences?.asDictionary()?.flattening()
+        // Verify pt. 1
+        let defaultConsents = manager.defaultPreferences?.asDictionary()
 
-        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
 
-        // setup pt. 2
+        // Verify default consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: defaultConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
+
+        // Setup pt. 2 - Update removes `adID` `val`
         let date = Date()
         let consents2 = [
             "collect":
@@ -182,19 +319,37 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
 
-        // test pt. 2
+        // Test pt. 2
         XCTAssertTrue(manager.updateDefaults(with: preferences2))
 
-        // verify pt. 2
-        let flatDefaultConsents2 = manager.defaultPreferences?.asDictionary()?.flattening()
+        // Verify pt. 2
+        let defaultConsents_pt2 = manager.defaultPreferences?.asDictionary()
 
-        XCTAssertNil(flatDefaultConsents2?["consents.adID.val"] as? String)
-        XCTAssertEqual(flatDefaultConsents2?["consents.collect.val"] as? String, "y")
-        XCTAssertNotNil(flatDefaultConsents2?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON_pt2 = #"""
+        {
+          "consents": {
+            "collect": {
+              "val": "y"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
+
+        // Verify default consents
+        assertExactMatch(
+            expected: expectedConsentsJSON_pt2,
+            actual: defaultConsents_pt2,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree),
+                KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldUpdate() {
-        // setup
+        // Setup
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -204,10 +359,10 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         manager.mergeAndUpdate(with: preferences)
 
-        // test
+        // Test
         let defaultConsents = [
             "share":
                 ["val": "n"]
@@ -216,17 +371,39 @@ class ConsentPreferencesManagerTests: XCTestCase {
 
         XCTAssertTrue(manager.updateDefaults(with: defaultPreferences))
 
-        // verify
-        let flatCurrentConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify
+        let currentConsents = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatCurrentConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatCurrentConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertEqual(flatCurrentConsents?["consents.share.val"] as? String, "n")
-        XCTAssertNotNil(flatCurrentConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            },
+            "share": {
+              "val": "n"
+            }
+          }
+        }
+        """#
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
-        // setup
+        // Setup
         var manager = ConsentPreferencesManager()
         let consents = [
             "collect":
@@ -236,10 +413,10 @@ class ConsentPreferencesManagerTests: XCTestCase {
         ]
         let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
 
-        // test
+        // Test
         manager.mergeAndUpdate(with: preferences)
 
-        // test
+        // Test
         let defaultConsents = [
             "adID":
                 ["val": "n"]
@@ -248,16 +425,36 @@ class ConsentPreferencesManagerTests: XCTestCase {
 
         XCTAssertFalse(manager.updateDefaults(with: defaultPreferences))
 
-        // verify
-        let flatDefaultConsents = manager.currentPreferences?.asDictionary()?.flattening()
+        // Verify
+        let currentConsents = manager.currentPreferences?.asDictionary()
 
-        XCTAssertEqual(flatDefaultConsents?["consents.adID.val"] as? String, "y")
-        XCTAssertEqual(flatDefaultConsents?["consents.collect.val"] as? String, "n")
-        XCTAssertNotNil(flatDefaultConsents?["consents.metadata.time"] as? String)
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "adID": {
+              "val": "y"
+            },
+            "collect": {
+              "val": "n"
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """#
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaults_RemovalOfDefaultConsent() {
-        // setup default collect and adID
+        // Setup default collect and adID
         var manager = ConsentPreferencesManager()
         let defaultConsent1 = [
             "collect": ["val": "n"],
@@ -266,25 +463,41 @@ class ConsentPreferencesManagerTests: XCTestCase {
         let defaultpreferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsent1)!)
         XCTAssertTrue(manager.updateDefaults(with: defaultpreferences1))
 
-        // setup update collect
+        // Setup update collect
         let updatedConsents = [
             "collect": ["val": "y"]
         ]
         let updatedPreferences = ConsentPreferences(consents: AnyCodable.from(dictionary: updatedConsents)!)
         manager.mergeAndUpdate(with: updatedPreferences)
 
-        // setup default only collect
+        // Setup default only collect
         let defaultConsent2 = [
             "collect": ["val": "n"]
         ]
         let defaultpreferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: defaultConsent2)!)
 
-        // test pt. 2
+        // Test
         XCTAssertTrue(manager.updateDefaults(with: defaultpreferences2))
 
-        // verify pt. 2
-        let currentConsents = manager.currentPreferences?.asDictionary()?.flattening()
-        XCTAssertNil(currentConsents?["consents.adID.val"] as? String)
-        XCTAssertEqual(currentConsents?["consents.collect.val"] as? String, "y")
+        // Verify
+        var currentConsents = manager.currentPreferences?.asDictionary()
+
+        let expectedConsentsJSON = #"""
+        {
+          "consents": {
+            "collect": {
+              "val": "y"
+            }
+          }
+        }
+        """#
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                KeyMustBeAbsent(paths: "consents.adID.val"),
+                CollectionEqualCount(scope: .subtree))
     }
 }
