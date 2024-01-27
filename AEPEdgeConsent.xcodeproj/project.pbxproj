@@ -29,7 +29,6 @@
 		2170719825BB5F9B0052BACE /* ConsentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170719725BB5F9B0052BACE /* ConsentConstants.swift */; };
 		217219E325CC9CDE00639914 /* Consent+PublicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */; };
 		21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */; };
-		21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A9E2B025D1EDB10089690E /* MockExtension.swift */; };
 		21B544E12DB5DE2F4C3315CB /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 877A8AACD6D02629093E37AA /* Pods_UnitTests.framework */; };
 		21C095B325BB9060006C1CFE /* ConsentPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B225BB9060006C1CFE /* ConsentPreferences.swift */; };
 		21C095B925BB906A006C1CFE /* ConsentPreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */; };
@@ -121,7 +120,6 @@
 		2170719725BB5F9B0052BACE /* ConsentConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentConstants.swift; sourceTree = "<group>"; };
 		217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Consent+PublicAPI.swift"; sourceTree = "<group>"; };
 		21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPublicAPITests.swift; sourceTree = "<group>"; };
-		21A9E2B025D1EDB10089690E /* MockExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExtension.swift; sourceTree = "<group>"; };
 		21C095B225BB9060006C1CFE /* ConsentPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferences.swift; sourceTree = "<group>"; };
 		21C095B825BB906A006C1CFE /* ConsentPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesManager.swift; sourceTree = "<group>"; };
 		21C0960725BF3429006C1CFE /* ConsentPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPreferencesTests.swift; sourceTree = "<group>"; };
@@ -277,7 +275,6 @@
 		2170716625BB5CDC0052BACE /* FunctionalTests */ = {
 			isa = PBXGroup;
 			children = (
-				21A9E2B625D1EDB90089690E /* Helpers */,
 				2170716725BB5CDC0052BACE /* ConsentFunctionalTests.swift */,
 				21A9E2A425D1E9690089690E /* ConsentPublicAPITests.swift */,
 				2170716925BB5CDC0052BACE /* Info.plist */,
@@ -292,14 +289,6 @@
 				217219E225CC9CDE00639914 /* Consent+PublicAPI.swift */,
 			);
 			path = Public;
-			sourceTree = "<group>";
-		};
-		21A9E2B625D1EDB90089690E /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				21A9E2B025D1EDB10089690E /* MockExtension.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		21D4BAA925E9724E00DD11AF /* TestApp */ = {
@@ -967,7 +956,6 @@
 			files = (
 				BFCDF45F27E93676005C4849 /* Date+ISO8601.swift in Sources */,
 				21A9E2A525D1E9690089690E /* ConsentPublicAPITests.swift in Sources */,
-				21A9E2B125D1EDB10089690E /* MockExtension.swift in Sources */,
 				2170716825BB5CDC0052BACE /* ConsentFunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

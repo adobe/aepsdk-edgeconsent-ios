@@ -322,7 +322,7 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
             actual: defaultConsents_pt2,
-            pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+            pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldUpdate() {
@@ -466,6 +466,6 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         """#
 
         // Verify current consents
-        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 }
