@@ -316,7 +316,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedEdgeEvent, actual: edgeUpdateEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+        assertExactMatch(expected: expectedEdgeEvent, actual: edgeUpdateEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_DefaultsUpdated() {
@@ -620,7 +620,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Should only contain updated consents
-        assertExactMatch(expected: expectedEdgeEvent, actual: edgeEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+        assertExactMatch(expected: expectedEdgeEvent, actual: edgeEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 
     // MARK: Consent response event handling (consent:preferences)
