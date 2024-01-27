@@ -61,13 +61,17 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: storedConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions: 
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: currentConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testMergeAndUpdateShouldReturnFalse() {
@@ -109,13 +113,17 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: storedConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: currentConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testMergeAndUpdateMultipleMerges() {
@@ -156,13 +164,17 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: storedConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: currentConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Setup pt. 2 - Update `collect` `val` to "y"
         let date = Date()
@@ -200,13 +212,17 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
             actual: storedConsents_pt2,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Verify current consents
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
             actual: currentConsents_pt2,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     // MARK: updateDefaults(...) tests
@@ -248,7 +264,9 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: defaultConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaultsMultipleMerges() {
@@ -288,7 +306,9 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: defaultConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
 
         // Setup pt. 2 - Update removes `adID` `val`
         let date = Date()
@@ -322,7 +342,10 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON_pt2,
             actual: defaultConsents_pt2,
-            pathOptions: ValueTypeMatch(paths: "consents.metadata.time"), KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree),
+                KeyMustBeAbsent(paths: "consents.adID.val"))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldUpdate() {
@@ -374,7 +397,9 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: currentConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaultsWithExistingConsents_ShouldNotUpdate() {
@@ -423,7 +448,9 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         assertExactMatch(
             expected: expectedConsentsJSON,
             actual: currentConsents,
-            typeMatchPaths: ["consents.metadata.time"])
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+                CollectionEqualCount(scope: .subtree))
     }
 
     func testUpdateDefaults_RemovalOfDefaultConsent() {
@@ -466,6 +493,11 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
         """#
 
         // Verify current consents
-        assertExactMatch(expected: expectedConsentsJSON, actual: currentConsents, pathOptions: KeyMustBeAbsent(paths: "consents.adID", keyNames: "val"))
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                KeyMustBeAbsent(paths: "consents.adID.val"),
+                CollectionEqualCount(scope: .subtree))
     }
 }
