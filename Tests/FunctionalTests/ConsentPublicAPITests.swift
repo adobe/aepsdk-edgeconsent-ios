@@ -59,13 +59,6 @@ class ConsentPublicAPITests: XCTestCase, AnyCodableAsserts {
     /// Ensures that update consents API dispatches the correct event with correct event data
     func testUpdateConsents() {
         // Setup
-        let consents = [
-            "consents": [
-                "collect":
-                    ["val": "y"]
-            ]
-        ]
-
         let expectation = XCTestExpectation(description: "updateConsents should dispatch an event with correct payload")
         expectation.assertForOverFulfill = true
         EventHub.shared.getExtensionContainer(MockExtension.self)?.registerListener(type: EventType.edgeConsent, source: EventSource.updateConsent) { event in
@@ -88,6 +81,12 @@ class ConsentPublicAPITests: XCTestCase, AnyCodableAsserts {
         }
 
         // Test
+        let consents = [
+            "consents": [
+                "collect":
+                    ["val": "y"]
+            ]
+        ]
         Consent.update(with: consents)
 
         // Verify
