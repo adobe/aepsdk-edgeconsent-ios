@@ -82,12 +82,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
 
     }
 
@@ -114,12 +114,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_thenDefaultsRemovedWithEmptyConfig() {
@@ -212,12 +212,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_CachedConsentsExist_ConfigDefaultExist() {
@@ -254,12 +254,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_MergesWithNew() {
@@ -295,12 +295,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
 
         // Edge event should only contain net new consents from buildSecondUpdateConsentEvent()
         let expectedEdgeEvent = """
@@ -316,7 +316,10 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedEdgeEvent, actual: edgeUpdateEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
+        assertExactMatch(
+            expected: expectedEdgeEvent,
+            actual: edgeUpdateEvent,
+            pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"), CollectionEqualCount(scope: .subtree))
     }
 
     func testBootup_NoCachedConsents_ConfigDefaultExist_DefaultsUpdated() {
@@ -347,12 +350,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
 
         // Verify updating defaults
         let sharedState_afterUpdate = mockRuntime.createdXdmSharedStates.last!
@@ -369,12 +372,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state pt 2
-        assertExactMatch(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
+        assertEqual(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
 
         // Validate consent event pt 2
         XCTAssertEqual(EventType.edgeConsent, consentEvent_afterUpdate.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent_afterUpdate.source)
-        assertExactMatch(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
+        assertEqual(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
     }
 
     func testBootup_CachedConsentsExist_ConfigDefaultExist_DefaultsUpdated() {
@@ -423,12 +426,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
 
         // Verify consent update caused by "share" consent
         let sharedState_afterUpdate = mockRuntime.createdXdmSharedStates.last!
@@ -455,12 +458,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Validate shared state
-        assertExactMatch(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
+        assertEqual(expected: expectedConsents_afterUpdate, actual: sharedState_afterUpdate)
 
         // Validate consent event
         XCTAssertEqual(EventType.edgeConsent, consentEvent_afterUpdate.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent_afterUpdate.source)
-        assertExactMatch(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
+        assertEqual(expected: expectedConsents_afterUpdate, actual: consentEvent_afterUpdate)
     }
 
     // MARK: Consent update event processing
@@ -531,7 +534,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
+        assertEqual(expected: expectedConsents, actual: dispatchedEvent)
     }
 
     func testUpdateConsentHappyIgnoresMetadataDate() {
@@ -563,7 +566,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         XCTAssertNotEqual(event.timestamp, metadataDate)
-        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
+        assertEqual(expected: expectedConsents, actual: dispatchedEvent)
     }
 
     func testUpdateConsentMergeWithExistingHappy() {
@@ -601,7 +604,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: dispatchedEvent)
+        assertEqual(expected: expectedConsents, actual: dispatchedEvent)
 
         // Verify edge update event
         let edgeEvent = mockRuntime.dispatchedEvents.last!
@@ -620,7 +623,10 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         """
 
         // Should only contain updated consents
-        assertExactMatch(expected: expectedEdgeEvent, actual: edgeEvent, pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"))
+        assertExactMatch(
+            expected: expectedEdgeEvent,
+            actual: edgeEvent,
+            pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"), CollectionEqualCount(scope: .subtree))
     }
 
     // MARK: Consent response event handling (consent:preferences)
@@ -691,7 +697,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithEmptyExistingConsentsIgnoresExtraneous() {
@@ -763,7 +769,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponseWithExistingConsentsMerged() {
@@ -798,7 +804,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
     }
 
     func testMultipleValidResponsesWithExistingConsentsMerged() {
@@ -834,7 +840,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         }
         """
 
-        assertExactMatch(expected: expectedConsents, actual: sharedState)
+        assertEqual(expected: expectedConsents, actual: sharedState)
     }
 
     func testValidResponsesWithExistingConsentsUnchanged() {
@@ -884,7 +890,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testResponse_dispatchConsentResponseContent_usesResponseMetadata() {
@@ -919,7 +925,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testResponse_dispatchConsentResponseContent_multipleSameResponse() {
@@ -956,7 +962,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
     }
 
     func testUpdateConsentRequest_dispatchConsentResponseContent() {
@@ -991,7 +997,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
         XCTAssertEqual(EventType.edgeConsent, consentEvent.type)
         XCTAssertEqual(EventSource.responseContent, consentEvent.source)
-        assertExactMatch(expected: expectedConsents, actual: consentEvent)
+        assertEqual(expected: expectedConsents, actual: consentEvent)
 
         // Verify edge update event
         XCTAssertEqual(EventType.edge, edgeEvent.type)
