@@ -54,12 +54,6 @@
 		30124AD4C967CCE6E441C0AF /* Pods_FunctionalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79824FF2DC5D9EF797353B8F /* Pods_FunctionalTests.framework */; };
 		5E79E859C13FA3D7D09F8B67 /* Pods_AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FBFA31E93600F3EFABBAAD5 /* Pods_AEPEdgeConsent.framework */; };
 		667E387BF7FBF6B6068678E7 /* Pods_TestApptvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */; };
-		92D9D4CA2BA4FF890005BCEF /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
-		92D9D4CB2BA4FF890005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		92D9D4CF2BA4FF8F0005BCEF /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
-		92D9D4D02BA4FF8F0005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		92D9D4D42BA4FF940005BCEF /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
-		92D9D4D52BA4FF940005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A44A5DA94D4EFCC852D2D2C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8D71F5046A8978899196E8 /* Pods_TestApp.framework */; };
 		B6F662302604B3C600BB6DD2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F6622F2604B3C600BB6DD2 /* AppDelegate.m */; };
 		B6F662362604B3C600BB6DD2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F662352604B3C600BB6DD2 /* ViewController.m */; };
@@ -109,27 +103,6 @@
 			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
 			remoteInfo = AEPConsent;
 		};
-		92D9D4CC2BA4FF890005BCEF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
-			remoteInfo = AEPEdgeConsent;
-		};
-		92D9D4D12BA4FF8F0005BCEF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
-			remoteInfo = AEPEdgeConsent;
-		};
-		92D9D4D62BA4FF940005BCEF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
-			remoteInfo = AEPEdgeConsent;
-		};
 		B6F662642604B86500BB6DD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
@@ -138,42 +111,6 @@
 			remoteInfo = AEPEdgeConsent;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		92D9D4CE2BA4FF890005BCEF /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				92D9D4CB2BA4FF890005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		92D9D4D32BA4FF8F0005BCEF /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				92D9D4D02BA4FF8F0005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		92D9D4D82BA4FF940005BCEF /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				92D9D4D52BA4FF940005BCEF /* AEPEdgeConsent.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApptvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A44A5DA94D4EFCC852D2D2C4 /* Pods_TestApp.framework in Frameworks */,
-				92D9D4CA2BA4FF890005BCEF /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,7 +216,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				667E387BF7FBF6B6068678E7 /* Pods_TestApptvOS.framework in Frameworks */,
-				92D9D4D42BA4FF940005BCEF /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +224,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7F76628958B331CDE628174 /* Pods_TestAppObjC.framework in Frameworks */,
-				92D9D4CF2BA4FF8F0005BCEF /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,13 +482,11 @@
 				21D4BAA625E9724E00DD11AF /* Resources */,
 				82BD9E88973E1020BD15067F /* [CP] Embed Pods Frameworks */,
 				2E18855F29A6B70600A994E8 /* ShellScript */,
-				92D9D4CE2BA4FF890005BCEF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				21D4BADE25E9766B00DD11AF /* PBXTargetDependency */,
-				92D9D4CD2BA4FF890005BCEF /* PBXTargetDependency */,
 			);
 			name = TestApp;
 			productName = AEPConsentTestApp;
@@ -571,13 +503,11 @@
 				2EDF618D287CC84D007DCFCC /* Resources */,
 				2B8D3072437203E0B80A73F8 /* [CP] Embed Pods Frameworks */,
 				2E18856029A6B70D00A994E8 /* ShellScript */,
-				92D9D4D82BA4FF940005BCEF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				2EDF6184287CC84D007DCFCC /* PBXTargetDependency */,
-				92D9D4D72BA4FF940005BCEF /* PBXTargetDependency */,
 			);
 			name = TestApptvOS;
 			productName = AEPConsentTestApp;
@@ -593,13 +523,11 @@
 				B6F662292604B3C600BB6DD2 /* Frameworks */,
 				B6F6622A2604B3C600BB6DD2 /* Resources */,
 				5E9E9A664859CDC1ED329CAC /* [CP] Embed Pods Frameworks */,
-				92D9D4D32BA4FF8F0005BCEF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				B6F662652604B86500BB6DD2 /* PBXTargetDependency */,
-				92D9D4D22BA4FF8F0005BCEF /* PBXTargetDependency */,
 			);
 			name = TestAppObjC;
 			productName = TestAppObjc;
@@ -1121,21 +1049,6 @@
 			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
 			targetProxy = 2EDF6185287CC84D007DCFCC /* PBXContainerItemProxy */;
 		};
-		92D9D4CD2BA4FF890005BCEF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
-			targetProxy = 92D9D4CC2BA4FF890005BCEF /* PBXContainerItemProxy */;
-		};
-		92D9D4D22BA4FF8F0005BCEF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
-			targetProxy = 92D9D4D12BA4FF8F0005BCEF /* PBXContainerItemProxy */;
-		};
-		92D9D4D72BA4FF940005BCEF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
-			targetProxy = 92D9D4D62BA4FF940005BCEF /* PBXContainerItemProxy */;
-		};
 		B6F662652604B86500BB6DD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
@@ -1482,7 +1395,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1506,7 +1418,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1530,7 +1441,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1556,7 +1466,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
