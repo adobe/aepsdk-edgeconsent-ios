@@ -48,6 +48,12 @@
 		30124AD4C967CCE6E441C0AF /* Pods_FunctionalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79824FF2DC5D9EF797353B8F /* Pods_FunctionalTests.framework */; };
 		5E79E859C13FA3D7D09F8B67 /* Pods_AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FBFA31E93600F3EFABBAAD5 /* Pods_AEPEdgeConsent.framework */; };
 		667E387BF7FBF6B6068678E7 /* Pods_TestApptvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */; };
+		9290E2C72BA5048500D2D393 /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
+		9290E2C82BA5048500D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9290E2CC2BA5048900D2D393 /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
+		9290E2CD2BA5048900D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9290E2D12BA5048D00D2D393 /* AEPEdgeConsent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; };
+		9290E2D22BA5048D00D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2170713B25BB5BEA0052BACE /* AEPEdgeConsent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A44A5DA94D4EFCC852D2D2C4 /* Pods_TestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8D71F5046A8978899196E8 /* Pods_TestApp.framework */; };
 		B6F662302604B3C600BB6DD2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F6622F2604B3C600BB6DD2 /* AppDelegate.m */; };
 		B6F662362604B3C600BB6DD2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F662352604B3C600BB6DD2 /* ViewController.m */; };
@@ -97,6 +103,27 @@
 			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
 			remoteInfo = AEPConsent;
 		};
+		9290E2C92BA5048500D2D393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
+			remoteInfo = AEPEdgeConsent;
+		};
+		9290E2CE2BA5048900D2D393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
+			remoteInfo = AEPEdgeConsent;
+		};
+		9290E2D32BA5048D00D2D393 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2170713A25BB5BEA0052BACE;
+			remoteInfo = AEPEdgeConsent;
+		};
 		B6F662642604B86500BB6DD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2170713225BB5BEA0052BACE /* Project object */;
@@ -105,6 +132,42 @@
 			remoteInfo = AEPEdgeConsent;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9290E2CB2BA5048500D2D393 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9290E2C82BA5048500D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9290E2D02BA5048900D2D393 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9290E2CD2BA5048900D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9290E2D52BA5048D00D2D393 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9290E2D22BA5048D00D2D393 /* AEPEdgeConsent.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		09645E3D3E3CB9984BF5C6F7 /* Pods_TestApptvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestApptvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A44A5DA94D4EFCC852D2D2C4 /* Pods_TestApp.framework in Frameworks */,
+				9290E2C72BA5048500D2D393 /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				667E387BF7FBF6B6068678E7 /* Pods_TestApptvOS.framework in Frameworks */,
+				9290E2D12BA5048D00D2D393 /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7F76628958B331CDE628174 /* Pods_TestAppObjC.framework in Frameworks */,
+				9290E2CC2BA5048900D2D393 /* AEPEdgeConsent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,11 +524,13 @@
 				21D4BAA625E9724E00DD11AF /* Resources */,
 				82BD9E88973E1020BD15067F /* [CP] Embed Pods Frameworks */,
 				2E18855F29A6B70600A994E8 /* ShellScript */,
+				9290E2CB2BA5048500D2D393 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				21D4BADE25E9766B00DD11AF /* PBXTargetDependency */,
+				9290E2CA2BA5048500D2D393 /* PBXTargetDependency */,
 			);
 			name = TestApp;
 			productName = AEPConsentTestApp;
@@ -479,11 +547,13 @@
 				2EDF618D287CC84D007DCFCC /* Resources */,
 				2B8D3072437203E0B80A73F8 /* [CP] Embed Pods Frameworks */,
 				2E18856029A6B70D00A994E8 /* ShellScript */,
+				9290E2D52BA5048D00D2D393 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				2EDF6184287CC84D007DCFCC /* PBXTargetDependency */,
+				9290E2D42BA5048D00D2D393 /* PBXTargetDependency */,
 			);
 			name = TestApptvOS;
 			productName = AEPConsentTestApp;
@@ -499,11 +569,13 @@
 				B6F662292604B3C600BB6DD2 /* Frameworks */,
 				B6F6622A2604B3C600BB6DD2 /* Resources */,
 				5E9E9A664859CDC1ED329CAC /* [CP] Embed Pods Frameworks */,
+				9290E2D02BA5048900D2D393 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				B6F662652604B86500BB6DD2 /* PBXTargetDependency */,
+				9290E2CF2BA5048900D2D393 /* PBXTargetDependency */,
 			);
 			name = TestAppObjC;
 			productName = TestAppObjc;
@@ -1019,6 +1091,21 @@
 			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
 			targetProxy = 2EDF6185287CC84D007DCFCC /* PBXContainerItemProxy */;
 		};
+		9290E2CA2BA5048500D2D393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
+			targetProxy = 9290E2C92BA5048500D2D393 /* PBXContainerItemProxy */;
+		};
+		9290E2CF2BA5048900D2D393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
+			targetProxy = 9290E2CE2BA5048900D2D393 /* PBXContainerItemProxy */;
+		};
+		9290E2D42BA5048D00D2D393 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
+			targetProxy = 9290E2D32BA5048D00D2D393 /* PBXContainerItemProxy */;
+		};
 		B6F662652604B86500BB6DD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2170713A25BB5BEA0052BACE /* AEPEdgeConsent */;
@@ -1106,7 +1193,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1115,7 +1202,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1167,7 +1254,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1175,7 +1262,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1195,13 +1282,13 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 5.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1210,7 +1297,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -1227,13 +1314,13 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 5.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.aep.edge.consent;
 				PRODUCT_MODULE_NAME = AEPEdgeConsent;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1241,7 +1328,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -1251,7 +1338,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/UnitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1264,7 +1351,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -1274,7 +1361,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/UnitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1287,7 +1374,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -1297,7 +1384,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/FunctionalTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1310,7 +1397,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -1320,7 +1407,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/FunctionalTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1333,7 +1420,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -1342,7 +1429,7 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1352,7 +1439,7 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1365,6 +1452,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
+				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1388,6 +1476,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TestApp/Preview Content\"";
+				DEVELOPMENT_TEAM = FKGEE875K4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1462,7 +1551,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FKGEE875K4;
 				INFOPLIST_FILE = TestAppObjc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1470,7 +1559,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.TestAppObjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -1483,7 +1572,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FKGEE875K4;
 				INFOPLIST_FILE = TestAppObjc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1491,7 +1580,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.TestAppObjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
