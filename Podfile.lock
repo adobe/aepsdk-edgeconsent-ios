@@ -13,7 +13,7 @@ DEPENDENCIES:
   - AEPCore (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `staging`)
   - AEPRulesEngine (from `https://github.com/adobe/aepsdk-rulesengine-ios.git`, branch `staging`)
   - AEPServices (from `https://github.com/adobe/aepsdk-core-ios.git`, branch `staging`)
-  - AEPTestUtils (from `https://github.com/adobe/aepsdk-testutils-ios.git`, branch `feature/latest`)
+  - AEPTestUtils (from `https://github.com/adobe/aepsdk-testutils-ios.git`, tag `v5.0.0-beta`)
   - SwiftLint (= 0.52.0)
 
 SPEC REPOS:
@@ -31,8 +31,8 @@ EXTERNAL SOURCES:
     :branch: staging
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPTestUtils:
-    :branch: feature/latest
     :git: https://github.com/adobe/aepsdk-testutils-ios.git
+    :tag: v5.0.0-beta
 
 CHECKOUT OPTIONS:
   AEPCore:
@@ -45,8 +45,8 @@ CHECKOUT OPTIONS:
     :commit: f44b7b0d66e2c6a1454b51ed5a9d835bfbc2a8f9
     :git: https://github.com/adobe/aepsdk-core-ios.git
   AEPTestUtils:
-    :commit: 88b9887c6b504fe39139b736a6360e9e2746496b
     :git: https://github.com/adobe/aepsdk-testutils-ios.git
+    :tag: v5.0.0-beta
 
 SPEC CHECKSUMS:
   AEPCore: f1c3e9238bb12e7e1103f4407c341ebc65aeab5b
@@ -55,6 +55,6 @@ SPEC CHECKSUMS:
   AEPTestUtils: 756e5997318be74584057d7628941c737d358640
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: aed68707c71d080b3a4fc815fe312af5591be77a
+PODFILE CHECKSUM: 94154e414279e9e552812a14093359a09eebf4cc
 
 COCOAPODS: 1.14.3
