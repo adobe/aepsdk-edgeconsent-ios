@@ -10,7 +10,7 @@
 The AEP Consent Collection mobile extension enables consent preferences collection from the mobile application when using the [Adobe Experience Platform SDK](https://developer.adobe.com/client-sdks) and the Edge Network extension.
 
 ## Requirements
-- Xcode 14.1 (or newer)
+- Xcode 15 (or newer)
 - Swift 5.1 (or newer)
 
 ## Installation
@@ -61,7 +61,7 @@ Alternatively, if your project has a `Package.swift` file, you can add AEPEdgeCo
 
 ```
 dependencies: [
-    .package(url: "https://github.com/adobe/aepsdk-edgeconsent-ios.git", .upToNextMajor(from: "4.0.0"))
+    .package(url: "https://github.com/adobe/aepsdk-edgeconsent-ios.git", .upToNextMajor(from: "5.0.0"))
 ],
 targets: [
     .target(name: "YourTarget",
