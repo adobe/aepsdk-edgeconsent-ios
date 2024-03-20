@@ -45,9 +45,9 @@ pod-update: pod-repo-update
 ci-pod-install:
 	bundle exec pod install --repo-update
 
-ci-archive: ci-pod-update _archive
+ci-archive: ci-pod-install _archive
 
-archive: pod-update _archive
+archive: pod-install _archive
 
 open:
 	open $(PROJECT_NAME).xcworkspace
