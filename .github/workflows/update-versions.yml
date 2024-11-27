@@ -47,5 +47,5 @@ jobs:
       version: ${{ github.event.inputs.version }}
       branch: ${{ github.event.inputs.branch }}
       dependencies: AEPCore ${{ github.event.inputs.core-dependency }}, AEPEdge ${{ github.event.inputs.edge-dependency }}
-      paths: Package.swift:swift_spm, AEPEdge.podspec, AEPEdge.xcodeproj/project.pbxproj, Sources/ConsentConstants.swift
+      paths: Package.swift:swift_spm, AEPEdgeConsent.podspec, AEPEdgeConsent.xcodeproj/project.pbxproj, Sources/ConsentConstants.swift
       update: true
