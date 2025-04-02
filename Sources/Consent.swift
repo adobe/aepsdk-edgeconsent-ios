@@ -79,12 +79,15 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        // set metadata
-        newPreferences.setTimestamp(date: event.timestamp)
-        preferencesManager.mergeAndUpdate(with: newPreferences)
-        shareCurrentConsents(event: event)
-        // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
-        dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
+        // Only proceed with Edge event dispatch if preferences actually changed
+        if preferencesManager.mergeAndUpdate(with: newPreferences) {
+            // Add timestamp after checking for change in preferences to prevent false positive from timestamp differences.
+            newPreferences.setTimestamp(date: event.timestamp)
+            preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
+
+            shareCurrentConsents(event: event)
+            dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
+        }
     }
 
     /// Invoked when an event with `EventType.edge` and source `consent:preferences` is dispatched

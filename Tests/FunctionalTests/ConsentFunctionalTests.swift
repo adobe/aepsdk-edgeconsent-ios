@@ -629,6 +629,29 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"), CollectionEqualCount(scope: .subtree))
     }
 
+    func testUpdateConsentOnlyDispatchesEdgeEventOnChange() {
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - same consent values
+        let firstRepeatEvent = buildFirstUpdateConsentEvent() // rebuild first event so timestamps are different
+        mockRuntime.simulateComingEvents(firstRepeatEvent)
+
+        // Verify - no events dispatched for unchanged consents
+        XCTAssertEqual(0, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
+    }
+
     // MARK: Consent response event handling (consent:preferences)
 
     func testEmptyResponseNilPayload() {
