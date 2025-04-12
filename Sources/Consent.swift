@@ -24,7 +24,12 @@ public class Consent: NSObject, Extension {
 
     private var preferencesManager = ConsentPreferencesManager()
 
+    // The forceSync flag, false means the SDK will only sync if preferences have changed.
+    // Flag updated via configuration shared state.
     private var forceSync = ConsentConstants.Defaults.CONSENT_FORCE_SYNC
+
+    // The last time a consent update was processed from public API.
+    private var lastConsentUpdateTime: Date?
 
     // MARK: Extension
 
@@ -82,13 +87,15 @@ public class Consent: NSObject, Extension {
         }
 
         // Only proceed with Edge event dispatch if preferences actually changed
-        if preferencesManager.mergeAndUpdate(with: newPreferences) || forceSync {
+        if preferencesManager.mergeAndUpdate(with: newPreferences) || shouldForceSync(event: event) {
             // Add timestamp after checking for change in preferences to prevent false positive from timestamp differences.
             newPreferences.setTimestamp(date: event.timestamp)
             preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
 
             shareCurrentConsents(event: event)
             dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
+
+            lastConsentUpdateTime = event.timestamp
         }
     }
 
@@ -172,5 +179,20 @@ public class Consent: NSObject, Extension {
         if let forceSync = config[ConsentConstants.SharedState.Configuration.CONSENT_FORCE_SYNC] as? Bool {
             self.forceSync = forceSync
         }
+    }
+
+    /// Returns true if the SDK should force a sync of consents.
+    /// Checks if forceSync is true and if the last consent update was too recent.
+    /// - Parameter event: the event that triggered the sync.
+    private func shouldForceSync(event: Event) -> Bool {
+        if !forceSync {
+            return false
+        }
+
+        guard let lastConsentUpdateTime = lastConsentUpdateTime else {
+            return true
+        }
+
+        return event.timestamp.timeIntervalSince(lastConsentUpdateTime) > ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL
     }
 }

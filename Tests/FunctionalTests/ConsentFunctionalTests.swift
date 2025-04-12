@@ -652,13 +652,9 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
     }
 
-    func testUpdateConsentDispatchesEdgeEventAlwaysWhenForceSyncIsTrue() {
+    func testUpdateConsentDoesNotDispatchEdgeEventWhenForceSyncIsTrueAndSameUpdateLessThanTimeout() {
         // Setup Configuration with forceSync set to true
-        let configUpdateEvent = Event(name: "Config update",
-                                      type: EventType.configuration,
-                                      source: EventSource.responseContent,
-                                      data: [ConsentConstants.SharedState.Configuration.CONSENT_FORCE_SYNC: true])
-        mockRuntime.simulateComingEvents(configUpdateEvent)
+        mockRuntime.simulateComingEvents(buildConfigUpdateForceSynceEvent(forceSync: true))
 
         // Setup - initial consent update
         let firstEvent = buildFirstUpdateConsentEvent()
@@ -667,6 +663,35 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
         // Test - same consent values
         mockRuntime.simulateComingEvents(firstEvent)
+
+        // Verify - no events dispatched for unchanged consents as event timestamps are equal.
+        XCTAssertEqual(0, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
+    }
+
+    func testUpdateConsentDispatchesEdgeEventWhenForceSyncIsTrueAndSameUpdateAfterTimeout() {
+        // Setup Configuration with forceSync set to true
+        mockRuntime.simulateComingEvents(buildConfigUpdateForceSynceEvent(forceSync: true))
+
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Need to pause to add 1 second delta to event timestamps
+        Thread.sleep(forTimeInterval: ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL)
+
+        // Test - same consent values
+        let firstRepeatEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstRepeatEvent)
 
         // Verify - events dispatched for unchanged consents
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
@@ -1249,5 +1274,12 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let config = [ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: cachedPrefs.asDictionary()]
 
         return Event(name: "Config update", type: EventType.configuration, source: EventSource.responseContent, data: config as [String: Any])
+    }
+
+    private func buildConfigUpdateForceSynceEvent(forceSync: Bool) -> Event {
+        return  Event(name: "Config update",
+                      type: EventType.configuration,
+                      source: EventSource.responseContent,
+                      data: [ConsentConstants.SharedState.Configuration.CONSENT_FORCE_SYNC: forceSync])
     }
 }

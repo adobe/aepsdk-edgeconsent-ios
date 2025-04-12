@@ -21,6 +21,8 @@ enum ConsentConstants {
     enum Defaults {
         // Default value for the forceSync flag, false means the SDK will only sync if preferences have changed.
         static let CONSENT_FORCE_SYNC = false
+        // The interval to ignore consecutive consent updates, in seconds.
+        static let IGNORE_CONSENT_UPDATES_INTERVAL: TimeInterval = 1
     }
 
     enum EventDataKeys {
