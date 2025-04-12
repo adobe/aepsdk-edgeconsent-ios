@@ -18,6 +18,11 @@ enum ConsentConstants {
     static let EXTENSION_VERSION = "5.0.0"
     static let LOG_TAG = FRIENDLY_NAME
 
+    enum Defaults {
+        // Default value for the forceSync flag, false means the SDK will only sync if preferences have changed.
+        static let CONSENT_FORCE_SYNC = false
+    }
+
     enum EventDataKeys {
         static let CONSENTS = "consents"
         static let METADATA = "metadata"
@@ -47,6 +52,7 @@ enum ConsentConstants {
         enum Configuration {
             static let STATE_OWNER_NAME = "com.adobe.module.configuration"
             static let CONSENT_DEFAULT = "consent.default"
+            static let CONSENT_FORCE_SYNC = "consent.forceSync"
         }
     }
 }

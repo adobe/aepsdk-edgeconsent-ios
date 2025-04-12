@@ -24,6 +24,8 @@ public class Consent: NSObject, Extension {
 
     private var preferencesManager = ConsentPreferencesManager()
 
+    private var forceSync = ConsentConstants.Defaults.CONSENT_FORCE_SYNC
+
     // MARK: Extension
 
     public required init?(runtime: ExtensionRuntime) {
@@ -80,7 +82,7 @@ public class Consent: NSObject, Extension {
         }
 
         // Only proceed with Edge event dispatch if preferences actually changed
-        if preferencesManager.mergeAndUpdate(with: newPreferences) {
+        if preferencesManager.mergeAndUpdate(with: newPreferences) || forceSync {
             // Add timestamp after checking for change in preferences to prevent false positive from timestamp differences.
             newPreferences.setTimestamp(date: event.timestamp)
             preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
@@ -165,6 +167,10 @@ public class Consent: NSObject, Extension {
 
         if preferencesManager.updateDefaults(with: defaultPrefs) {
             shareCurrentConsents(event: event)
+        }
+
+        if let forceSync = config[ConsentConstants.SharedState.Configuration.CONSENT_FORCE_SYNC] as? Bool {
+            self.forceSync = forceSync
         }
     }
 }

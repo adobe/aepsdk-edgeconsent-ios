@@ -652,6 +652,37 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
     }
 
+    func testUpdateConsentDispatchesEdgeEventAlwaysWhenForceSyncIsTrue() {
+        // Setup Configuration with forceSync set to true
+        let configUpdateEvent = Event(name: "Config update",
+                                      type: EventType.configuration,
+                                      source: EventSource.responseContent,
+                                      data: [ConsentConstants.SharedState.Configuration.CONSENT_FORCE_SYNC: true])
+        mockRuntime.simulateComingEvents(configUpdateEvent)
+
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - same consent values
+        mockRuntime.simulateComingEvents(firstEvent)
+
+        // Verify - events dispatched for unchanged consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count)
+
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
+    }
+
     // MARK: Consent response event handling (consent:preferences)
 
     func testEmptyResponseNilPayload() {
