@@ -75,13 +75,30 @@ struct ConsentPreferences: Codable, Equatable {
         return defaultPrefs
     }
 
-    /// Determines if two `ConsentPreferences` are equal
+    /// Determines if two `ConsentPreferences` are equal.
+    /// Ignores the "consents.metadata.time" field.
     /// - Parameters:
     ///   - lhs: a `ConsentPreferences`
     ///   - rhs: a `ConsentPreferences`
     /// - Returns: true if they are equal, otherwise false
     static func == (lhs: ConsentPreferences, rhs: ConsentPreferences) -> Bool {
-        return NSDictionary(dictionary: lhs.asDictionary() ?? [:]).isEqual(to: rhs.asDictionary() ?? [:])
+        var lhsDict = lhs.asDictionary() ?? [:]
+        if var lhsConsents = lhsDict[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any],
+           var lhsMetaData = lhsConsents[ConsentConstants.EventDataKeys.METADATA] as? [String: Any] {
+            lhsMetaData.removeValue(forKey: ConsentConstants.EventDataKeys.TIME)
+            lhsConsents[ConsentConstants.EventDataKeys.METADATA] = lhsMetaData
+            lhsDict[ConsentConstants.EventDataKeys.CONSENTS] = lhsConsents
+        }
+
+        var rhsDict = rhs.asDictionary() ?? [:]
+        if var rhsConsents = rhsDict[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any],
+           var rhsMetaData = rhsConsents[ConsentConstants.EventDataKeys.METADATA] as? [String: Any] {
+            rhsMetaData.removeValue(forKey: ConsentConstants.EventDataKeys.TIME)
+            rhsConsents[ConsentConstants.EventDataKeys.METADATA] = rhsMetaData
+            rhsDict[ConsentConstants.EventDataKeys.CONSENTS] = rhsConsents
+        }
+
+        return NSDictionary(dictionary: lhsDict).isEqual(to: rhsDict)
     }
 
 }

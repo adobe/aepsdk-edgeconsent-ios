@@ -417,6 +417,79 @@ class ConsentPreferencesTests: XCTestCase, AnyCodableAsserts {
         XCTAssertTrue(equal)
     }
 
+    // MARK: equals operator tests
+
+    func testEqualsWithEqualConsentPreferences() {
+        // Setup
+        let consents = [
+            "adID": ["val": "y"],
+            "collect": ["val": "n"],
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
+        ]
+        let preferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // Test
+        XCTAssertTrue(preferences1 == preferences2)
+    }
+
+    func testEqualsWithDifferentConsentPreferences() {
+        // Setup
+        let consents1 = [
+            "adID": ["val": "y"],
+            "collect": ["val": "n"]
+        ]
+        let preferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents1)!)
+        let consents2 = [
+            "adID": ["val": "y"],
+            "collect": ["val": "y"]
+        ]
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+
+        // Test
+        XCTAssertFalse(preferences1 == preferences2)
+    }
+
+    func testEqualsWithDifferentDictionaryOrder() {
+        // Setup
+        let timestamp = Date().iso8601UTCWithMillisecondsString
+        let consents1 = [
+            "adID": ["val": "y"],
+            "collect": ["val": "n"],
+            "metadata": ["time": timestamp]
+        ]
+        let consents2 = [
+            "collect": ["val": "n"],
+            "adID": ["val": "y"],
+            "metadata": ["time": timestamp]
+        ]
+        let preferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents1)!)
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+
+        // Test
+        XCTAssertTrue(preferences1 == preferences2)
+    }
+
+    func testEqualsDifferentTimestamp() {
+        // Setup
+        let consents1 = [
+            "adID": ["val": "y"],
+            "collect": ["val": "n"],
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
+        ]
+        let consents2 = [
+            "adID": ["val": "y"],
+            "collect": ["val": "n"],
+            "metadata": ["time": Date().addingTimeInterval(10).iso8601UTCWithMillisecondsString]
+        ]
+        let preferences1 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents1)!)
+        let preferences2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents2)!)
+
+        // Test
+        // Expect true because equality ignores timestamp
+        XCTAssertTrue(preferences1 == preferences2)
+    }
+
     // MARK: from(config) tests
 
     func testFromEmptyConfig() {
