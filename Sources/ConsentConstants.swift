@@ -18,6 +18,11 @@ enum ConsentConstants {
     static let EXTENSION_VERSION = "5.0.0"
     static let LOG_TAG = FRIENDLY_NAME
 
+    enum Defaults {
+        /// The interval to ignore consecutive consent updates, in seconds.
+        static let IGNORE_CONSENT_UPDATES_INTERVAL: TimeInterval = 1
+    }
+
     enum EventDataKeys {
         static let CONSENTS = "consents"
         static let METADATA = "metadata"

@@ -629,6 +629,71 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             pathOptions: KeyMustBeAbsent(paths: "consents.adID.val"), CollectionEqualCount(scope: .subtree))
     }
 
+    func testUpdateConsentDoesNotDispatchEdgeEventWhenSameUpdateLessThanTimeout() {
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - same consent values
+        mockRuntime.simulateComingEvents(firstEvent)
+
+        // Verify - no events dispatched for unchanged consents as event timestamps are equal.
+        XCTAssertEqual(0, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(0, mockRuntime.dispatchedEvents.count)
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
+    }
+
+    func testUpdateConsentDispatchesEdgeEventWhenDifferentUpdateLessThanTimeout() {
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents within timeout
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count)
+    }
+
+    func testUpdateConsentDispatchesEdgeEventWhenSameUpdateAfterTimeout() {
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Need to pause to add 1 second delta to event timestamps
+        Thread.sleep(forTimeInterval: ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL)
+
+        // Test - same consent values
+        let firstRepeatEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstRepeatEvent)
+
+        // Verify - events dispatched for unchanged consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count)
+
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
+    }
+
     // MARK: Consent response event handling (consent:preferences)
 
     func testEmptyResponseNilPayload() {
