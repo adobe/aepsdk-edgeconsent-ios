@@ -651,6 +651,21 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count) // consent response content + edge updateConsent
     }
 
+    func testUpdateConsentDispatchesEdgeEventWhenDifferentUpdateLessThanTimeout() {
+        // Setup - initial consent update
+        let firstEvent = buildFirstUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(firstEvent)
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Test - different consent values
+        let secondEvent = buildSecondUpdateConsentEvent()
+        mockRuntime.simulateComingEvents(secondEvent)
+
+        // Verify - events dispatched for changed consents withing timeout
+        XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
+        XCTAssertEqual(2, mockRuntime.dispatchedEvents.count)
+    }
+
     func testUpdateConsentDispatchesEdgeEventWhenSameUpdateAfterTimeout() {
         // Setup - initial consent update
         let firstEvent = buildFirstUpdateConsentEvent()
