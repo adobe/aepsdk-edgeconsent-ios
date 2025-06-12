@@ -19,7 +19,7 @@ enum ConsentConstants {
     static let LOG_TAG = FRIENDLY_NAME
 
     enum Defaults {
-        // The interval to ignore consecutive consent updates, in seconds.
+        /// The interval to ignore consecutive consent updates, in seconds.
         static let IGNORE_CONSENT_UPDATES_INTERVAL: TimeInterval = 1
     }
 
