@@ -661,7 +661,7 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         let secondEvent = buildSecondUpdateConsentEvent()
         mockRuntime.simulateComingEvents(secondEvent)
 
-        // Verify - events dispatched for changed consents withing timeout
+        // Verify - events dispatched for changed consents within timeout
         XCTAssertEqual(1, mockRuntime.createdXdmSharedStates.count)
         XCTAssertEqual(2, mockRuntime.dispatchedEvents.count)
     }
