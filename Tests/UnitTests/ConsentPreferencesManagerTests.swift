@@ -74,6 +74,59 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
             CollectionEqualCount(scope: .subtree))
     }
 
+    func testMergeAndUpdateNestedPreferences() {
+        // Setup
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect": ["val": "n"],
+            "marketing": ["preferred": "none", "push": ["val": "y"]],
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // Test
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
+
+        // Verify
+        let storedConsents = manager.persistedPreferences?.asDictionary()
+        let currentConsents = manager.currentPreferences?.asDictionary()
+
+        let expectedConsentsJSON = """
+        {
+          "consents": {
+            "collect": {
+              "val": "n"
+            },
+            "marketing": {
+              "preferred": "none",
+              "push": {
+                "val": "y"
+              }
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """
+
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+    }
+
     func testMergeAndUpdateShouldReturnFalse() {
         // Setup
         var manager = ConsentPreferencesManager()
@@ -267,6 +320,111 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
             }
             }
         """#
+
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON_pt2,
+            actual: storedConsents_pt2,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON_pt2,
+            actual: currentConsents_pt2,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+    }
+
+    func testMergeAndUpdateMultipleMergesNestedPreferences() {
+        // Setup pt. 1
+        var manager = ConsentPreferencesManager()
+        let consents = [
+            "collect": ["val": "n"],
+            "marketing": ["preferred": "none", "push": ["val": "y"]],
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
+        ]
+        let preferences = ConsentPreferences(consents: AnyCodable.from(dictionary: consents)!)
+
+        // Test pt. 1
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences))
+
+        // Verify pt. 1
+        let storedConsents = manager.persistedPreferences?.asDictionary()
+        let currentConsents = manager.currentPreferences?.asDictionary()
+
+        let expectedConsentsJSON = """
+        {
+          "consents": {
+            "collect": {
+              "val": "n"
+            },
+            "marketing": {
+              "preferred": "none",
+              "push": {
+                "val": "y"
+              }
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """
+
+        // Verify stored consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: storedConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+
+        // Verify current consents
+        assertExactMatch(
+            expected: expectedConsentsJSON,
+            actual: currentConsents,
+            pathOptions:
+                ValueTypeMatch(paths: "consents.metadata.time"),
+            CollectionEqualCount(scope: .subtree))
+
+        // Setup pt. 2 - Update `marketing` `preferred` to `sms` and add `sms` `val` to "y"
+        let consents_pt2 = [
+            "marketing": ["preferred": "sms", "sms": ["val": "y"]],
+            "metadata": ["time": Date().iso8601UTCWithMillisecondsString]
+        ]
+        let preferences_pt2 = ConsentPreferences(consents: AnyCodable.from(dictionary: consents_pt2)!)
+
+        // Test pt. 2
+        XCTAssertTrue(manager.mergeAndUpdate(with: preferences_pt2))
+
+        // Verify pt. 2
+        let storedConsents_pt2 = manager.persistedPreferences?.asDictionary()
+        let currentConsents_pt2 = manager.currentPreferences?.asDictionary()
+
+        let expectedConsentsJSON_pt2 = """
+        {
+          "consents": {
+            "collect": {
+              "val": "n"
+            },
+            "marketing": {
+              "preferred": "sms",
+              "push": {
+                "val": "y"
+              },
+              "sms": {
+                "val": "y"
+              }
+            },
+            "metadata": {
+              "time": "STRING_TYPE"
+            }
+          }
+        }
+        """
 
         // Verify stored consents
         assertExactMatch(

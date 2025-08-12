@@ -30,8 +30,44 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        let mergedConsents = consents.merging(otherPreferences.consents) { _, new in new }
+
+        // Convert to regular dictionaries for easier manipulation
+        let selfDict = consents.asDictionary() ?? [:]
+        let otherDict = otherPreferences.consents.asDictionary() ?? [:]
+
+        // Perform deep merge
+        let mergedDict = deepMerge(selfDict, with: otherDict)
+
+        // Convert back to AnyCodable dictionary
+        let mergedConsents = AnyCodable.from(dictionary: mergedDict) ?? [:]
         return ConsentPreferences(consents: mergedConsents)
+    }
+
+    /// Recursively merges two dictionaries, preserving nested structure
+    /// - Parameters:
+    ///   - base: The base dictionary to merge into
+    ///   - other: The dictionary to merge from
+    /// - Returns: The merged dictionary
+    private func deepMerge(_ base: [String: Any], with other: [String: Any]) -> [String: Any] {
+        var result = base
+
+        for (key, value) in other {
+            if let existingValue = result[key] {
+                // If both values are dictionaries, merge them recursively
+                if let existingDict = existingValue as? [String: Any],
+                   let newDict = value as? [String: Any] {
+                    result[key] = deepMerge(existingDict, with: newDict)
+                } else {
+                    // If they're not both dictionaries, the new value takes precedence
+                    result[key] = value
+                }
+            } else {
+                // Key doesn't exist in base, add it
+                result[key] = value
+            }
+        }
+
+        return result
     }
 
     /// Sets the provided date as metadata time for current consent preferences
