@@ -52,17 +52,18 @@ struct ConsentPreferences: Codable, Equatable {
         var result = base
 
         for (key, value) in other {
-            if let existingValue = result[key] {
-                // If both values are dictionaries, merge them recursively
-                if let existingDict = existingValue as? [String: Any],
-                   let newDict = value as? [String: Any] {
-                    result[key] = deepMerge(existingDict, with: newDict)
-                } else {
-                    // If they're not both dictionaries, the new value takes precedence
-                    result[key] = value
-                }
-            } else {
+            guard let existingValue = result[key] else {
                 // Key doesn't exist in base, add it
+                result[key] = value
+                continue
+            }
+
+            // If both values are dictionaries, merge them recursively
+            if let existingDict = existingValue as? [String: Any],
+               let newDict = value as? [String: Any] {
+                result[key] = deepMerge(existingDict, with: newDict)
+            } else {
+                // If they're not both dictionaries, the new value takes precedence
                 result[key] = value
             }
         }
