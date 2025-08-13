@@ -30,4 +30,5 @@ jobs:
       run-test-tvos-functional: true
       run-build-xcframework-and-app: true
       enable-codecov: true
+      result-bundle-path: build/reports
     secrets: inherit
