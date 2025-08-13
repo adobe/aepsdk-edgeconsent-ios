@@ -37,29 +37,6 @@ else
 	TVOS_DESTINATION = "platform=tvOS Simulator,name=$(TVOS_DEVICE_NAME),OS=$(TVOS_VERSION)"
 endif
 
-clean-derived-data:
-	@if [ -z "$(SCHEME)" ]; then \
-		echo "Error: SCHEME variable is not set."; \
-		exit 1; \
-	fi; \
-	if [ -z "$(DESTINATION)" ]; then \
-		echo "Error: DESTINATION variable is not set."; \
-		exit 1; \
-	fi; \
-	echo "Cleaning derived data for scheme: $(SCHEME) with destination: $(DESTINATION)"; \
-	DERIVED_DATA_PATH=`xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme "$(SCHEME)" -destination "$(DESTINATION)" -showBuildSettings | grep -m1 'BUILD_DIR' | awk '{print $$3}' | sed 's|/Build/Products||'`; \
-	echo "DerivedData Path: $$DERIVED_DATA_PATH"; \
-	\
-	LOGS_TEST_DIR=$$DERIVED_DATA_PATH/Logs/Test; \
-	echo "Logs Test Path: $$LOGS_TEST_DIR"; \
-	\
-	if [ -d "$$LOGS_TEST_DIR" ]; then \
-		echo "Removing existing .xcresult files in $$LOGS_TEST_DIR"; \
-		rm -rf "$$LOGS_TEST_DIR"/*.xcresult; \
-	else \
-		echo "Logs/Test directory does not exist. Skipping cleanup."; \
-	fi;
-
 setup:
 	pod install
 
@@ -68,11 +45,8 @@ setup-tools: install-githook
 clean:
 	rm -rf build
 
-clean-ios-test-files:
-	rm -rf iosresults.xcresult
-
-clean-tvos-test-files:
-	rm -rf tvosresults.xcresult
+clean-test-files:
+	rm -rf build/reports
 
 pod-repo-update:
 	pod repo update
@@ -107,15 +81,15 @@ build-ios:
 	@echo "######################################################################"
 	@echo "### Building iOS archive"
 	@echo "######################################################################"
-	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/ios.xcarchive" -sdk iphoneos -destination="iOS" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
-	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/ios_simulator.xcarchive" -sdk iphonesimulator -destination="iOS Simulator" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
+	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/ios.xcarchive" -sdk iphoneos -destination="iOS" SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
+	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/ios_simulator.xcarchive" -sdk iphonesimulator -destination="iOS Simulator" SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
 
 build-tvos:
 	@echo "######################################################################"
 	@echo "### Building tvOS archive"
 	@echo "######################################################################"
-	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/tvos.xcarchive" -sdk appletvos -destination="tvOS" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
-	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/tvos_simulator.xcarchive" -sdk appletvsimulator -destination="tvOS Simulator" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
+	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/tvos.xcarchive" -sdk appletvos -destination="tvOS" SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
+	xcodebuild archive -workspace $(PROJECT_NAME).xcworkspace -scheme $(SCHEME_NAME_XCFRAMEWORK) -archivePath "./build/tvos_simulator.xcarchive" -sdk appletvsimulator -destination="tvOS Simulator" SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES ADB_SKIP_LINT=YES
 
 zip:
 	cd build && zip -r -X $(PROJECT_NAME).xcframework.zip $(PROJECT_NAME).xcframework/
@@ -139,33 +113,33 @@ build-app: setup
 
 test: unit-test-ios functional-test-ios unit-test-tvos functional-test-tvos
 
-unit-test-ios:
+unit-test-ios: clean-test-files
 	@echo "######################################################################"
 	@echo "### Unit Testing iOS"
 	@echo "######################################################################"
 	@$(MAKE) clean-derived-data SCHEME=UnitTests DESTINATION=$(IOS_DESTINATION)
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "UnitTests" -destination $(IOS_DESTINATION) -enableCodeCoverage YES ADB_SKIP_LINT=YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "UnitTests" -destination $(IOS_DESTINATION) -derivedDataPath build/out -resultBundlePath build/reports/iosUnitResults.xcresult -enableCodeCoverage YES ADB_SKIP_LINT=YES
 
-functional-test-ios:
+functional-test-ios: clean-test-files
 	@echo "######################################################################"
 	@echo "### Functional Testing iOS"
 	@echo "######################################################################"
 	@$(MAKE) clean-derived-data SCHEME=FunctionalTests DESTINATION=$(IOS_DESTINATION)
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "FunctionalTests" -destination $(IOS_DESTINATION) -enableCodeCoverage YES ADB_SKIP_LINT=YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "FunctionalTests" -destination $(IOS_DESTINATION) -derivedDataPath build/out -resultBundlePath build/reports/iosFunctionalResults.xcresult -enableCodeCoverage YES ADB_SKIP_LINT=YES
 
-unit-test-tvos:
+unit-test-tvos: clean-test-files
 	@echo "######################################################################"
 	@echo "### Unit Testing tvOS"
 	@echo "######################################################################"
 	@$(MAKE) clean-derived-data SCHEME=UnitTests DESTINATION=$(TVOS_DESTINATION)
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "UnitTests" -destination $(TVOS_DESTINATION) -enableCodeCoverage YES ADB_SKIP_LINT=YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "UnitTests" -destination $(TVOS_DESTINATION) -derivedDataPath build/out -resultBundlePath build/reports/tvosUnitResults.xcresult -enableCodeCoverage YES ADB_SKIP_LINT=YES
 
-functional-test-tvos:
+functional-test-tvos: clean-test-files
 	@echo "######################################################################"
 	@echo "### Functional Testing tvOS"
 	@echo "######################################################################"
 	@$(MAKE) clean-derived-data SCHEME=FunctionalTests DESTINATION=$(TVOS_DESTINATION)
-	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "FunctionalTests" -destination $(TVOS_DESTINATION) -enableCodeCoverage YES ADB_SKIP_LINT=YES
+	xcodebuild test -workspace $(PROJECT_NAME).xcworkspace -scheme "FunctionalTests" -destination $(TVOS_DESTINATION) -derivedDataPath build/out -resultBundlePath build/reports/tvosFunctionalResults.xcresult -enableCodeCoverage YES ADB_SKIP_LINT=YES
 
 install-githook:
 	git config core.hooksPath .githooks
