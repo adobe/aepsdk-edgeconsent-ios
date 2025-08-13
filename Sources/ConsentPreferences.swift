@@ -49,26 +49,13 @@ struct ConsentPreferences: Codable, Equatable {
     ///   - other: The dictionary to merge from
     /// - Returns: The merged dictionary
     private func deepMerge(_ base: [String: Any], with other: [String: Any]) -> [String: Any] {
-        var result = base
-
-        for (key, value) in other {
-            guard let existingValue = result[key] else {
-                // Key doesn't exist in base, add it
-                result[key] = value
-                continue
+        return base.merging(other) { lhs, rhs in
+            if let lhsDict = lhs as? [String: Any],
+               let rhsDict = rhs as? [String: Any] {
+                return deepMerge(lhsDict, with: rhsDict)
             }
-
-            // If both values are dictionaries, merge them recursively
-            if let existingDict = existingValue as? [String: Any],
-               let newDict = value as? [String: Any] {
-                result[key] = deepMerge(existingDict, with: newDict)
-            } else {
-                // If they're not both dictionaries, the new value takes precedence
-                result[key] = value
-            }
+            return rhs
         }
-
-        return result
     }
 
     /// Sets the provided date as metadata time for current consent preferences
