@@ -24,6 +24,9 @@ public class Consent: NSObject, Extension {
 
     private var preferencesManager = ConsentPreferencesManager()
 
+    // The last time a consent update was processed from public API. Initialize to date in the past.
+    private var lastConsentUpdateTime: Date = Date().addingTimeInterval(-(ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL * 2))
+
     // MARK: Extension
 
     public required init?(runtime: ExtensionRuntime) {
@@ -81,10 +84,22 @@ public class Consent: NSObject, Extension {
 
         // set metadata
         newPreferences.setTimestamp(date: event.timestamp)
-        preferencesManager.mergeAndUpdate(with: newPreferences)
-        shareCurrentConsents(event: event)
-        // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
-        dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
+        let outsideTimeout = event.timestamp.timeIntervalSince(lastConsentUpdateTime) > ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL
+
+        if preferencesManager.mergeAndUpdate(with: newPreferences) || outsideTimeout {
+            shareCurrentConsents(event: event)
+            // Share only changed preferences instead of all preferences to prevent accidental sharing of default consents.
+            dispatchEdgeConsentUpdateEvent(preferences: newPreferences)
+            lastConsentUpdateTime = event.timestamp
+        } else {
+            // If the consent preferences have not changed and arrived too soon after the previous synced preferences, ignore event.
+            let msg = """
+            Consent - Update request did not change preferences and is within \
+            \(ConsentConstants.Defaults.IGNORE_CONSENT_UPDATES_INTERVAL) \
+            sec of the previous request, dropping event.
+            """
+            Log.debug(label: ConsentConstants.LOG_TAG, msg)
+        }
     }
 
     /// Invoked when an event with `EventType.edge` and source `consent:preferences` is dispatched
@@ -102,13 +117,13 @@ public class Consent: NSObject, Extension {
             return
         }
 
-        if preferencesManager.mergeAndUpdate(with: newPreferences) {
-            if newPreferences.consents[ConsentConstants.EventDataKeys.METADATA] == nil {
-                // preferences were updated without providing metadata, update the metadata
-                newPreferences.setTimestamp(date: event.timestamp)
-                preferencesManager.mergeAndUpdate(with: newPreferences) // re-apply with updated metadata
-            }
+        // Set timestamp if needed
+        if newPreferences.consents[ConsentConstants.EventDataKeys.METADATA] == nil {
+            newPreferences.setTimestamp(date: event.timestamp)
+        }
 
+        // Merge and share preferences if changed
+        if preferencesManager.mergeAndUpdate(with: newPreferences) {
             shareCurrentConsents(event: event)
         }
     }

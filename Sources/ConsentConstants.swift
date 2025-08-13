@@ -15,8 +15,13 @@ import Foundation
 enum ConsentConstants {
     static let EXTENSION_NAME = "com.adobe.edge.consent"
     static let FRIENDLY_NAME = "Consent"
-    static let EXTENSION_VERSION = "5.0.0"
+    static let EXTENSION_VERSION = "5.0.1"
     static let LOG_TAG = FRIENDLY_NAME
+
+    enum Defaults {
+        /// The interval to ignore consecutive consent updates, in seconds.
+        static let IGNORE_CONSENT_UPDATES_INTERVAL: TimeInterval = 1
+    }
 
     enum EventDataKeys {
         static let CONSENTS = "consents"
