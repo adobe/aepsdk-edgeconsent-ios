@@ -30,8 +30,32 @@ struct ConsentPreferences: Codable, Equatable {
     /// - Returns: The resulting `ConsentPreferences` after merging `self` with `otherPreferences`
     func merge(with otherPreferences: ConsentPreferences?) -> ConsentPreferences {
         guard let otherPreferences = otherPreferences else { return self }
-        let mergedConsents = consents.merging(otherPreferences.consents) { _, new in new }
+
+        // Convert to regular dictionaries for easier manipulation
+        let selfDict = consents.asDictionary() ?? [:]
+        let otherDict = otherPreferences.consents.asDictionary() ?? [:]
+
+        // Perform deep merge
+        let mergedDict = deepMerge(selfDict, with: otherDict)
+
+        // Convert back to AnyCodable dictionary
+        let mergedConsents = AnyCodable.from(dictionary: mergedDict) ?? [:]
         return ConsentPreferences(consents: mergedConsents)
+    }
+
+    /// Recursively merges two dictionaries, preserving nested structure
+    /// - Parameters:
+    ///   - base: The base dictionary to merge into
+    ///   - other: The dictionary to merge from
+    /// - Returns: The merged dictionary
+    private func deepMerge(_ base: [String: Any], with other: [String: Any]) -> [String: Any] {
+        return base.merging(other) { lhs, rhs in
+            if let lhsDict = lhs as? [String: Any],
+               let rhsDict = rhs as? [String: Any] {
+                return deepMerge(lhsDict, with: rhsDict)
+            }
+            return rhs
+        }
     }
 
     /// Sets the provided date as metadata time for current consent preferences
@@ -75,13 +99,30 @@ struct ConsentPreferences: Codable, Equatable {
         return defaultPrefs
     }
 
-    /// Determines if two `ConsentPreferences` are equal
+    /// Determines if two `ConsentPreferences` are equal.
+    /// Ignores the "consents.metadata.time" field.
     /// - Parameters:
     ///   - lhs: a `ConsentPreferences`
     ///   - rhs: a `ConsentPreferences`
     /// - Returns: true if they are equal, otherwise false
     static func == (lhs: ConsentPreferences, rhs: ConsentPreferences) -> Bool {
-        return NSDictionary(dictionary: lhs.asDictionary() ?? [:]).isEqual(to: rhs.asDictionary() ?? [:])
+        var lhsDict = lhs.asDictionary() ?? [:]
+        if var lhsConsents = lhsDict[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any],
+           var lhsMetaData = lhsConsents[ConsentConstants.EventDataKeys.METADATA] as? [String: Any] {
+            lhsMetaData.removeValue(forKey: ConsentConstants.EventDataKeys.TIME)
+            lhsConsents[ConsentConstants.EventDataKeys.METADATA] = lhsMetaData
+            lhsDict[ConsentConstants.EventDataKeys.CONSENTS] = lhsConsents
+        }
+
+        var rhsDict = rhs.asDictionary() ?? [:]
+        if var rhsConsents = rhsDict[ConsentConstants.EventDataKeys.CONSENTS] as? [String: Any],
+           var rhsMetaData = rhsConsents[ConsentConstants.EventDataKeys.METADATA] as? [String: Any] {
+            rhsMetaData.removeValue(forKey: ConsentConstants.EventDataKeys.TIME)
+            rhsConsents[ConsentConstants.EventDataKeys.METADATA] = rhsMetaData
+            rhsDict[ConsentConstants.EventDataKeys.CONSENTS] = rhsConsents
+        }
+
+        return NSDictionary(dictionary: lhsDict).isEqual(to: rhsDict)
     }
 
 }
