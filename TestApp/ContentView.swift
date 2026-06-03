@@ -30,6 +30,11 @@ struct ContentView: View {
             let currentConsents = ["consents": collectConsent]
             Consent.update(with: currentConsents)
         }.padding()
+        Button("Collect Consent - Pending") {
+            let collectConsent = ["collect": ["val": "p"]]
+            let currentConsents = ["consents": collectConsent]
+            Consent.update(with: currentConsents)
+        }.padding()
         Button("Set consent.default.consents.collect.val = y via updateConfig") {
             let defaultsConsents = ["collect": ["val": "y"]]
             let defaultConsent = ["consent.default": ["consents": defaultsConsents]]
