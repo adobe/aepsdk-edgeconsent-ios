@@ -91,6 +91,27 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
     }
 
+    /// SDK-upgrade case: user had collect="y" cached on the old (buggy) SDK, but
+    /// `lastDefinitiveCollectConsent` has never been written (new key). We cannot tell
+    /// whether their token was ever successfully synced — they may have gone n→y on the
+    /// old build and had the sync silently dropped. The conservative null→y invariant
+    /// deliberately fires the resync flag once on upgrade. The cost is one extra Edge
+    /// event; the benefit is correctness for every user whose sync was previously lost.
+    func testBootup_CachedCollectYes_firstLaunchAfterSDKUpgrade_firesResyncFlag() {
+        // Setup – simulate a cached "y" with no lastDefinitiveCollectConsent written
+        let date = Date()
+        cacheConsents("y", "y", date)
+
+        // Test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+
+        // Verify – flag should be present: we have no record of a prior successful sync
+        let flag = mockRuntime.dispatchedEvents.first?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertTrue(flag == true,
+                      "null→y on SDK upgrade must fire the flag — we cannot know if the prior sync succeeded")
+    }
+
     func testBootup_NoCachedConsents_ConfigDefaultExist() {
         // Test
         consent = Consent(runtime: mockRuntime)
