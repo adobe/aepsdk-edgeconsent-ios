@@ -32,6 +32,24 @@ struct ConsentPreferencesManager {
         }
     }
 
+    /// Last observed value of `consents.collect.val` that was *not* `"p"` (pending).
+    /// Persisted so the transition `non-"y" → "y"` can be detected across process
+    /// restarts without each downstream extension having to track its own state.
+    ///
+    /// `"p"` events are deliberately ignored — pending is "user has not made a fresh
+    /// choice yet," not "user revoked." Treating it as no-information preserves the
+    /// user's prior `"y"` opt-in and avoids a spurious resync when a consent flow
+    /// simply re-renders (`y → p → y` is NOT a transition).
+    var lastDefinitiveCollectConsent: String? {
+        get {
+            return datastore.getString(key: ConsentConstants.DataStoreKeys.LAST_DEFINITIVE_COLLECT_CONSENT)
+        }
+
+        set {
+            datastore.set(key: ConsentConstants.DataStoreKeys.LAST_DEFINITIVE_COLLECT_CONSENT, value: newValue)
+        }
+    }
+
     /// The current user consent preferences merged over the default consent values (if any), used to be shared as Consent XDM Shared State and Consent response events.
     var currentPreferences: ConsentPreferences? {
         guard let persistedPreferences = persistedPreferences else {
@@ -74,5 +92,35 @@ struct ConsentPreferencesManager {
 
         // Check if applying the new defaults would change the computed current preferences
         return existingPreferences != currentPreferences
+    }
+
+    /// Examines the current merged `consents.collect.val` and advances the persisted
+    /// `lastDefinitiveCollectConsent` tracker accordingly, returning `true` iff the
+    /// effective value is now `"y"` and the previously stored definitive value was
+    /// not `"y"`.
+    ///
+    /// **Side effect:** `lastDefinitiveCollectConsent` is overwritten with the new
+    /// effective `collect.val` unless that value is `"p"` (pending). Pending is
+    /// deliberately ignored — pending is "user has not made a fresh choice yet,"
+    /// not "user revoked." Treating it as no-information preserves the user's
+    /// prior `"y"` opt-in and keeps a `y → p → y` sequence from spuriously firing
+    /// a re-sync.
+    ///
+    /// Intended to be called by the dispatcher AFTER a `mergeAndUpdate` /
+    /// `updateDefaults` call that resulted in (or should result in) a dispatched
+    /// `CONSENT_PREFERENCES_UPDATED` event. Leaves `mergeAndUpdate` and
+    /// `updateDefaults` untouched so their public contract is preserved.
+    @discardableResult
+    mutating func evaluateCollectConsentTransition() -> Bool {
+        let newCollectVal = currentPreferences?.collectVal
+        if newCollectVal == ConsentConstants.EventDataKeys.PENDING {
+            return false
+        }
+        let previousDefinitive = lastDefinitiveCollectConsent
+        if newCollectVal != previousDefinitive {
+            lastDefinitiveCollectConsent = newCollectVal
+        }
+        return newCollectVal == ConsentConstants.EventDataKeys.YES
+            && previousDefinitive != ConsentConstants.EventDataKeys.YES
     }
 }

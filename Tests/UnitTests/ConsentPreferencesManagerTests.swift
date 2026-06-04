@@ -718,4 +718,195 @@ class ConsentPreferencesManagerTests: XCTestCase, AnyCodableAsserts {
                 KeyMustBeAbsent(paths: "consents.adID.val"),
             CollectionEqualCount(scope: .subtree))
     }
+
+    // MARK: collect-consent transition (evaluateCollectConsentTransition) tests
+    //
+    // `mergeAndUpdate` / `updateDefaults` continue to return Bool ("did the effective
+    // state change?"). The transition signal lives in a separate method
+    // `evaluateCollectConsentTransition()` which the dispatcher invokes after a
+    // successful merge. These tests exercise that method against the same matrix
+    // of scenarios documented in the plan's invariants table.
+
+    /// Helper that builds a `ConsentPreferences` with only `collect.val` populated.
+    private func makeCollectPreferences(_ val: String) -> ConsentPreferences {
+        return ConsentPreferences(consents: AnyCodable.from(dictionary: ["collect": ["val": val]])!)
+    }
+
+    /// null -> "y": first definitive observation after fresh install must fire the flag.
+    func testCollectTransition_nullToYes_returnsResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        XCTAssertTrue(manager.mergeAndUpdate(with: makeCollectPreferences("y")))
+        XCTAssertTrue(manager.evaluateCollectConsentTransition())
+        XCTAssertEqual("y", manager.lastDefinitiveCollectConsent)
+    }
+
+    /// "n" -> "y": classic recovery transition must fire the flag.
+    func testCollectTransition_nToYes_returnsResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("n"))
+        _ = manager.evaluateCollectConsentTransition()   // advance tracker to "n"
+        XCTAssertTrue(manager.mergeAndUpdate(with: makeCollectPreferences("y")))
+        XCTAssertTrue(manager.evaluateCollectConsentTransition())
+    }
+
+    /// "y" -> "y": idempotent. No transition.
+    func testCollectTransition_yToYes_doesNotReturnResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        _ = manager.evaluateCollectConsentTransition()   // tracker = "y"
+        XCTAssertFalse(manager.mergeAndUpdate(with: makeCollectPreferences("y")))
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+    }
+
+    /// **Load-bearing test for the user-flagged case.**
+    /// "y" -> "p" -> "y": pending must NOT overwrite the prior "y"; the final "y"
+    /// compares against `lastDefinitive = "y"` and must NOT fire the flag.
+    func testCollectTransition_yToPToY_doesNotReturnResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        _ = manager.evaluateCollectConsentTransition()   // tracker = "y"
+        XCTAssertEqual("y", manager.lastDefinitiveCollectConsent)
+
+        // "p" must not advance lastDefinitive
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("p"))
+        _ = manager.evaluateCollectConsentTransition()
+        XCTAssertEqual("y", manager.lastDefinitiveCollectConsent, "Pending must not overwrite lastDefinitive")
+
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        XCTAssertFalse(manager.evaluateCollectConsentTransition(), "y -> p -> y must not fire the flag")
+    }
+
+    /// "y" -> "n" -> "p" -> "y": pending in the middle must not erase the "n";
+    /// the final "y" is a transition from "n" and must fire the flag.
+    func testCollectTransition_yToNToPToY_returnsResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        _ = manager.evaluateCollectConsentTransition()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("n"))
+        _ = manager.evaluateCollectConsentTransition()
+        XCTAssertEqual("n", manager.lastDefinitiveCollectConsent)
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("p"))
+        _ = manager.evaluateCollectConsentTransition()
+        XCTAssertEqual("n", manager.lastDefinitiveCollectConsent, "Pending must not overwrite the prior 'n'")
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        XCTAssertTrue(manager.evaluateCollectConsentTransition())
+    }
+
+    /// "n" -> "p" -> "y": same as the above but starting from "n".
+    func testCollectTransition_nToPToY_returnsResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("n"))
+        _ = manager.evaluateCollectConsentTransition()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("p"))
+        _ = manager.evaluateCollectConsentTransition()
+        XCTAssertEqual("n", manager.lastDefinitiveCollectConsent)
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        XCTAssertTrue(manager.evaluateCollectConsentTransition())
+    }
+
+    /// "p" as the first-ever event must NOT persist anything in `lastDefinitiveCollectConsent`
+    /// and must NOT fire the flag.
+    func testCollectTransition_pendingAlone_doesNotPersistOrFire() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("p"))
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+        XCTAssertNil(manager.lastDefinitiveCollectConsent, "Pending alone must not seed the tracker")
+    }
+
+    /// Cross-instance persistence: a manager that was used to write "y" must,
+    /// when re-instantiated against the same datastore, still suppress a later
+    /// "y" update from firing the flag.
+    func testCollectTransition_crossInstance_persistedYesSuppresses() {
+        var first = ConsentPreferencesManager()
+        _ = first.mergeAndUpdate(with: makeCollectPreferences("y"))
+        _ = first.evaluateCollectConsentTransition()
+        XCTAssertEqual("y", first.lastDefinitiveCollectConsent)
+
+        // New manager instance reads from the shared datastore
+        var second = ConsentPreferencesManager()
+        XCTAssertEqual("y", second.lastDefinitiveCollectConsent)
+        _ = second.mergeAndUpdate(with: makeCollectPreferences("y"))
+        XCTAssertFalse(second.evaluateCollectConsentTransition())
+    }
+
+    /// Cross-instance: persisted "n" -> a fresh instance seeing "y" must fire the flag.
+    func testCollectTransition_crossInstance_persistedNoTriggers() {
+        var first = ConsentPreferencesManager()
+        _ = first.mergeAndUpdate(with: makeCollectPreferences("n"))
+        _ = first.evaluateCollectConsentTransition()
+        XCTAssertEqual("n", first.lastDefinitiveCollectConsent)
+
+        var second = ConsentPreferencesManager()
+        XCTAssertEqual("n", second.lastDefinitiveCollectConsent)
+        _ = second.mergeAndUpdate(with: makeCollectPreferences("y"))
+        XCTAssertTrue(second.evaluateCollectConsentTransition())
+    }
+
+    /// A change to a non-`collect` dimension (e.g. adID) must NOT fire the
+    /// flag, even though `mergeAndUpdate` returns true (state did change).
+    func testCollectTransition_otherDimensionChange_doesNotFireFlag() {
+        var manager = ConsentPreferencesManager()
+        // Seed with collect=y
+        _ = manager.mergeAndUpdate(with: makeCollectPreferences("y"))
+        _ = manager.evaluateCollectConsentTransition()   // tracker = "y"
+        // Update only adID
+        let adIDOnly = ConsentPreferences(consents: AnyCodable.from(dictionary: ["adID": ["val": "n"]])!)
+        XCTAssertTrue(manager.mergeAndUpdate(with: adIDOnly))
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+    }
+
+    /// `updateDefaults` is a separate code path that must also work with the
+    /// transition evaluator. When a configuration default flips effective collect
+    /// from absent (null) to "y" with no persisted user preference, the flag must fire.
+    func testCollectTransition_updateDefaults_nullToYes_returnsResyncRequired() {
+        var manager = ConsentPreferencesManager()
+        XCTAssertTrue(manager.updateDefaults(with: makeCollectPreferences("y")))
+        XCTAssertTrue(manager.evaluateCollectConsentTransition())
+        XCTAssertEqual("y", manager.lastDefinitiveCollectConsent)
+    }
+
+    /// `updateDefaults` "y" -> "y": no transition.
+    func testCollectTransition_updateDefaults_yToYes_doesNotFireFlag() {
+        var manager = ConsentPreferencesManager()
+        _ = manager.updateDefaults(with: makeCollectPreferences("y"))
+        _ = manager.evaluateCollectConsentTransition()   // tracker = "y"
+        XCTAssertFalse(manager.updateDefaults(with: makeCollectPreferences("y")))
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+    }
+
+    /// If the effective `collect.val` becomes `nil` (e.g. a merge produces a state with
+    /// no `collect` key) and there is a previously persisted definitive value, the
+    /// tracker must be cleared. Exercises the `newCollectVal != previousDefinitive`
+    /// branch where the new value is `nil` and the setter writes `nil`.
+    func testCollectTransition_currentCollectAbsent_clearsPersistedTracker() {
+        var manager = ConsentPreferencesManager()
+        // Seed lastDefinitive = "y" directly
+        manager.lastDefinitiveCollectConsent = "y"
+        XCTAssertEqual("y", manager.lastDefinitiveCollectConsent)
+
+        // Update with a preferences object that has no `collect` key (adID only)
+        let adIDOnly = ConsentPreferences(consents: AnyCodable.from(dictionary: ["adID": ["val": "n"]])!)
+        _ = manager.mergeAndUpdate(with: adIDOnly)
+
+        // currentPreferences.collectVal is nil; previousDefinitive is "y" — they differ,
+        // so the tracker is overwritten with nil.
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+        XCTAssertNil(manager.lastDefinitiveCollectConsent, "Tracker must be cleared when current collect.val is nil")
+    }
+
+    /// When both the effective `collect.val` AND the persisted definitive are `nil`
+    /// — i.e. fresh manager observing only non-collect updates — the equality check
+    /// short-circuits, neither a set nor a remove is issued, and the flag does not fire.
+    /// Exercises the `nil == nil` no-op branch of the comparison.
+    func testCollectTransition_bothNull_doesNotWriteOrFire() {
+        var manager = ConsentPreferencesManager()
+        XCTAssertNil(manager.lastDefinitiveCollectConsent)
+
+        // Update with only non-collect dimensions — current state has no collect key
+        let adIDOnly = ConsentPreferences(consents: AnyCodable.from(dictionary: ["adID": ["val": "y"]])!)
+        _ = manager.mergeAndUpdate(with: adIDOnly)
+
+        XCTAssertFalse(manager.evaluateCollectConsentTransition())
+        XCTAssertNil(manager.lastDefinitiveCollectConsent, "No write should occur when both old and new collect.val are nil")
+    }
 }

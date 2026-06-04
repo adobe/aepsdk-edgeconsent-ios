@@ -28,6 +28,15 @@ enum ConsentConstants {
         static let METADATA = "metadata"
         static let TIME = "time"
         static let PAYLOAD = "payload"
+        static let COLLECT = "collect"
+        static let VAL = "val"
+        static let YES = "y"
+        static let PENDING = "p"
+        /// Top-level flag included in CONSENT_PREFERENCES_UPDATED when the effective
+        /// `consents.collect.val` just transitioned to "y" from a non-"y" value
+        /// (including null). Absent when no such transition occurred. Listeners that
+        /// have data gated by collect consent should re-sync when this flag is true.
+        static let COLLECT_CONSENT_RESYNC_REQUIRED = "collectConsentResyncRequired"
     }
 
     enum EventNames {
@@ -44,6 +53,10 @@ enum ConsentConstants {
 
     enum DataStoreKeys {
         static let CONSENT_PREFERENCES = "consent.preferences"
+        /// Persisted "last definitive collect.val" used for cross-session transition
+        /// detection. Records the most recent "y", "n", or null observation —
+        /// "p" (pending) events do NOT advance it.
+        static let LAST_DEFINITIVE_COLLECT_CONSENT = "consent.lastDefinitiveCollect"
     }
 
     enum SharedState {

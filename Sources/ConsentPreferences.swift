@@ -24,6 +24,18 @@ struct ConsentPreferences: Codable, Equatable {
     private(set) var consents: [String: AnyCodable]
     #endif
 
+    /// Convenience accessor for `consents.collect.val`.
+    /// - Returns: the string value of `consents.collect.val` (typically "y", "n", or "p"),
+    ///   or `nil` if any layer of the path is missing.
+    var collectVal: String? {
+        guard let dict = consents.asDictionary(),
+              let collect = dict[ConsentConstants.EventDataKeys.COLLECT] as? [String: Any],
+              let val = collect[ConsentConstants.EventDataKeys.VAL] as? String else {
+            return nil
+        }
+        return val
+    }
+
     /// Creates a new consent preferences by merging `otherPreferences` with `self`
     /// Any shared keys will take on the value stored in `otherPreferences`
     /// - Parameter otherPreferences: The preferences to be merged with `self`
