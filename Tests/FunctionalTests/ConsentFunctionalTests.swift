@@ -91,6 +91,27 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
 
     }
 
+    /// SDK-upgrade case: user had collect="y" cached on the old (buggy) SDK, but
+    /// `lastDefinitiveCollectConsent` has never been written (new key). We cannot tell
+    /// whether their token was ever successfully synced — they may have gone n→y on the
+    /// old build and had the sync silently dropped. The conservative null→y invariant
+    /// deliberately fires the resync flag once on upgrade. The cost is one extra Edge
+    /// event; the benefit is correctness for every user whose sync was previously lost.
+    func testBootup_CachedCollectYes_firstLaunchAfterSDKUpgrade_firesResyncFlag() {
+        // Setup – simulate a cached "y" with no lastDefinitiveCollectConsent written
+        let date = Date()
+        cacheConsents("y", "y", date)
+
+        // Test
+        consent = Consent(runtime: mockRuntime)
+        consent.onRegistered()
+
+        // Verify – flag should be present: we have no record of a prior successful sync
+        let flag = mockRuntime.dispatchedEvents.first?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertTrue(flag == true,
+                      "null→y on SDK upgrade must fire the flag — we cannot know if the prior sync succeeded")
+    }
+
     func testBootup_NoCachedConsents_ConfigDefaultExist() {
         // Test
         consent = Consent(runtime: mockRuntime)
@@ -949,7 +970,8 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             "metadata": {
               "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
-          }
+          },
+          "collectConsentResyncRequired": true
         }
         """
 
@@ -984,7 +1006,8 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             "metadata": {
               "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
-          }
+          },
+          "collectConsentResyncRequired": true
         }
         """
 
@@ -1021,7 +1044,8 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             "metadata": {
               "time": "\(date.iso8601UTCWithMillisecondsString)"
             }
-          }
+          },
+          "collectConsentResyncRequired": true
         }
         """
 
@@ -1056,7 +1080,8 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
             "metadata": {
               "time": "\(event.timestamp.iso8601UTCWithMillisecondsString)"
             }
-          }
+          },
+          "collectConsentResyncRequired": true
         }
         """
 
@@ -1067,6 +1092,193 @@ class ConsentFunctionalTests: XCTestCase, AnyCodableAsserts {
         // Verify edge update event
         XCTAssertEqual(EventType.edge, edgeEvent.type)
         XCTAssertEqual(EventSource.updateConsent, edgeEvent.source)
+    }
+
+    // MARK: collectConsentResyncRequired flag in dispatched events
+
+    /// Public-API path: a "n" → "y" sequence must produce two CONSENT_PREFERENCES_UPDATED
+    /// events; the first carries the flag (null → "y" transition for a fresh manager),
+    /// the second does not (y → y is not a transition).
+    func testConsentUpdate_collectYesFromN_dispatchesPreferencesUpdatedWithFlag() {
+        // Sequence: update(collect:n) then update(collect:y)
+        let nEvent = makeUpdateConsentEvent(collect: "n")
+        let yEvent = makeUpdateConsentEvent(collect: "y")
+
+        mockRuntime.simulateComingEvents(nEvent)
+        mockRuntime.simulateComingEvents(yEvent)
+
+        // Filter to only CONSENT_PREFERENCES_UPDATED dispatches (ignore EDGE_CONSENT_UPDATE)
+        let prefsUpdatedEvents = mockRuntime.dispatchedEvents.filter {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        XCTAssertEqual(2, prefsUpdatedEvents.count, "Expected one preferences-updated event per consent change")
+
+        // First event: collect = n. Not a transition into "y". No flag.
+        let firstFlag = prefsUpdatedEvents[0].data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertNil(firstFlag, "First event (n) must not carry the flag")
+
+        // Second event: collect transitioned n -> y. Flag must be true.
+        let secondFlag = prefsUpdatedEvents[1].data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertEqual(true, secondFlag, "Second event (y after n) must carry the flag")
+    }
+
+    /// Repeated "y" updates: the first (null → y) carries the flag, subsequent ones do not.
+    func testConsentUpdate_collectYesRepeated_onlyFirstCarriesFlag() {
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+
+        let prefsUpdatedEvents = mockRuntime.dispatchedEvents.filter {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        // Even though the merge state is unchanged on the second update, the rate-limit
+        // (IGNORE_CONSENT_UPDATES_INTERVAL = 1s) governs whether shareCurrentConsents
+        // is called. Tests run faster than 1s so the second dispatch is rate-limited
+        // away; assert we have at least 1 event and the first one carries the flag.
+        XCTAssertGreaterThanOrEqual(prefsUpdatedEvents.count, 1)
+        let firstFlag = prefsUpdatedEvents[0].data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertEqual(true, firstFlag, "First y (null -> y transition) must carry the flag")
+    }
+
+    /// **Load-bearing user invariant** — `y → p → y` must not fire the flag on the final y.
+    func testConsentUpdate_yToPToY_finalEventOmitsFlag() {
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "p"))
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+
+        let prefsUpdatedEvents = mockRuntime.dispatchedEvents.filter {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        // The final y event compares against lastDefinitive = "y" (p did not advance it).
+        // It must NOT carry the flag.
+        let lastFlag = prefsUpdatedEvents.last?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertNil(lastFlag, "y -> p -> y must not fire the flag on the final y event")
+    }
+
+    /// GET_CONSENTS_RESPONSE (response to the public getConsents() query) must NEVER
+    /// carry the transition flag — it answers a different question (current state).
+    func testGetConsents_responseDoesNotIncludeFlag() {
+        // Seed state so getConsents has something to respond with.
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        let getRequest = Event(name: ConsentConstants.EventNames.GET_CONSENTS_REQUEST,
+                               type: EventType.edgeConsent,
+                               source: EventSource.requestContent,
+                               data: nil)
+        mockRuntime.simulateComingEvents(getRequest)
+
+        let getResponse = mockRuntime.dispatchedEvents.first {
+            $0.name == ConsentConstants.EventNames.GET_CONSENTS_RESPONSE
+        }
+        XCTAssertNotNil(getResponse)
+        let flag = getResponse?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertNil(flag, "GET_CONSENTS_RESPONSE must never carry the transition flag")
+    }
+
+    /// EDGE_CONSENT_UPDATE (Edge-bound) must never carry the transition flag.
+    func testEdgeConsentUpdate_doesNotIncludeFlag() {
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+
+        let edgeUpdates = mockRuntime.dispatchedEvents.filter {
+            $0.name == ConsentConstants.EventNames.EDGE_CONSENT_UPDATE
+        }
+        XCTAssertFalse(edgeUpdates.isEmpty)
+        for evt in edgeUpdates {
+            let flag = evt.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+            XCTAssertNil(flag, "EDGE_CONSENT_UPDATE must never carry the transition flag")
+        }
+    }
+
+    /// Load-bearing invariant for the dispatch path: the XDM shared state must NOT contain
+    /// the `collectConsentResyncRequired` flag, even though `shareCurrentConsents` augments
+    /// the same local dictionary with the flag after calling `createXDMSharedState`.
+    /// Swift's value semantics (dictionary is a value type) isolate the shared-state copy
+    /// from the post-call mutation; this test pins that contract.
+    func testSharedStateDoesNotCarryFlag_onTransitionDispatch() {
+        // First update establishes lastDefinitive = "n"
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "n"))
+        // Now an n → y transition fires the flag on the dispatched event
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "y"))
+
+        // The most-recent shared state was created by the "y" dispatch — it must not carry the flag.
+        guard let lastSharedState = mockRuntime.createdXdmSharedStates.last else {
+            XCTFail("Expected at least one XDM shared state to have been created")
+            return
+        }
+        let sharedStateFlag = lastSharedState?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertNil(sharedStateFlag, "XDM shared state must not carry the transient transition flag")
+
+        // The most-recent CONSENT_PREFERENCES_UPDATED event must carry the flag.
+        let prefsUpdated = mockRuntime.dispatchedEvents.last {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        let eventFlag = prefsUpdated?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertEqual(true, eventFlag, "CONSENT_PREFERENCES_UPDATED must carry the flag on n -> y")
+    }
+
+    /// Parity coverage for the second of three dispatch sites: an Edge `consent:preferences`
+    /// handle that flips collect from `"n"` to `"y"` must fire the flag.
+    func testEdgeConsentPreferenceHandle_collectYesFromN_dispatchesFlag() {
+        // Seed lastDefinitive = "n" via the public-API path
+        mockRuntime.simulateComingEvents(makeUpdateConsentEvent(collect: "n"))
+        mockRuntime.resetDispatchedEventAndCreatedSharedStates()
+
+        // Server-side Edge handle pushes collect: y
+        let handlePayload: [String: Any] = [
+            ConsentConstants.EventDataKeys.PAYLOAD: [
+                ["collect": ["val": "y"]]
+            ]
+        ]
+        let handleEvent = Event(name: "consent:preferences",
+                                type: EventType.edge,
+                                source: ConsentConstants.EventSource.CONSENT_PREFERENCES,
+                                data: handlePayload)
+        mockRuntime.simulateComingEvents(handleEvent)
+
+        let prefsUpdated = mockRuntime.dispatchedEvents.last {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        XCTAssertNotNil(prefsUpdated, "Edge handle path must dispatch CONSENT_PREFERENCES_UPDATED on transition")
+        let flag = prefsUpdated?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertEqual(true, flag, "Edge handle path must fire the flag on n -> y")
+    }
+
+    /// Parity coverage for the third dispatch site: a configuration response whose default
+    /// consent sets effective collect to `"y"` (from `nil`, since setUp leaves persistence
+    /// empty) must fire the flag.
+    func testConfigurationResponse_defaultCollectYes_dispatchesFlag() {
+        // setUp leaves the extension in a clean state — no persisted user preference, no
+        // defaults yet. Dispatch a config-response event whose default sets collect: y.
+        let configData: [String: Any] = [
+            ConsentConstants.SharedState.Configuration.CONSENT_DEFAULT: [
+                "consents": ["collect": ["val": "y"]]
+            ]
+        ]
+        let configEvent = Event(name: "Config update",
+                                type: EventType.configuration,
+                                source: EventSource.responseContent,
+                                data: configData)
+        mockRuntime.simulateComingEvents(configEvent)
+
+        let prefsUpdated = mockRuntime.dispatchedEvents.last {
+            $0.name == ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED
+        }
+        XCTAssertNotNil(prefsUpdated, "Defaults path must dispatch CONSENT_PREFERENCES_UPDATED on transition")
+        let flag = prefsUpdated?.data?[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] as? Bool
+        XCTAssertEqual(true, flag, "Defaults path must fire the flag on null -> y")
+    }
+
+    /// Helper: builds an `edgeConsent / updateConsent` event whose only collect val is the supplied value.
+    private func makeUpdateConsentEvent(collect val: String) -> Event {
+        let data: [String: Any] = [
+            "consents": [
+                "collect": ["val": val]
+            ]
+        ]
+        return Event(name: "Consent Update",
+                     type: EventType.edgeConsent,
+                     source: EventSource.updateConsent,
+                     data: data)
     }
 
     private func buildFirstUpdateConsentEvent() -> Event {

@@ -144,12 +144,29 @@ public class Consent: NSObject, Extension {
     /// Creates a new shared state with the newly updated preferences and dispatches an event
     /// with `EventType.edgeConsent` and `EventSource.responseContent` containing the updated preferences.
     ///
-    /// - Parameters:
-    ///   - event: the event for this consent update
+    /// The shared state carries only consent values. The dispatched event additionally
+    /// carries a top-level `collectConsentResyncRequired: true` whenever
+    /// `evaluateCollectConsentTransition()` detects a `non-"y" → "y"` transition,
+    /// signalling to downstream listeners (e.g. Messaging) that any consent-gated data
+    /// should be re-synced. The flag is omitted from the payload otherwise — and is
+    /// never added to the XDM shared state.
+    ///
+    /// - Parameter event: the event for this consent update (may be nil on the
+    ///   on-register share path, in which case no transition can have just occurred).
     private func shareCurrentConsents(event: Event?) {
-        let currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
-        // create shared state first, then dispatch response event
+        var currentPreferencesDict = preferencesManager.currentPreferences?.asDictionary() ?? [:]
+        let collectConsentResyncRequired = preferencesManager.evaluateCollectConsentTransition()
+
+        // Shared state first, with consent values only — the transient transition flag does
+        // not belong in shared state (it describes an event, not current state).
         createXDMSharedState(data: currentPreferencesDict, event: event)
+
+        // Then augment the local copy with the transition flag (if any) and dispatch.
+        // Swift dictionaries are value types, so the mutation below cannot affect the
+        // shared-state copy passed above.
+        if collectConsentResyncRequired {
+            currentPreferencesDict[ConsentConstants.EventDataKeys.COLLECT_CONSENT_RESYNC_REQUIRED] = true
+        }
         let responseEvent = Event(name: ConsentConstants.EventNames.CONSENT_PREFERENCES_UPDATED,
                                   type: EventType.edgeConsent,
                                   source: EventSource.responseContent,
