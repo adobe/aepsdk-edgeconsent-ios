@@ -1,9 +1,9 @@
 PODS:
-  - AEPCore (5.6.0):
+  - AEPCore (5.12.0):
     - AEPRulesEngine (< 6.0.0, >= 5.0.0)
-    - AEPServices (< 6.0.0, >= 5.6.0)
+    - AEPServices (< 6.0.0, >= 5.12.0)
   - AEPRulesEngine (5.0.0)
-  - AEPServices (5.6.0)
+  - AEPServices (5.12.0)
   - AEPTestUtils (5.6.0):
     - AEPCore (< 6.0.0, >= 5.6.0)
     - AEPServices (< 6.0.0, >= 5.6.0)
@@ -32,12 +32,12 @@ CHECKOUT OPTIONS:
     :tag: testutils-5.6.0
 
 SPEC CHECKSUMS:
-  AEPCore: 404a4c600f5a885031a7e9b1e646ea9405d94b24
+  AEPCore: ec8e326c5bb86c74bfda2de6055bbb82d25cbba6
   AEPRulesEngine: fe5800653a4bee07b1e41e61b4d5551f0dba557b
-  AEPServices: cbdac48662ef2f1001d05d47b5930a397a8beaab
+  AEPServices: 62db5f1060752a890f990b6bbb3a4c893d698476
   AEPTestUtils: 2bbed995c8974f6f6d92058db88d6cd2e4a7f869
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
 
-PODFILE CHECKSUM: 5bd9eadbcba898b67b4794cc4a090f11b86f0182
+PODFILE CHECKSUM: 5c791fcfb6a8cf2da688a3bd3d348edd871e6282
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
