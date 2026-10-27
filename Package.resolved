@@ -1,0 +1,42 @@
+{
+  "originHash" : "59a0b014ca3a06d6ca3139954d41a6d90203acc6aad525ce434c24a3f1b2fd35",
+  "pins" : [
+    {
+      "identity" : "aepsdk-core-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adobe/aepsdk-core-ios.git",
+      "state" : {
+        "revision" : "5b81c6cb5a0c3c3894f99265a8653772d0cca175",
+        "version" : "5.13.0"
+      }
+    },
+    {
+      "identity" : "aepsdk-edge-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adobe/aepsdk-edge-ios.git",
+      "state" : {
+        "revision" : "5ad516ee4fbc23cc84f62208db2fd16e6bfdbd0c",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "aepsdk-edgeidentity-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adobe/aepsdk-edgeidentity-ios.git",
+      "state" : {
+        "revision" : "d97f33c79a8bc5087c1b660ab4166115a6ed9c19",
+        "version" : "5.2.0"
+      }
+    },
+    {
+      "identity" : "aepsdk-rulesengine-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adobe/aepsdk-rulesengine-ios.git",
+      "state" : {
+        "revision" : "514d2b3787c545bfa6749ffce5dd3e6f560c9319",
+        "version" : "5.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
