@@ -24,7 +24,7 @@ import Foundation
     /// ["consents": ["collect": ["val": "y"]]]
     /// ```
     @objc(getConsents:)
-    static func getConsents(completion: @escaping ([String: Any]?, Error?) -> Void) {
+    @preconcurrency static func getConsents(completion: @escaping @Sendable ([String: Any]?, Error?) -> Void) {
         let event = Event(name: ConsentConstants.EventNames.GET_CONSENTS_REQUEST,
                           type: EventType.edgeConsent,
                           source: EventSource.requestContent,
